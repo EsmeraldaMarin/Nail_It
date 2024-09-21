@@ -62,7 +62,7 @@ routerClientes.post("/registro", async (req, res) => {
             return res.status(400).json({ message: "El email ya está registrado." });
           }
           
-        const {username, lastname, email, password } = req.body;
+        const {password} = req.body;
 
         req.body.password = await bcrypt.hash(password, 10);
         // Creación del cliente si las validaciones pasan
