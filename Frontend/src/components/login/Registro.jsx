@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Registro.scss';
+import axios from '../../axiosConfig/axiosConfig';
 const Registro = () => {
+    const navigate = useNavigate(); // Hook para redirigir
+    const [errorMessage, setErrorMessage] = useState("");
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        nombre: '',
+        apellido: '',
         email: '',
-        phone: '',
+        telefono: '',
         password: '',
         confirmPassword: ''
     });
 
-    const [errorMessage, setErrorMessage] = useState("");
 
     // Maneja el cambio de cada input
     const handleChange = (e) => {
@@ -23,13 +26,13 @@ const Registro = () => {
     };
 
     // Maneja el envío del formulario
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validación básica
-        const { firstName, lastName, email, phone, password, confirmPassword } = formData;
+        const { nombre, apellido, email, telefono, password, confirmPassword } = formData;
 
-        if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+        if (!nombre || !apellido || !email || !telefono || !password || !confirmPassword) {
             setErrorMessage("Todos los campos son obligatorios.");
             return;
         }
@@ -47,10 +50,22 @@ const Registro = () => {
             return;
         }
 
+        try {
+            const response = await axios.post('/registro', {
+                nombre: formData.nombre,
+                apellido: formData.apellido,
+                email: formData.email,
+                telefono: formData.telefono,
+                password: formData.password,
+            });
+            navigate('/login')
+        } catch (error) {
+            console.error('Error en el registro:', error);
+        }
+
         // Aquí se podría enviar el formulario a una API o servicio
         console.log('Datos enviados:', formData);
         setErrorMessage(""); // Reiniciar mensajes de error
-        alert('¡Registro exitoso!');
     };
 
     return (
@@ -61,9 +76,9 @@ const Registro = () => {
                     <label className="form-label">Nombre</label>
                     <input
                         type="text"
-                        name="firstName"
+                        name="nombre"
                         className="form-control"
-                        value={formData.firstName}
+                        value={formData.nombre}
                         onChange={handleChange}
                     />
                 </div>
@@ -71,9 +86,9 @@ const Registro = () => {
                     <label className="form-label">Apellido</label>
                     <input
                         type="text"
-                        name="lastName"
+                        name="apellido"
                         className="form-control"
-                        value={formData.lastName}
+                        value={formData.apellido}
                         onChange={handleChange}
                     />
                 </div>
@@ -91,9 +106,9 @@ const Registro = () => {
                     <label className="form-label">Número de teléfono</label>
                     <input
                         type="tel"
-                        name="phone"
+                        name="telefono"
                         className="form-control"
-                        value={formData.phone}
+                        value={formData.telefono}
                         onChange={handleChange}
                     />
                 </div>

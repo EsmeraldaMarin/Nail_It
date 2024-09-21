@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { Router } from "express";
+import express from "express";
 import { sequelize } from "./db/database.js";
 import { routerClientes } from "./routes/cliente_routes.js";
 import { GestorClientes } from "./controllers/cliente_controller.js";

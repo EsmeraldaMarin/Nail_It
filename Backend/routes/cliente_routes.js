@@ -1,4 +1,5 @@
-import { Router } from "express";
+import pkg from "express";
+const { Router } = pkg
 import { gestorClientes } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -11,68 +12,68 @@ routerClientes.get('/pruebas', (req, res) => {
 
 routerClientes.get("/clientes", async (req, res) => {
     const datosClientes = await gestorClientes.obtener_clientes();
-    if (datosClientes){
+    if (datosClientes) {
         res.status(200).json(datosClientes);
-    }else{
+    } else {
         res.status(500).send("Error!");
     }
 });
 
-routerClientes.get("/cliente/:id", async(req,res) => {
+routerClientes.get("/cliente/:id", async (req, res) => {
     const id = req.params.id;
     const datos = await gestorClientes.obtener_cliente(id);
-    if (datos){
+    if (datos) {
         res.status(200).json(datos.email);
-    } else{
+    } else {
         res.status(404).send("Cliente inexistente");
     }
 });
 
-routerClientes.get("/cliente/:email", async(req,res) => {
+routerClientes.get("/cliente/:email", async (req, res) => {
     const email = req.params.email;
     const datos = await gestorClientes.obtener_cliente_por_email(email);
-    if (datos){
+    if (datos) {
         res.status(200).json(datos.email);
-    } else{
+    } else {
         res.status(404).send("Cliente inexistente");
     }
 });
 
 routerClientes.post("/registro", async (req, res) => {
-    
+
     req.body.email = req.body.email.toLowerCase();
-    
+
     try {
         // Validación
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
-          return res.status(400).json({ message: "Nombre del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Nombre del cliente es requerido y debe ser una cadena no vacía" });
         }
         if (!req.body.apellido || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
-          return res.status(400).json({ message: "Apellido del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Apellido del cliente es requerido y debe ser una cadena no vacía" });
         }
         if (!req.body.email || typeof req.body.email !== 'string' || req.body.email.trim() === '') {
             return res.status(400).json({ message: "Email del cliente es requerido y debe ser una cadena no vacía o ya existe." });
-          }
-          if (!req.body.password || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
+        }
+        if (!req.body.password || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
             return res.status(400).json({ message: "Password del cliente es requerido y debe ser una cadena no vacía" });
-          }
+        }
 
-          const existingClient = await gestorClientes.obtener_cliente_por_email(req.body.email);
-          if (existingClient) {
+        const existingClient = await gestorClientes.obtener_cliente_por_email(req.body.email);
+        if (existingClient) {
             return res.status(400).json({ message: "El email ya está registrado." });
-          }
-          
-        const {password} = req.body;
+        }
+
+        const { password } = req.body;
 
         req.body.password = await bcrypt.hash(password, 10);
         // Creación del cliente si las validaciones pasan
 
         const nuevoCliente = await gestorClientes.crear_cliente(req.body);
-    
+
         res.status(201).json(nuevoCliente);
-      } catch (error) {
+    } catch (error) {
         res.status(400).json({ error: error.message });
-      };
+    };
 })
 
 routerClientes.post("/login", async (req, res) => {

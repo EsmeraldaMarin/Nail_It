@@ -3,28 +3,43 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { Link } from "react-router-dom";
+import axios from '../../axiosConfig/axiosConfig';
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const navigate = useNavigate(); // Hook para redirigir
-    
-    const handleSubmit = (event) => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const navigate = useNavigate()
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Validación básica
-        if (email === "" || password === "") {
+        if (formData.email === "" || formData.password === "") {
             setErrorMessage("Por favor, completa ambos campos.");
             return;
         }
+        try {
+            const response = await axios.post('/login', {
+                email: formData.email,
+                password: formData.password,
+            });
 
-        // Autenticación simulada 
-        if (email === "admin" && password === "ohmynails") {
-            navigate('/inicio'); // Redirige a Inicio
-        } else {
-            setErrorMessage("Email o contraseña incorrectos.");
+            navigate('/inicio');
+        } catch (error) {
+            console.error('Error en el login:', error);
         }
+
     };
 
     return (
@@ -34,18 +49,20 @@ const Login = () => {
                 <div className="form-group col-md-6">
                     <label className="form-label">Email:</label>
                     <input
-                        type="text"
-                        value={email}
+                        type="email"
+                        name="email"
+                        value={formData.email}
                         className="form-control"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="inputPassword5" className="form-label">Contraseña:</label>
                     <input
                         type="password" id="inputPassword5" className="form-control" aria-describedby="passwordHelpBlock"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
                     />
 
                 </div>
