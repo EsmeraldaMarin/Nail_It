@@ -5,7 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import './custom.scss';
 import Registro from "./components/login/Registro";
 import Header from "./components/header/Header";
-import Inicio from "./components/Inicio";
+import Inicio from "./components/inicio/Inicio";
 
 function App() {
     return (
