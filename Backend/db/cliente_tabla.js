@@ -6,10 +6,11 @@ export const Clientes = sequelize.define('Clientes', {
     nombre: { type: DataTypes.STRING },
     apellido: { type: DataTypes.STRING },
     numero: {type:DataTypes.INTEGER},
-    email: { type: DataTypes.STRING },
+    email: { type: DataTypes.STRING, unique: true },
     password: {type: DataTypes.STRING}
 }, {
-    tableName: 'Clientes', timestamps: false
+    tableName: 'Clientes',
+    timestamps: false
 });
 
 Clientes.prototype.toString = function (){
