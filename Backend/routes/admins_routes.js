@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 
 export const routerAdmins = Router();
 
-routerAdmins.get("/admins", async (req, res) => {
+routerAdmins.get("/", async (req, res) => {
     const datos = await gestorAdmins.obtener_admins();
     if (datos){
         res.status(200).json(datos);
@@ -15,7 +15,7 @@ routerAdmins.get("/admins", async (req, res) => {
     }
 })
 
-routerAdmins.post("/registrarAdmin", async(req, res) => {
+routerAdmins.post("/registrar", async(req, res) => {
      req.body.email = req.body.email.toLowerCase();
      try{
         // Validación
@@ -32,7 +32,7 @@ routerAdmins.post("/registrarAdmin", async(req, res) => {
             return res.status(400).json({ message: "Password del admin es requerido" });
         }
 
-        const existingAdmin = await gestorAdmins.obtener_admins_por_email(req.body.email);
+        const existingAdmin = await gestorAdmins.obtener_admin_por_email(req.body.email);
         if (existingAdmin){
             return res.status(400).json({ message: "El email ya está registrado"});
         }
@@ -50,3 +50,30 @@ routerAdmins.post("/registrarAdmin", async(req, res) => {
         res.status(400).json({error: error.message });
      }
 })
+
+routerAdmins.post("/login", async(req, res) => {
+    try {
+        // Obtener el usuario por email
+        const usuario = await gestorAdmins.obtener_admin_por_email(req.body.email);
+
+        // Verificar si el usuario existe
+        if (!usuario) {
+            return res.status(400).json({ message: "Email no registrado." });
+        }
+
+        // Comparar la contraseña
+        const passwordMatch = await bcrypt.compare(req.body.password, usuario.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ message: "Contraseña incorrecta." });
+        }
+
+        // Si las credenciales son válidas, puedes generar un token aquí
+        const token = jwt.sign({ id: usuario.id }, 'tuSecreto', { expiresIn: '1h' });
+
+        // Responder con el token y un mensaje de éxito
+        res.status(200).json({ message: "Login exitoso!", token });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+

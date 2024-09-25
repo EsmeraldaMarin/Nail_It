@@ -13,5 +13,5 @@ export const Clientes = sequelize.define('Clientes', {
 });
 
 Clientes.prototype.toString = function (){
-    return `|${this.nombre} | ${this.apellido}|${this.email}`
+    return ` ${this.nombre} | ${this.apellido} | ${this.email}`
 }

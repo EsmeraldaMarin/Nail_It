@@ -3,6 +3,7 @@ const { Router } = pkg
 import { gestorClientes } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { Clientes } from "../db/cliente_tabla.js";
 
 export const routerClientes = Router();
 
@@ -25,7 +26,7 @@ routerClientes.get("/cliente/:id", async (req, res) => {
     }
 });
 
-routerClientes.get("/cliente/:email", async (req, res) => {
+/* routerClientes.get("/clientes/:email", async (req, res) => {
     const email = req.params.email;
     const datos = await gestorClientes.obtener_cliente_por_email(email);
     if (datos) {
@@ -33,7 +34,37 @@ routerClientes.get("/cliente/:email", async (req, res) => {
     } else {
         res.status(404).send("Cliente inexistente");
     }
-});
+}); */
+
+routerClientes.put("/cliente/:email", async (req, res) => {
+
+
+    try{
+        
+        const email = req.params.email.toLowerCase();
+
+        const clienteExistente = await gestorClientes.obtener_cliente_por_email(email);
+
+        console.log(email + " : " + clienteExistente);
+        
+        if (!clienteExistente){
+            return res.status(401).send("Cliente no encontrado");
+        }
+
+        const {password} = req.body ;
+
+        req.body.password = await bcrypt.hash(password, 10);
+
+        const updateCliente = await gestorClientes.actualizar_cliente(req.body, email);
+
+        console.log(updateCliente);
+        res.status(202).json("Cliente modificado.");
+    }
+    catch(error){
+        res.status(500).json({error: error.message });
+    }
+}); 
+
 
 routerClientes.post("/registro", async (req, res) => {
 
@@ -70,7 +101,7 @@ routerClientes.post("/registro", async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     };
-})
+});
 
 routerClientes.post("/login", async (req, res) => {
     try {
@@ -97,3 +128,4 @@ routerClientes.post("/login", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+

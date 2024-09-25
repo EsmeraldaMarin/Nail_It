@@ -17,6 +17,6 @@ export const gestorClientes = new GestorClientes();
 export const gestorAdmins = new GestorAdmins();
 
 app.use('', routerClientes);
-app.use('', routerAdmins);
+app.use('/admin', routerAdmins);
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

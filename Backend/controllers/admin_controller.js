@@ -9,7 +9,7 @@ export class GestorAdmins{
         return await Admins.create(req_body);
     }
 
-    async obtener_admins_por_email(email){
+    async obtener_admin_por_email(email){
         return await Admins.findOne({where: {email: email}});
     }
 
