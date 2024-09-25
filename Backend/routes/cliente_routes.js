@@ -6,10 +6,6 @@ import bcrypt from "bcryptjs";
 
 export const routerClientes = Router();
 
-routerClientes.get('/pruebas', (req, res) => {
-    res.send('Funcionando!');
-});
-
 routerClientes.get("/clientes", async (req, res) => {
     const datosClientes = await gestorClientes.obtener_clientes();
     if (datosClientes) {
@@ -46,16 +42,16 @@ routerClientes.post("/registro", async (req, res) => {
     try {
         // Validación
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
-            return res.status(400).json({ message: "Nombre del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Nombre del cliente es requerido" });
         }
         if (!req.body.apellido || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
-            return res.status(400).json({ message: "Apellido del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Apellido del cliente es requerido" });
         }
         if (!req.body.email || typeof req.body.email !== 'string' || req.body.email.trim() === '') {
-            return res.status(400).json({ message: "Email del cliente es requerido y debe ser una cadena no vacía o ya existe." });
+            return res.status(400).json({ message: "Email del cliente es requerido" });
         }
         if (!req.body.password || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
-            return res.status(400).json({ message: "Password del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Password del cliente es requerido" });
         }
 
         const existingClient = await gestorClientes.obtener_cliente_por_email(req.body.email);
