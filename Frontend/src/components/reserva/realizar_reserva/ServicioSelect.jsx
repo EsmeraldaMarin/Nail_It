@@ -1,24 +1,26 @@
 import React from 'react';
 import "./Reserva.scss"
+import { NULL } from 'sass';
 
 const ServicioSelect = ({ tipoServicio, servicio, setServicio }) => {
 
     //esto se resuelve cuando este listo el back
     const servicios = {
-        manicure: ['Manicure Básica', 'Manicure Completa', 'Manicure Francesa'],
-        pedicure: ['Pedicure Básica', 'Pedicure Completa', 'Pedicure Spa'],
+        manicura: ['Manicure Básica', 'Manicure Completa', 'Manicure Francesa'],
+        pedicura: ['Pedicure Básica', 'Pedicure Completa', 'Pedicure Spa'],
         pestañasycejas: ['Uñas Acrílicas', 'Uñas de Gel', 'Relleno de Uñas']
     }
     return (
         <div className="mb-3">
             <label>Seleccione el servicio</label>
             <select
-                value={servicio}
+                value={servicio == null ? "" : servicio}
                 onChange={(e) => setServicio(e.target.value)}
                 className="form-select"
+                disabled={tipoServicio === null}
             >
                 <option value="">Seleccione un servicio</option>
-                {servicios[tipoServicio].map((servicio, index) => (
+                {tipoServicio && servicios[tipoServicio].map((servicio, index) => (
                     <option key={index} value={servicio}>
                         {servicio}
                     </option>

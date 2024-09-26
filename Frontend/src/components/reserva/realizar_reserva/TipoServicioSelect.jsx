@@ -2,38 +2,24 @@ import React, { useState } from 'react';
 import "./Reserva.scss"
 
 const TipoServicio = ({ tipoServicio, setTipoServicio }) => {
+    //esto se trae de la bd
+    let tipoDeServicios = ["manicura", "pedicura", "pestañasycejas"]
     return (
         <div className="mb-3 tipo-servicio">
             <h5>Selecciona un tipo de servicio</h5>
-            <ul className="nav nav-tabs tipo-servicio-tabs">
+            <select
+                value={tipoServicio == null ? "" : tipoServicio}
+                onChange={(e) => setTipoServicio(e.target.value)}
+                className="form-select"
 
-                <li className="nav-item">
-                    <button
-                        className={`nav-link ${tipoServicio === 'manicure' ? 'active' : ''}`}
-                        onClick={() => setTipoServicio('manicure')}
-                    >
-                        Manicure
-                    </button>
-                </li>
-
-                <li className="nav-item">
-                    <button
-                        className={`nav-link ${tipoServicio === 'pedicure' ? 'active' : ''}`}
-                        onClick={() => setTipoServicio('pedicure')}
-                    >
-                        Pedicure
-                    </button>
-                </li>
-
-                <li className="nav-item">
-                    <button
-                        className={`nav-link ${tipoServicio === 'pestañasycejas' ? 'active' : ''}`}
-                        onClick={() => setTipoServicio('pestañasycejas')}
-                    >
-                        Pestañas o Cejas
-                    </button>
-                </li>
-            </ul>
+            >
+                <option value="">Ninguno</option>
+                {tipoDeServicios.map((tipoServ, index) => (
+                    <option key={index} value={tipoServ}>
+                        {tipoServ}
+                    </option>
+                ))}
+            </select>
         </div>
     );
 };

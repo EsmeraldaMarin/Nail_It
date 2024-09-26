@@ -1,0 +1,36 @@
+.transf {
+    .monto-ctn {
+        padding: 10px;
+        background-color: #eee;
+        border-radius: 10px;
+        line-height: 1em;
+        .monto {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    }
+    > div {
+        &:nth-child(2) {
+            justify-content: space-between;
+            font-size: 0.9em;
+            border: 0;
+        }
+        &:last-child {
+            > p {
+                text-align: center;
+                font-weight: bold;
+                margin: 10px 0;
+                span {
+                    display: block;
+                    font-weight: normal;
+                }
+                &.fw-normal {
+                    font-weight: normal;
+                    text-align: left;
+                    font-size: 0.8em;
+                    margin-top: 30px;
+                }
+            }
+        }
+    }
+}
