@@ -38,11 +38,10 @@ routerVerificar.get("/:token", (req, res) => {
             verificado: true,
         }
 
-        const usuarioVerificado = gestorClientes.actualizar_cliente(usuarioAInsertar, decodificar.user);
+        gestorClientes.actualizar_cliente(usuarioAInsertar, decodificar.user);
 
-        res.send(usuarioVerificado);
         res.cookie("jwt", token, cookieOption);
-        res.redirect("/inicio");
+        res.redirect("http://localhost:3000/inicio");
         res.status(200);
         
     }catch(error){
