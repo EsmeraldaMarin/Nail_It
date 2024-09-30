@@ -1,25 +1,7 @@
 //TIPO SERVICIO
 .tipo-servicio {
-    /* Evitar que las pestañas hagan wrap */
-    .tipo-servicio-tabs {
-        display: flex;
-        flex-wrap: nowrap;
-        li {
-            width: 100%;
-            .nav-link {
-                padding: 0;
-                height: 100%;
-                width: 100%;
-                text-align: center;
-                font-size: 0.9em;
-                color: black;
-            }
-            .nav-link.active {
-                color: orange;
-                border: 1px solid orange;
-                font-weight: bold;
-            }
-        }
+    select {
+        text-transform: capitalize;
     }
 }
 //SERVICIO E INFO DEL SERVICIO
@@ -43,6 +25,7 @@
         border-radius: 20px;
         padding: 0;
         overflow: hidden;
+        width: 200px;
         > p:first-child {
             border-bottom: 1px solid #bbb;
             font-weight: bold;
@@ -68,14 +51,14 @@
         scrollbar-width: none;
         position: relative;
         margin-top: 10px;
-        
+
         button {
             background-color: white;
             border: 1px solid orange;
             color: orange;
             white-space: nowrap;
             margin: 0px 5px;
-            padding: 16px 8px ;
+            padding: 16px 8px;
             min-width: 100px;
             border-radius: 30px;
             &.ocupado {
@@ -86,7 +69,10 @@
                 color: white;
                 font-weight: bold;
             }
-            
+            &:disabled {
+                border: 1px solid gray;
+                color: gray;
+            }
         }
     }
 }

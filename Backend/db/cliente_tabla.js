@@ -6,12 +6,15 @@ export const Clientes = sequelize.define('Clientes', {
     nombre: { type: DataTypes.STRING },
     apellido: { type: DataTypes.STRING },
     numero: {type:DataTypes.INTEGER},
-    email: { type: DataTypes.STRING },
-    password: {type: DataTypes.STRING}
+    email: { type: DataTypes.STRING, unique: true},
+    password: {type: DataTypes.STRING},
+    verificado: {type: DataTypes.BOOLEAN}
 }, {
-    tableName: 'Clientes', timestamps: false
+    tableName: 'Clientes',
+    timestamps: false
 });
 
 Clientes.prototype.toString = function (){
-    return `|${this.nombre} | ${this.apellido}|${this.email}`
+    return ` ${this.nombre} | ${this.apellido} | ${this.email}`
 }
+

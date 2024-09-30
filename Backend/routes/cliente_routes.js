@@ -3,12 +3,13 @@ const { Router } = pkg
 import { gestorClientes } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { Clientes } from "../db/cliente_tabla.js";
+import { enviarMailVerificacion } from "../controllers/services/mail.services.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const routerClientes = Router();
-
-routerClientes.get('/pruebas', (req, res) => {
-    res.send('Funcionando!');
-});
 
 routerClientes.get("/clientes", async (req, res) => {
     const datosClientes = await gestorClientes.obtener_clientes();
@@ -29,7 +30,7 @@ routerClientes.get("/cliente/:id", async (req, res) => {
     }
 });
 
-routerClientes.get("/cliente/:email", async (req, res) => {
+/* routerClientes.get("/clientes/:email", async (req, res) => {
     const email = req.params.email;
     const datos = await gestorClientes.obtener_cliente_por_email(email);
     if (datos) {
@@ -37,7 +38,37 @@ routerClientes.get("/cliente/:email", async (req, res) => {
     } else {
         res.status(404).send("Cliente inexistente");
     }
-});
+}); */
+
+routerClientes.put("/cliente/:email", async (req, res) => {
+
+
+    try{
+        
+        const email = req.params.email.toLowerCase();
+
+        const clienteExistente = await gestorClientes.obtener_cliente_por_email(email);
+
+        console.log(email + " : " + clienteExistente);
+        
+        if (!clienteExistente){
+            return res.status(401).send("Cliente no encontrado");
+        }
+
+        const {password} = req.body ;
+
+        req.body.password = await bcrypt.hash(password, 10);
+
+        const updateCliente = await gestorClientes.actualizar_cliente(req.body, email);
+
+        console.log(updateCliente);
+        res.status(202).json("Cliente modificado.");
+    }
+    catch(error){
+        res.status(500).json({error: error.message });
+    }
+}); 
+
 
 routerClientes.post("/registro", async (req, res) => {
 
@@ -46,44 +77,65 @@ routerClientes.post("/registro", async (req, res) => {
     try {
         // Validación
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
-            return res.status(400).json({ message: "Nombre del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Nombre del cliente es requerido" });
         }
         if (!req.body.apellido || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
-            return res.status(400).json({ message: "Apellido del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Apellido del cliente es requerido" });
         }
         if (!req.body.email || typeof req.body.email !== 'string' || req.body.email.trim() === '') {
-            return res.status(400).json({ message: "Email del cliente es requerido y debe ser una cadena no vacía o ya existe." });
+            return res.status(400).json({ message: "Email del cliente es requerido" });
         }
         if (!req.body.password || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
-            return res.status(400).json({ message: "Password del cliente es requerido y debe ser una cadena no vacía" });
+            return res.status(400).json({ message: "Password del cliente es requerido" });
         }
 
-        const existingClient = await gestorClientes.obtener_cliente_por_email(req.body.email);
-        if (existingClient) {
-            return res.status(400).json({ message: "El email ya está registrado." });
+        const clienteARevisar = await gestorClientes.obtener_cliente_por_email(req.body.email);
+        if (clienteARevisar){
+        //    return res.status(400).json({message: "El email ya está registrado."})
         }
 
-        const { password } = req.body;
-
+        const {password} = req.body;
         req.body.password = await bcrypt.hash(password, 10);
-        // Creación del cliente si las validaciones pasan
 
-        const nuevoCliente = await gestorClientes.crear_cliente(req.body);
+        // Validación del email
+   
+        const tokenVerificacion = jwt.sign(
+            {user: req.body.email},
+            process.env.JWT_SECRET,
+            {expiresIn: process.env.JWT_EXPIRATION}
+        )
+       
+        const mail = await enviarMailVerificacion(req.body.email, tokenVerificacion);
+        console.log(mail);
+        if (mail.accepted === 0){
+           return res.status(500).send({status:"error", message:"Error enviando mail de verificación"})
+        }
+    
+        const nuevoUsuario ={
+            nombre: req.body.nombre,
+             apellido: req.body.apellido,
+             email: req.body.email,
+             numero: req.body.numero,
+             password: req.body.password,
+             verificado: 0};
+
+
+        const nuevoCliente = await gestorClientes.crear_cliente(nuevoUsuario);
 
         res.status(201).json(nuevoCliente);
     } catch (error) {
         res.status(400).json({ error: error.message });
     };
-})
+});
 
 routerClientes.post("/login", async (req, res) => {
     try {
         // Obtener el usuario por email
         const usuario = await gestorClientes.obtener_cliente_por_email(req.body.email);
-
+        
         // Verificar si el usuario existe
-        if (!usuario) {
-            return res.status(400).json({ message: "Email no registrado." });
+        if (!usuario || usuario.verificado) {
+            return res.status(400).json({ message: "Email no registrado o no verificado." });
         }
 
         // Comparar la contraseña
@@ -93,11 +145,26 @@ routerClientes.post("/login", async (req, res) => {
         }
 
         // Si las credenciales son válidas, puedes generar un token aquí
-        const token = jwt.sign({ id: usuario.id }, 'tuSecreto', { expiresIn: '1h' });
+        
+        const token = jwt.sign({user:usuario.mail}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
+        const cookieOption = {
+            expiresIn: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 100,
+            path: "/"
+        }
 
+        res.cookie("jwt", token, cookieOption);
         // Responder con el token y un mensaje de éxito
-        res.status(200).json({ message: "Login exitoso!", token });
+        // res.status(200).json({ message: "Login exitoso!", token });
+        res.status(200).json({message:"Cliente loggeado", redirect:"/inicio"})
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Cierre de sesión, hay que testearlo con el front.
+
+routerClientes.post("/logout", async (req, res) => {
+    res.clearCookie(req.body.mail);
+
+    res.status(200).json({message: "Sesión cerrada exitosamente!", redirect:"/inicio"});
+})
