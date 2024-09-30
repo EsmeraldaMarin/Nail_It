@@ -2,7 +2,7 @@ import pkg from 'express';
 const { Router } = pkg;
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { gestorClientes } from "../index.js";
+import { gestorAdmins, gestorClientes } from "../index.js";
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ routerVerificar.get("/:token", (req, res) => {
 
         const usuarioAValidar = gestorClientes.obtener_cliente_por_email(decodificar.user);
 
+
         const usuarioAInsertar = {
             nombre: usuarioAValidar.nombre,
             apellido: usuarioAValidar.apellido,
@@ -40,7 +41,8 @@ routerVerificar.get("/:token", (req, res) => {
         }
 
         gestorClientes.actualizar_cliente(usuarioAInsertar, decodificar.user);
-
+        gestorAdmins.actualizar_admin(usuarioAInsertar, decodificar.user);
+        
         res.cookie("jwt", token, cookieOption);
         res.redirect("http://localhost:3000/inicio");
         res.status(200);
