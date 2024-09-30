@@ -30,16 +30,20 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('/login', {
+            const response = await axios.post('/admin/login', {
                 email: formData.email,
                 password: formData.password,
             });
             // Almacena el token en localStorage
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('rol', response.data.rol);
 
             // Redirigir o hacer algo después del inicio de sesión
-            console.log('Inicio de sesión exitoso', response.data.token);
-            navigate('/inicio');
+            if (response.data.rol == "admin" ) {
+                navigate("/inicio_admin")
+            }else{
+                navigate("/inicio")
+            }
         } catch (error) {
             setError('Usuario o contraseña incorrecta');
         }

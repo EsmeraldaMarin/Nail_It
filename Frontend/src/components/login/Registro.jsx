@@ -51,7 +51,7 @@ const Registro = () => {
         }
 
         try {
-            const response = await axios.post('/registro', {
+            const response = await axios.post('/admin/registrar', {
                 nombre: formData.nombre,
                 apellido: formData.apellido,
                 email: formData.email,

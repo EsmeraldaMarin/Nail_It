@@ -1,0 +1,21 @@
+.Reservas {
+    margin-left: 250px;
+    margin-top: 50px;
+    width: 80vw;
+
+    .table-ctn {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 0 3px #bbb;
+        
+    }
+    td, th {
+        white-space: nowrap;
+        input[type="checkbox"]{
+            height: 25px;
+            width: 25px;
+            
+        }
+    }
+}
