@@ -4,7 +4,7 @@ import { gestorAdmins } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { GestorAdmins } from "../controllers/admin_controller.js";
-import { enviarMailVerificacion } from "../controllers/services/mail.services.js";
+import { enviarMailVerificacion, enviarMailVerificacionAdmin } from "../controllers/services/mail.services.js";
 
 export const routerAdmins = Router();
 
@@ -48,7 +48,7 @@ routerAdmins.post("/registro", async(req, res) => {
             {expiresIn: process.env.JWT_EXPIRATION}
         )
 
-        const mail = await enviarMailVerificacion(req.body.email, tokenVerificacion);
+        const mail = await enviarMailVerificacionAdmin(req.body.email, tokenVerificacion);
         console.log(mail);
         if (mail.accepted === 0){
            return res.status(500).send({status:"error", message:"Error enviando mail de verificación"})
