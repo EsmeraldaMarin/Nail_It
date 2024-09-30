@@ -91,7 +91,7 @@ routerClientes.post("/registro", async (req, res) => {
 
         const clienteARevisar = await gestorClientes.obtener_cliente_por_email(req.body.email);
         if (clienteARevisar){
-        //    return res.status(400).json({message: "El email ya está registrado."})
+            return res.status(400).json({message: "El email ya está registrado."})
         }
 
         const {password} = req.body;
@@ -153,7 +153,6 @@ routerClientes.post("/login", async (req, res) => {
 
         res.cookie("jwt", token, cookieOption);
         // Responder con el token y un mensaje de éxito
-        // res.status(200).json({ message: "Login exitoso!", token });
         res.status(200).json({message:"Cliente loggeado", redirect:"/inicio"})
     } catch (error) {
         res.status(500).json({ error: error.message });

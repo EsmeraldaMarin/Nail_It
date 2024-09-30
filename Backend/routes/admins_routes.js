@@ -3,6 +3,8 @@ const { Router } = pkg
 import { gestorAdmins } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { GestorAdmins } from "../controllers/admin_controller.js";
+import { enviarMailVerificacion } from "../controllers/services/mail.services.js";
 
 export const routerAdmins = Router();
 
@@ -15,7 +17,7 @@ routerAdmins.get("/", async (req, res) => {
     }
 })
 
-routerAdmins.post("/registrar", async(req, res) => {
+routerAdmins.post("/registro", async(req, res) => {
      req.body.email = req.body.email.toLowerCase();
      try{
         // Validación
@@ -34,31 +36,48 @@ routerAdmins.post("/registrar", async(req, res) => {
 
         const existingAdmin = await gestorAdmins.obtener_admin_por_email(req.body.email);
         if (existingAdmin){
-            return res.status(400).json({ message: "El email ya está registrado"});
+            // return res.status(400).json({ message: "El email ya está registrado"});
         }
 
         const { password } = req.body;
-
         req.body.password = await bcrypt.hash(password, 10);
 
-        const nuevoAdmin = await gestorAdmins.crear_admin(req.body);
+        const tokenVerificacion = jwt.sign(
+            {user: req.body.email},
+            process.env.JWT_SECRET,
+            {expiresIn: process.env.JWT_EXPIRATION}
+        )
 
-        res.status(201).json(nuevoAdmin);
+        const mail = await enviarMailVerificacion(req.body.email, tokenVerificacion);
+        console.log(mail);
+        if (mail.accepted === 0){
+           return res.status(500).send({status:"error", message:"Error enviando mail de verificación"})
+        }
 
-     }
-     catch(error){
+        const nuevoAdmin = {
+            nombre: req.body.nombre,
+             apellido: req.body.apellido,
+             email: req.body.email,
+             numero: req.body.numero,
+             password: req.body.password,
+             verificado: 0};
+
+        const nuevoAd = await gestorAdmins.crear_admin(nuevoAdmin);
+
+        res.status(201).json(nuevoAd);
+     } catch(error){
         res.status(400).json({error: error.message });
      }
 })
 
-routerAdmins.post("/login", async(req, res) => {
+routerAdmins.post("/login", async (req, res) => {
     try {
         // Obtener el usuario por email
         const usuario = await gestorAdmins.obtener_admin_por_email(req.body.email);
-
+        
         // Verificar si el usuario existe
-        if (!usuario) {
-            return res.status(400).json({ message: "Email no registrado." });
+        if (!usuario || usuario.verificado) {
+            return res.status(400).json({ message: "Email no registrado o no verificado." });
         }
 
         // Comparar la contraseña
@@ -68,10 +87,16 @@ routerAdmins.post("/login", async(req, res) => {
         }
 
         // Si las credenciales son válidas, puedes generar un token aquí
-        const token = jwt.sign({ id: usuario.id }, 'tuSecreto', { expiresIn: '1h' });
+        
+        const token = jwt.sign({user:usuario.mail}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
+        const cookieOption = {
+            expiresIn: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 100,
+            path: "/"
+        }
 
+        res.cookie("jwt", token, cookieOption);
         // Responder con el token y un mensaje de éxito
-        res.status(200).json({ message: "Login exitoso!", token });
+        res.status(200).json({message:"Admin loggeado", redirect:"/inicio"})
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

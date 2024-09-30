@@ -7,8 +7,9 @@ export const Admins = sequelize.define("Admins", {
     nombre: { type: DataTypes.STRING },
     apellido: { type: DataTypes.STRING },
     numero: {type:DataTypes.INTEGER},
-    email: { type: DataTypes.STRING },
-    password: {type: DataTypes.STRING}
+    email: { type: DataTypes.STRING, /* unique: true */},
+    password: {type: DataTypes.STRING},
+    verificado: {type: DataTypes.BOOLEAN}
 }, {
     tableName: 'Admins',
     timestamps: false
