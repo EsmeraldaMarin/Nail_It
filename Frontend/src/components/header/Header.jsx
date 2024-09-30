@@ -1,8 +1,11 @@
+import Logout from "../login/Logout"
 import "./Header.css"
 const Header = () => {
     return (
         <div>
-            <header className="header"></header>
+            <header className="header">
+                <Logout></Logout>
+            </header>
         </div>
     )
 }

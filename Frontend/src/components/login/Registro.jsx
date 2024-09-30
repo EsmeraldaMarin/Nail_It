@@ -10,7 +10,7 @@ const Registro = () => {
         nombre: '',
         apellido: '',
         email: '',
-        telefono: '',
+        numero: '',
         password: '',
         confirmPassword: ''
     });
@@ -30,9 +30,9 @@ const Registro = () => {
         e.preventDefault();
 
         // Validación básica
-        const { nombre, apellido, email, telefono, password, confirmPassword } = formData;
+        const { nombre, apellido, email, numero, password, confirmPassword } = formData;
 
-        if (!nombre || !apellido || !email || !telefono || !password || !confirmPassword) {
+        if (!nombre || !apellido || !email || !numero || !password || !confirmPassword) {
             setErrorMessage("Todos los campos son obligatorios.");
             return;
         }
@@ -55,7 +55,7 @@ const Registro = () => {
                 nombre: formData.nombre,
                 apellido: formData.apellido,
                 email: formData.email,
-                telefono: formData.telefono,
+                numero: formData.numero,
                 password: formData.password,
             });
             navigate('/login')
@@ -106,9 +106,9 @@ const Registro = () => {
                     <label className="form-label">Número de teléfono</label>
                     <input
                         type="tel"
-                        name="telefono"
+                        name="numero"
                         className="form-control"
-                        value={formData.telefono}
+                        value={formData.numero}
                         onChange={handleChange}
                     />
                 </div>

@@ -34,10 +34,14 @@ const Login = () => {
                 email: formData.email,
                 password: formData.password,
             });
+            // Almacena el token en localStorage
+            localStorage.setItem('token', response.data.token);
 
+            // Redirigir o hacer algo después del inicio de sesión
+            console.log('Inicio de sesión exitoso', response.data.token);
             navigate('/inicio');
         } catch (error) {
-            console.error('Error en el login:', error);
+            setError('Usuario o contraseña incorrecta');
         }
 
     };

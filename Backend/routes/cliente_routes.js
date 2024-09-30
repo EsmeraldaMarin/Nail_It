@@ -85,7 +85,7 @@ routerClientes.post("/registro", async (req, res) => {
         if (!req.body.email || typeof req.body.email !== 'string' || req.body.email.trim() === '') {
             return res.status(400).json({ message: "Email del cliente es requerido" });
         }
-        if (!req.body.password || typeof req.body.apellido !== 'string' || req.body.apellido.trim() === '') {
+        if (!req.body.password || typeof req.body.password !== 'string' || req.body.password.trim() === '') {
             return res.status(400).json({ message: "Password del cliente es requerido" });
         }
 
@@ -98,7 +98,6 @@ routerClientes.post("/registro", async (req, res) => {
         req.body.password = await bcrypt.hash(password, 10);
 
         // Validación del email
-   
         const tokenVerificacion = jwt.sign(
             {user: req.body.email},
             process.env.JWT_SECRET,

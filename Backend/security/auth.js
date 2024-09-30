@@ -1,4 +1,5 @@
-import { Router } from "express";
+import pkg from 'express';
+const { Router } = pkg;
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { gestorClientes } from "../index.js";

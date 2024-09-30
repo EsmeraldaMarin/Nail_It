@@ -6,6 +6,7 @@ import './custom.scss';
 import Registro from "./components/login/Registro";
 import Header from "./components/header/Header";
 import Inicio from "./components/inicio/Inicio";
+import Logout from "./components/login/Logout";
 
 function App() {
     return (
