@@ -88,7 +88,7 @@ routerVerificar.get("/admin/:token", (req, res) => {
         gestorAdmins.actualizar_admin(usuarioAInsertar, decodificar.user);
         
         res.cookie("jwt", token, cookieOption);
-        res.redirect("http://localhost:3000/admin/inicio");
+        res.redirect("http://localhost:3000/inicio_admin");
         res.status(200);
         
     }catch(error){
