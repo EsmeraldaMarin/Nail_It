@@ -16,6 +16,7 @@ routerEspecialidades.get("/", async (req, res) => {
 routerEspecialidades.post("/", async (req, res) => {
     try {
         // Validación
+        console.log(req.body)
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
             return res.status(400).json({ message: "Nombre de especialidad es requerido" });
         }
