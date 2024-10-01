@@ -1,9 +1,28 @@
+import { Clientes } from "../db/cliente_tabla.js";
 import { Reservas } from "../db/reserva_tabla.js";
+import { Servicios } from "../db/servicio_tabla.js";
 
 
 export class GestorReservas {
-    async obtener_reservas() {
-        return await Reservas.findAll();
+    async obtener_reservas(condicion) {
+        try {
+            return await Reservas.findAll({
+                where: condicion,
+                include: [
+                    {
+                        model: Clientes,
+                        key: 'id_cliente'
+                    }, {
+                        model: Servicios,
+                        key: 'id_servicio'
+                    }
+                ]
+            });
+
+        } catch (error) {
+            console.error('Error en crear_reserva:', error);
+            throw error; // Lanzar el error para manejarlo en la ruta
+        }
     }
 
     async crear_reserva(req_body) {
@@ -20,9 +39,15 @@ export class GestorReservas {
         return await Reservas.findOne({ where: { estado: estado } });
     }
 
-    async actualizar_reserva(req_body, nombre) {
+    async actualizar_reserva(req_body, id_reserva) {
         return await Reservas.update(req_body, {
-            where: { nombre: nombre }
+            where: { id: id_reserva }
+        });
+    }
+    async confirmar_reserva(id_reserva) {
+        console.log(id_reserva)
+        return await Reservas.update({estado: 'confirmada'}, {
+            where: { id: id_reserva }
         });
     }
 

@@ -8,7 +8,7 @@ const SideBar = () => {
             <div className="container-fluid">
                 <button className="btn btn-primary nav-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><span className="navbar-toggler-icon"></span></button>
 
-                <div className="offcanvas offcanvas-start menu show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div className="offcanvas offcanvas-start menu show" data-bs-scroll="true" data-bs-backdrop="false" tabIndex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
                     <div className="offcanvas-header">
                         <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>

@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Reserva.scss"
 
-const InfoServicio = () => {
+const InfoServicio = ({servicio}) => {
     return (
         <div className='infoServicio container-fluid'>
             <p>Duracion</p>

@@ -13,6 +13,18 @@ routerReservas.get("/", async (req, res) => {
     }
 });
 
+routerReservas.post("/confirmar/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(req.params)
+        const reservaActualizada = await gestorReservas.confirmar_reserva(id);
+        console.log(reservaActualizada)
+        res.status(201).json(reservaActualizada);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    };
+});
+
 routerReservas.post("/", async (req, res) => {
     try {
         console.log(req.body)

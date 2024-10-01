@@ -1,7 +1,7 @@
 import React from 'react';
 import "./CardInfoTransferencia.scss"
 
-const CardInfoTransferencia = ({ setPasoActual, reservaData, setReservaData }) => {
+const CardInfoTransferencia = ({ setPasoActual, reservaData, setReservaData, registrarReserva }) => {
     const { profesional, fecha, servicio, tipoServicio, horario, monto } = reservaData;
     //esto se hace con un fetch
     const alias = "hola.como.estas"
@@ -20,8 +20,10 @@ const CardInfoTransferencia = ({ setPasoActual, reservaData, setReservaData }) =
         // Lógica de confirmación de reserva aquí (opcional)
         // Luego de confirmar, redirige a otra vista
         if (reservaData.comprobante) {
+            registrarReserva();
             setPasoActual(4);
         }
+        
     };
     return (
         <div className='container-fluid'>
