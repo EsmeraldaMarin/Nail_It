@@ -13,6 +13,15 @@ routerServicios.get("/", async (req, res) => {
         res.status(400).json("Error!");
     }
 })
+routerServicios.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    const datos = await gestorServicios.obtener_servicios_by_especialidad(id);
+    if (datos) {
+        res.status(200).json(datos);
+    } else {
+        res.status(404).send("Servicio inexistente");
+    }
+})
 routerServicios.post("/", async (req, res) => {
     try {
         // Validación

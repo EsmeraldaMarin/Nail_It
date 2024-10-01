@@ -9,7 +9,8 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [formData, setFormData] = useState({
         email: '',
-        password: ''
+        password: '',
+        isAdmin: false
     });
 
     const navigate = useNavigate()
@@ -30,22 +31,26 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('/admin/login', {
+            let url = '/login'
+            if (formData.isAdmin == "on") {
+                url = '/admin/login'
+            }
+            const response = await axios.post(url, {
                 email: formData.email,
                 password: formData.password,
             });
             // Almacena el token en localStorage
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('rol', response.data.rol);
+
 
             // Redirigir o hacer algo después del inicio de sesión
-            if (response.data.rol == "admin" ) {
+            if (formData.isAdmin) {
                 navigate("/inicio_admin")
-            }else{
+            } else {
                 navigate("/inicio")
             }
         } catch (error) {
-            setError('Usuario o contraseña incorrecta');
+            setErrorMessage('Usuario o contraseña incorrecta');
         }
 
     };
@@ -73,6 +78,14 @@ const Login = () => {
                         onChange={handleChange}
                     />
 
+                </div>
+                <div className="form-group col-md-6">
+                    <label className="form-label">Soy admin</label>
+                    <input
+                        type="checkbox"
+                        name="isAdmin"
+                        onChange={handleChange}
+                    />
                 </div>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
 

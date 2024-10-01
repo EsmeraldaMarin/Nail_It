@@ -75,10 +75,10 @@ routerAdmins.post("/login", async (req, res) => {
         // Obtener el usuario por email
         const usuario = await gestorAdmins.obtener_admin_por_email(req.body.email);
         
-        // Verificar si el usuario existe
-        if (!usuario || !usuario.verificado) {
-            return res.status(400).json({ message: "Email no registrado o no verificado." });
-        }
+        // // Verificar si el usuario existe
+        // if (!usuario || !usuario.verificado) {
+        //     return res.status(400).json({ message: "Email no registrado o no verificado." });
+        // }
 
         // Comparar la contraseña
         const passwordMatch = await bcrypt.compare(req.body.password, usuario.password);

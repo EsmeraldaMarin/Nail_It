@@ -17,5 +17,19 @@
             width: 25px;
             
         }
+        .btn-confirmacion{
+            background-color: white;
+            border-radius: 10px;
+            border: 0;
+            box-shadow: 0 0 5px #bbb;
+            padding: 0.4em 1em;
+            &:hover{
+                box-shadow: 0 0 5px #777;
+                color: green;
+            }
+        }
+        .confirmada{
+            color: grey;
+        }
     }
 }

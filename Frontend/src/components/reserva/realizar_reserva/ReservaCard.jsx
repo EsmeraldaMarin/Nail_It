@@ -7,11 +7,21 @@ import TipoServicioSelect from './TipoServicioSelect';
 import HorarioSelect from './HorarioSelect';
 import InfoServicio from './InfoServicio';
 import "./Reserva.scss"
-
+import axios from '../../../axiosConfig/axiosConfig';
 
 const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const { profesional, fecha, servicio, tipoServicio, horario } = reservaData;
 
+  const [servicios, setServicios] = useState([]);
+
+  const fetchServicios = async () => {
+    try {
+      const response = await axios.get(`/servicio/${tipoServicio}`);
+      setServicios(response.data);
+    } catch (error) {
+      console.error('Error al obtener las servicios', error);
+    }
+  };
   // Función que maneja el cambio de tipo de servicio
   const handleTipoServicioChange = (nuevoTipoServicio) => {
     setReservaData({
@@ -45,15 +55,15 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       </div>
 
       {/* ver como relacionar el tipo de servicio con el servicio */}
-      <TipoServicioSelect tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} />
+      <TipoServicioSelect tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} fetchServicios={fetchServicios} />
 
       {/* Verifica que el usuario haya seleccionado un tipo de servicio */}
 
       <div className="servicio-ctn">
-        <ServicioSelect tipoServicio={tipoServicio} servicio={servicio} setServicio={handleServicioChange} />
+        <ServicioSelect  tipoServicio={tipoServicio} servicio={servicio} setServicio={handleServicioChange} servicios={servicios} />
         <InfoServicio servicio={servicio} />
       </div>
-      
+
 
       {/* Verifica que el usuario haya seleccionado un servicio */}
       <HorarioSelect servicio={servicio} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />

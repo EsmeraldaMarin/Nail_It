@@ -1,15 +1,20 @@
 import "./Reservas.scss"
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../axiosConfig/axiosConfig';
 
 const Reservas = () => {
     const [reservas, setReservas] = useState([]);
 
-    // Simulando traer datos de la base de datos
+    const formatearFecha = (fecha) => {
+        return format(new Date(fecha), 'EEEE dd/MM', { locale: es });
+    };
     useEffect(() => {
         const fetchReservas = async () => {
             try {
-                const response = await axios.get('/api/reservas');
+                const response = await axios.get('/reserva');
+
                 setReservas(response.data);
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
@@ -20,13 +25,12 @@ const Reservas = () => {
 
     const handleConfirmarReserva = async (id) => {
         try {
-            await axios.post('/api/confirmar-reserva', { id });
-            alert('Reserva confirmada exitosamente.');
-
-            // Actualiza el estado local para reflejar el cambio (ej. cambia la reserva a confirmada)
+            const response = await axios.post(`/reserva/confirmar/${id}`, {
+                estado: "confirmada"
+            });;
             setReservas((prevReservas) =>
                 prevReservas.map((reserva) =>
-                    reserva.id === id ? { ...reserva, confirmada: true } : reserva
+                    reserva.id === id ? { ...reserva, estado: "confirmada" } : reserva
                 )
             );
         } catch (error) {
@@ -40,12 +44,13 @@ const Reservas = () => {
             <h4>Reservas pendientes de Comprobar el Pago</h4>
 
             <div className="table-ctn" style={{ overflowX: "auto" }}>
-                <table class="table">
+                <table className="table">
                     <thead>
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">Numero</th>
-                            <th scope="col">Fecha y Hora Turno</th>
+                            <th scope="col">Fecha Turno</th>
+                            <th scope="col">Hora Turno</th>
                             <th scope="col">Monto</th>
                             <th scope="col">Comprobante</th>
                             <th scope="col">Acciones</th>
@@ -55,17 +60,18 @@ const Reservas = () => {
                         {reservas.map(reserva =>
 
                             <tr>
-                                <td>{reserva.nombre}</td>
-                                <td>{reserva.numero}</td>
-                                <td>{reserva.fecha} / {reserva.hora}</td>
-                                <td>${reserva.monto}</td>
+                                <td>{reserva.cliente}</td>
+                                <td>{reserva.numero}3333355555</td>
+                                <td>{formatearFecha(reserva.fecha)}</td>
+                                <td>{reserva.horaInicio}</td>
+                                <td>${reserva.montoSenia}</td>
                                 <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
                                     Ver Comprobante
                                 </a></td>
-                                <td> {reserva.confirmada ? (
-                                    <span>Confirmada</span>
+                                <td> {reserva.estado == "confirmada" ? (
+                                    <span className="confirmada">Confirmada</span>
                                 ) : (
-                                    <button onClick={() => handleConfirmarReserva(reserva.id)}>
+                                    <button className="btn-confirmacion" onClick={() => handleConfirmarReserva(reserva.id)}>
                                         Confirmar
                                     </button>
                                 )}</td>
