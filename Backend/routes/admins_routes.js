@@ -76,7 +76,7 @@ routerAdmins.post("/login", async (req, res) => {
         const usuario = await gestorAdmins.obtener_admin_por_email(req.body.email);
         
         // Verificar si el usuario existe
-        if (!usuario || usuario.verificado) {
+        if (!usuario || !usuario.verificado) {
             return res.status(400).json({ message: "Email no registrado o no verificado." });
         }
 
