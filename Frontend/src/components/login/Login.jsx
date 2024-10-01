@@ -30,7 +30,7 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('/admin/login', {
+            const response = await axios.post('/login', {
                 email: formData.email,
                 password: formData.password,
             });
@@ -45,7 +45,7 @@ const Login = () => {
                 navigate("/inicio")
             }
         } catch (error) {
-            setError('Usuario o contraseña incorrecta');
+            setErrorMessage('Usuario o contraseña incorrecta');
         }
 
     };
