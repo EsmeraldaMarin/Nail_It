@@ -20,7 +20,7 @@ export class GestorServicios {
                 include: [
                     {
                         model: Especialidades,
-                        key: 'id_especialidad'
+                        key: 'id'
                     }
                 ]
             });
@@ -31,6 +31,14 @@ export class GestorServicios {
 
     async crear_servicio(body) {
         return await Servicios.create(body);
+    }
+
+    async obtener_servicio_por_nombre(nombre){
+        try{
+            return await Servicios.findOne({where: {nombre: nombre}});
+        }catch(error){
+            console.error(error);
+        }
     }
 
 }

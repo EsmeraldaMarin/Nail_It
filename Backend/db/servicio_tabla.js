@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "./database.js";
+import { Especialidades } from "./especialidad_tabla.js";
 
 
 export const Servicios = sequelize.define('Servicios', {
@@ -7,7 +8,12 @@ export const Servicios = sequelize.define('Servicios', {
     nombre: { type: DataTypes.STRING },
     precio: {type: DataTypes.DOUBLE},
     duracion: {type: DataTypes.INTEGER}, // EN MINUTOS INTEGER.
-    id_especialidad: {type: DataTypes.INTEGER}
+    id_especialidad: {type: DataTypes.INTEGER,
+        references:{
+            model: Especialidades,
+            key: 'id'
+        }
+    }
 },{
     tableName: "Servicios",
     timestamps: false
