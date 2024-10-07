@@ -21,7 +21,6 @@ const CardInfoTransferencia = ({ setPasoActual, reservaData, setReservaData, reg
         // Luego de confirmar, redirige a otra vista
         if (reservaData.comprobante) {
             registrarReserva();
-            setPasoActual(4);
         }
         
     };

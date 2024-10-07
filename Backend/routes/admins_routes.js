@@ -16,6 +16,15 @@ routerAdmins.get("/", async (req, res) => {
         res.status(500).send("Error!")
     }
 })
+routerAdmins.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    const datos = await gestorAdmins.obtener_admin(id);
+    if (datos) {
+        res.status(200).json(datos);
+    } else {
+        res.status(404).send("Admin inexistente");
+    }
+});
 
 routerAdmins.post("/registro", async(req, res) => {
      req.body.email = req.body.email.toLowerCase();
@@ -86,9 +95,16 @@ routerAdmins.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Contraseña incorrecta." });
         }
 
+        const payload = {
+            usuario: {
+                id: usuario.id,
+                email: usuario.email,
+                isAdmin: false
+            }
+        };
         // Si las credenciales son válidas, puedes generar un token aquí
         
-        const token = jwt.sign({user:usuario.mail}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
         const cookieOption = {
             expiresIn: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 100,
             path: "/"
@@ -96,7 +112,14 @@ routerAdmins.post("/login", async (req, res) => {
 
         res.cookie("jwt", token, cookieOption);
         // Responder con el token y un mensaje de éxito
-        res.status(200).json({message:"Admin loggeado", redirect:"/inicio"})
+        res.json({
+            token,
+            usuario: {
+                id: usuario.id,
+                email: usuario.email,
+                isAdmin: usuario.isAdmin
+            }
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

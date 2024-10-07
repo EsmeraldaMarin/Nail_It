@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./Reserva.scss"
+import "../Reserva.scss"
 
 const ServicioSelect = ({ tipoServicio, servicio, setServicio, servicios }) => {
 

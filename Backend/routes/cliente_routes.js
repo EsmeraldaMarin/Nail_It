@@ -24,7 +24,7 @@ routerClientes.get("/cliente/:id", async (req, res) => {
     const id = req.params.id;
     const datos = await gestorClientes.obtener_cliente(id);
     if (datos) {
-        res.status(200).json(datos.email);
+        res.status(200).json(datos);
     } else {
         res.status(404).send("Cliente inexistente");
     }
@@ -144,9 +144,16 @@ routerClientes.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Contraseña incorrecta." });
         }
 
+        const payload = {
+            usuario: {
+                id: usuario.id,
+                email: usuario.email,
+                isAdmin: false
+            }
+        };
         // Si las credenciales son válidas, puedes generar un token aquí
 
-        const token = jwt.sign({ user: usuario.mail }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
         const cookieOption = {
             expiresIn: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 100,
             path: "/"
@@ -154,7 +161,14 @@ routerClientes.post("/login", async (req, res) => {
 
         res.cookie("jwt", token, cookieOption);
         // Responder con el token y un mensaje de éxito
-        res.status(200).json({ message: "Cliente loggeado", redirect: "/inicio" })
+        res.json({
+            token,
+            usuario: {
+                id: usuario.id,
+                email: usuario.email,
+                isAdmin: usuario.isAdmin
+            }
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

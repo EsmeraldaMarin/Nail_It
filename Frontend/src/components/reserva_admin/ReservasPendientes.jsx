@@ -4,7 +4,7 @@ import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 
-const Reservas = () => {
+const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
 
     const formatearFecha = (fecha) => {
@@ -90,4 +90,4 @@ const Reservas = () => {
     );
 };
 
-export default Reservas;
+export default ReservasPendientes;
