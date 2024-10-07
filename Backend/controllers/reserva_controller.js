@@ -1,3 +1,4 @@
+import { Admins } from "../db/admin_tabla.js";
 import { Clientes } from "../db/cliente_tabla.js";
 import { Reservas } from "../db/reserva_tabla.js";
 import { Servicios } from "../db/servicio_tabla.js";
@@ -15,6 +16,9 @@ export class GestorReservas {
                     }, {
                         model: Servicios,
                         key: 'id_servicio'
+                    }, {
+                        model: Admins,
+                        key: 'id_profesional'
                     }
                 ]
             });
@@ -35,7 +39,7 @@ export class GestorReservas {
     }
 
 
-    async obtener_reserva_por_estado(estado) {
+    async obtener_reservas_por_estado(estado) {
         return await Reservas.findOne({ where: { estado: estado } });
     }
 

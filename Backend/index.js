@@ -17,6 +17,7 @@ import { routerReservas } from "./routes/reserva_routes.js";
 import { GestorReservas } from "./controllers/reserva_controller.js";
 import { Reservas } from "./db/reserva_tabla.js";
 import { Clientes } from "./db/cliente_tabla.js";
+import { Admins } from "./db/admin_tabla.js";
 
 const PORT = 5050;
 
@@ -41,6 +42,9 @@ Servicios.hasMany(Reservas, { foreignKey: 'id_servicio' });
 
 Reservas.belongsTo(Clientes, { foreignKey: 'id_cliente' });
 Clientes.hasMany(Reservas, { foreignKey: 'id_cliente' });
+
+Reservas.belongsTo(Admins, { foreignKey: 'id_profesional' });
+Admins.hasOne(Reservas, { foreignKey: 'id_profesional' });
 
 
 // Definición de relaciones entre tablas.
