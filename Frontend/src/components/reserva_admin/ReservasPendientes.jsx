@@ -58,7 +58,7 @@ const ReservasPendientes = () => {
                     </thead>
                     <tbody>
                         {reservas.map(reserva =>
-                            reserva.estado == "pendiente" ?
+                            reserva.estado == "pendiente" &&
                             <tr>
                                 <td>{reserva.Cliente.nombre}</td>
                                 <td>{reserva.Cliente.numero}</td>
@@ -73,8 +73,7 @@ const ReservasPendientes = () => {
                                         Confirmar
                                     </button>
                                 </td>
-                            </tr> :
-                            <p>No tienes reservas por confirmar</p>
+                            </tr> 
                         )}
 
 
