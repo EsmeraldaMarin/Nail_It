@@ -4,7 +4,7 @@ import axios from '../../axiosConfig/axiosConfig';
 
 export default function Horarios() {
     const [tiposServicio, setTiposServicio] = useState([])
-    const [tipoServicioSeleccionado, setTipoServicioSeleccionado] = useState([])
+    const [tipoServicioSeleccionado, setTipoServicioSeleccionado] = useState("")
     const [diaSeleccionado, setDiaSeleccionado] = useState('')
 
     const horarios = [
@@ -91,7 +91,7 @@ export default function Horarios() {
                         <div>
                             <label htmlFor="tipo_servicio">Tipo servicio</label>
                             <select
-                                value={tipoServicioSeleccionado === null ? "" : tipoServicioSeleccionado}
+                                value={tipoServicioSeleccionado}
                                 id="tipo_servicio"
                                 onChange={(e) => {
                                     setTipoServicioSeleccionado(e.target.value);

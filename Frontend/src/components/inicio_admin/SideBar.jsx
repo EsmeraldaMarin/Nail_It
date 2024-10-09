@@ -19,7 +19,7 @@ const SideBar = () => {
                             <li className="nav-item"><NavLink to="/inicio_admin/reservas_pendientes" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Reservas pendientes</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/horarios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-calendar-week"></i>Horarios</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/agenda" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-calendar-week"></i>Agenda</NavLink></li>
-                            <li className="nav-item"><NavLink to="/nada" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Gestion Estilistas</NavLink></li>
+                            <li className="nav-item"><NavLink to="/inicio_admin/gestion_estilistas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Gestion Estilistas</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bookmarks"></i>Servicios</NavLink></li>
                             <li className="nav-item"><NavLink to="/nada" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-clock-history"></i>Historial</NavLink></li>
                             <li className='nav-item logout'><button><i className="bi bi-box-arrow-left"></i>Cerrar Sesion</button></li>

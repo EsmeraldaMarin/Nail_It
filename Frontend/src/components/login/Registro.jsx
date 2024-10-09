@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Registro.scss';
 import axios from '../../axiosConfig/axiosConfig';
 const Registro = () => {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate(); // Hook para redirigir
     const [errorMessage, setErrorMessage] = useState("");
     const [formData, setFormData] = useState({
@@ -24,13 +25,11 @@ const Registro = () => {
             ...formData,
             [name]: value
         });
-        console.log(formData)
     };
 
     // Maneja el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         // Validación básica
         const { nombre, apellido, email, numero, password, confirmPassword } = formData;
 
@@ -52,10 +51,10 @@ const Registro = () => {
             return;
         }
 
+        setLoading(true);
         try {
             let url = '/registro'
-            console.log(formData.isAdmin)
-            if (formData.isAdmin == "on"){
+            if (formData.isAdmin == "on") {
                 url = '/admin/registro'
             }
             const response = await axios.post(url, {
@@ -64,8 +63,9 @@ const Registro = () => {
                 email: formData.email,
                 numero: formData.numero,
                 password: formData.password,
-                isAdmin:formData.isAdmin
+                isAdmin: formData.isAdmin
             });
+            setLoading(false);
             navigate('/login')
         } catch (error) {
             console.error('Error en el registro:', error);
@@ -78,6 +78,7 @@ const Registro = () => {
 
     return (
         <div className="input-container" id='registro-container'>
+            <div className="header">Nail It</div>
 
             <form onSubmit={handleSubmit} className="row g-3">
                 <div className="form-group col-md-6">
@@ -158,6 +159,16 @@ const Registro = () => {
                     <Link to="/login" className="btn btn-secondary">Iniciar Sesión</Link>
                 </div>
             </form>
+
+            {loading && (<div className="modal show d-block" tabIndex="-1" role="dialog">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        <div className="modal-body text-center">
+                            <div class="loader" id="loader-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>)}
         </div>
     );
 };

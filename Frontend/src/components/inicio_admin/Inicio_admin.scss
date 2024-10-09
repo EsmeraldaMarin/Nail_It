@@ -24,56 +24,61 @@
     }
 }
 
-div.inicio_admin {
-    nav.aside {
-        background-color: inherit !important;
-        button.nav-toggle {
-            background-color: white;
-            border: 0;
-        }
-        .menu {
-            width: 250px;
-            margin-top: 60px;
-            box-shadow: inset 0 2px 3px #bbb;
-            ul {
-                padding: 0;
-                li {
-                    a,
-                    button {
-                        display: inline-block;
-                        padding: 10px;
-                        width: 100%;
-                        height: 100%;
-                        text-align: left;
-                        background-color: inherit;
-                        border: 0;
-                        color: #777;
-                        text-decoration: none;
-                        white-space: nowrap;
-                        &.active {
-                            background-color: #f2884c;
-                            border-radius: 10px;
-                            color: #fff;
-                            font-weight: bold;
-                        }
-                        &:hover {
-                            color: #000;
-                            i {
-                                display: inline-block;
-                                animation: swing 0.5s ease-in-out 1 alternate;
-                            }
-                        }
+.dashboard {
+    margin-top: 100px;
+    margin-left: 250px;
+    width: 80vw;
+}
+
+nav.aside {
+    background-color: #f2884c !important;
+    height: 60px;
+    box-shadow: 0 2px 2px #bbb;
+
+    button.nav-toggle {
+        background-color: white;
+        border: 0;
+    }
+    .menu {
+        width: 250px;
+        margin-top: 60px;
+        box-shadow: inset 0 2px 3px #bbb;
+        ul {
+            padding: 0;
+            li {
+                a,
+                button {
+                    display: inline-block;
+                    padding: 10px;
+                    width: 100%;
+                    height: 100%;
+                    text-align: left;
+                    background-color: inherit;
+                    border: 0;
+                    color: #777;
+                    text-decoration: none;
+                    white-space: nowrap;
+                    &.active {
+                        background-color: #f2884c;
+                        border-radius: 10px;
+                        color: #fff;
+                        font-weight: bold;
+                    }
+                    &:hover {
+                        color: #000;
                         i {
-                            margin-right: 15px;
+                            display: inline-block;
+                            animation: swing 0.5s ease-in-out 1 alternate;
                         }
                     }
-                    &.logout {
-                        margin-top: 30px;
+                    i {
+                        margin-right: 15px;
                     }
+                }
+                &.logout {
+                    margin-top: 30px;
                 }
             }
         }
-    }
-    div.dashboard {
     }
 }

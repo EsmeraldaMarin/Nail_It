@@ -40,12 +40,11 @@ const Login = () => {
                 email: formData.email,
                 password: formData.password,
             });
-            console.log("llegue aca")
             // Almacena el token en localStorage
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userId', response.data.usuario.id);
             localStorage.setItem('userEmail', response.data.usuario.email);
-            console.log("aca")
+            localStorage.setItem('auth', "true");
 
             // Redirigir o hacer algo después del inicio de sesión
             if (formData.isAdmin) {
@@ -61,7 +60,7 @@ const Login = () => {
 
     return (
         <div className="login-container" id="login-container">
-
+            <div className="header">Nail It</div>
             <form onSubmit={handleSubmit} className="row g-3">
                 <div className="form-group col-md-6">
                     <label className="form-label">Email:</label>

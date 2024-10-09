@@ -7,13 +7,13 @@ function Logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('auth');
         // Redirigir o realizar alguna acción después del cierre de sesión
-        console.log('Sesión cerrada');
         navigate('/login')
     };
 
     return (
-        <button className='btn btn-secondary logout-btn' onClick={handleLogout}>Cerrar sesión</button>
+        <button onClick={handleLogout}><i className="bi bi-box-arrow-left"></i>Cerrar Sesión</button>
     );
 }
 

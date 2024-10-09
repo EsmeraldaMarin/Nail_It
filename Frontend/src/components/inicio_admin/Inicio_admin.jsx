@@ -5,15 +5,14 @@ import "./Inicio_admin.scss";
 import { Outlet } from 'react-router-dom';
 const Inicio_admin = () => {
     return (
-        <div className='container-fluid inicio_admin'>
-            <SideBar />
-
-            <div className="dashboard">
-                <Outlet></Outlet>
+        <>
+            
+            <div className='container-fluid inicio_admin'>
+                <div className="dashboard">
+                    <Outlet></Outlet>
+                </div>
             </div>
-        </div>
-
-
+        </>
 
     );
 };

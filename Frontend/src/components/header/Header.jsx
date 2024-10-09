@@ -1,10 +1,12 @@
 import Logout from "../login/Logout"
-import "./Header.css"
+import "./Header.scss"
+import Menu from "./Menu"
 const Header = () => {
     return (
         <div>
             <header className="header">
-                <Logout></Logout>
+                <Menu></Menu>
+                {/* <Logout></Logout> */}
             </header>
         </div>
     )
