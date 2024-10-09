@@ -69,6 +69,23 @@ routerClientes.put("/cliente/:email", async (req, res) => {
     }
 });
 
+routerClientes.delete("/cliente/:email", async (req, res) => {
+    try {
+        const email = req.params.email.toLowerCase();
+
+        const clienteExistente = await gestorClientes.obtener_cliente_por_email(email);
+
+        if (!clienteExistente) {
+            return res.status(404).send("Cliente no encontrado");
+        }
+
+        await gestorClientes.eliminar_cliente_email(email);
+
+        res.status(204).json("Cliente removido."); // No hay contenido que devolver
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 routerClientes.post("/registro", async (req, res) => {
 

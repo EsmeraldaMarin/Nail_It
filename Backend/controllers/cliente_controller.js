@@ -29,4 +29,10 @@ export class GestorClientes{
         });
     }
 
+    async eliminar_cliente_email(mail){
+        return await Clientes.destroy({
+            where: {email: mail}
+        })
+    }
+
 }
