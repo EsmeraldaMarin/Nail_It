@@ -4,7 +4,7 @@ import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 
-const Reservas = () => {
+const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
 
     const formatearFecha = (fecha) => {
@@ -58,25 +58,22 @@ const Reservas = () => {
                     </thead>
                     <tbody>
                         {reservas.map(reserva =>
-
+                            reserva.estado == "pendiente" &&
                             <tr>
-                                <td>{reserva.cliente}</td>
-                                <td>{reserva.numero}3333355555</td>
+                                <td>{reserva.Cliente.nombre}</td>
+                                <td>{reserva.Cliente.numero}</td>
                                 <td>{formatearFecha(reserva.fecha)}</td>
                                 <td>{reserva.horaInicio}</td>
                                 <td>${reserva.montoSenia}</td>
                                 <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
                                     Ver Comprobante
                                 </a></td>
-                                <td> {reserva.estado == "confirmada" ? (
-                                    <span className="confirmada">Confirmada</span>
-                                ) : (
+                                <td>
                                     <button className="btn-confirmacion" onClick={() => handleConfirmarReserva(reserva.id)}>
                                         Confirmar
                                     </button>
-                                )}</td>
-                            </tr>
-
+                                </td>
+                            </tr> 
                         )}
 
 
@@ -90,4 +87,4 @@ const Reservas = () => {
     );
 };
 
-export default Reservas;
+export default ReservasPendientes;

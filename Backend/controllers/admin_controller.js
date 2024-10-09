@@ -12,6 +12,9 @@ export class GestorAdmins{
     async obtener_admin_por_email(email){
         return await Admins.findOne({where: {email: email}});
     }
+    async obtener_admin(id){
+        return await Admins.findOne({where: {id:id}});
+    }
 
     async actualizar_admin(req_body, updateEmail){
         return await Admins.update(req_body, {

@@ -19,7 +19,6 @@ const Registro = () => {
 
     // Maneja el cambio de cada input
     const handleChange = (e) => {
-        console.log(e)
         const { name, value } = e.target;
         setFormData({
             ...formData,

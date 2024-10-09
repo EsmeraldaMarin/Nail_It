@@ -3,33 +3,89 @@
     margin-top: 50px;
     width: 80vw;
 
+    h3, h4 {
+        text-align: left;
+        margin-bottom: 20px;
+        font-weight: 600;
+        color: #333;
+    }
+
     .table-ctn {
         margin-top: 20px;
         padding: 20px;
         border-radius: 20px;
-        box-shadow: 0 0 3px #bbb;
-        
+        background-color: #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
-    td, th {
-        white-space: nowrap;
-        input[type="checkbox"]{
-            height: 25px;
-            width: 25px;
-            
+
+    .mis-reservas {
+        margin-bottom: 15px;
+        border-left: 5px solid #007bff; /* Lateral azul para destacar tus reservas */
+    }
+
+    .reservas-gral {
+        margin-top: 20px;
+        border-left: 5px solid #6c757d; /* Lateral gris para destacar reservas generales */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            white-space: nowrap;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
         }
-        .btn-confirmacion{
-            background-color: white;
-            border-radius: 10px;
-            border: 0;
-            box-shadow: 0 0 5px #bbb;
-            padding: 0.4em 1em;
-            &:hover{
-                box-shadow: 0 0 5px #777;
-                color: green;
+
+        th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td {
+            &.confirmada {
+                color: #28a745;
+                font-weight: 600;
+            }
+
+            input[type="checkbox"] {
+                height: 25px;
+                width: 25px;
+            }
+
+            .btn-confirmacion {
+                background-color: #fff;
+                border-radius: 10px;
+                border: 0;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                padding: 0.4em 1em;
+                transition: all 0.2s ease;
+                color: #007bff;
+                font-size: 16px;
+
+                &:hover {
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                    color: #28a745;
+                    cursor: pointer;
+                }
             }
         }
-        .confirmada{
-            color: grey;
-        }
+    }
+
+    /* Mensajes de "No hay reservas" */
+    .no-reservas {
+        text-align: center;
+        font-size: 18px;
+        color: #dc3545;
+        font-weight: 500;
+        margin-top: 20px;
     }
 }

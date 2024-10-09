@@ -13,7 +13,7 @@ export class GestorServicios {
             ]
         });
     }
-    async obtener_servicios_by_especialidad(id) {
+    async obtener_servicios_por_especialidad(id) {
         try{
             return await Servicios.findAll({
                 where: { id_especialidad: id },
@@ -29,6 +29,13 @@ export class GestorServicios {
         }
     }
 
+    async obtener_servicio_por_id(id){
+        try{
+            return await Servicios.findOne({where: {id: id}});
+        }catch(error){
+            console.error(error);
+        }
+    }
     async crear_servicio(body) {
         return await Servicios.create(body);
     }

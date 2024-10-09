@@ -10,4 +10,5 @@
     background-color: white;
     color: #F2884C;
     border: 0;
+    z-index: 10000;
 }

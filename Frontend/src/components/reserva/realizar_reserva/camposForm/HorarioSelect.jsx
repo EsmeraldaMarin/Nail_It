@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Reserva.scss"
+import "../Reserva.scss"
 
 const HorarioSelect = ({ servicio, horario, setHorario }) => {
     //hacer conexion con el back 

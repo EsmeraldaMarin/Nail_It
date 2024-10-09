@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "./database.js";
 import { Servicios } from "./servicio_tabla.js";
 import { Clientes } from "./cliente_tabla.js";
+import { Admins } from "./admin_tabla.js";
 
 // tipo de servicio 
 export const Reservas = sequelize.define('Reservas', {
@@ -42,6 +43,14 @@ export const Reservas = sequelize.define('Reservas', {
         type: DataTypes.STRING,
         references: {
             model: Servicios,
+            key: 'id'
+        },
+        allowNull: false
+    },
+    id_profesional: {
+        type: DataTypes.STRING,
+        references: {
+            model: Admins,
             key: 'id'
         },
         allowNull: false

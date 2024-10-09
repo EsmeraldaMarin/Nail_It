@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import "./Reserva.scss"
-import axios from '../../../axiosConfig/axiosConfig';
+import "../Reserva.scss"
+import axios from '../../../../axiosConfig/axiosConfig';
 
 const TipoServicio = ({ tipoServicio, setTipoServicio, fetchServicios }) => {
     //esto se trae de la bd
