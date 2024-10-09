@@ -1,39 +1,48 @@
-#login-container{
+#login-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 50px;
-    .error-message{
+    .error-message {
         color: red;
         margin: 10px;
     }
-    form{
+    form {
         padding: 40px 20px;
-        border: 1px solid #BBB;
+        border: 1px solid #bbb;
         border-radius: 30px;
         width: 80%;
         display: flex;
         justify-content: center;
-        hr{
-            width: 20%;
+        flex-direction: column;
+        @media screen and (min-width: 800px) {
+            width: 500px;
         }
-        .col-12{
+        hr {
+            width: 20%;
+            margin: 0 auto;
+        }
+        .form-group {
+            width: 100%;
+        }
+        .col-12 {
             display: flex;
             flex-direction: column;
             align-items: center;
-            button, a{
+            button,
+            a {
                 width: 100%;
                 margin-bottom: 10px;
                 text-align: center;
-                &.btn-primary{
-                    background-color: #F2884C ;
+                &.btn-primary {
+                    background-color: #f2884c;
                     border: 0;
                 }
-                &.btn-secondary{
+                &.btn-secondary {
                     margin-top: 20px;
                     background-color: #fff;
-                    border: 1px solid #F2884C;
-                    color: #F2884C;
+                    border: 1px solid #f2884c;
+                    color: #f2884c;
                     font-weight: 600;
                 }
             }

@@ -2,7 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
+    margin: 50px auto;
+    @media screen and (min-width: 800px) {
+        width: 500px;
+    }
     .error-message{
         color: red;
         margin: 10px;
