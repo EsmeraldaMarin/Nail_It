@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import services from "../../services/servicios.services";
-import Login from "../login/Login";
+import services from "../../../services/servicios.services";
+import Login from "../../login/Login";
 
 export default function Actualizar() {
     const {
@@ -44,7 +44,7 @@ export default function Actualizar() {
             setUpdateError(response.error); // "no se puedo crear el usuario"
             return;
         }
-        navigate(`/servicios/${planId}`); // cambiar a useState
+        navigate(`/servicios/${id_especialidad}`); // cambiar a useState
     };
 
     const cancelar = () => {
@@ -75,6 +75,12 @@ export default function Actualizar() {
                         {errors.Precio && (<span className="text-danger">{errors.Precio.message}</span>)}
                     </div>
                     
+                    <div className="form-group">
+                        <label htmlFor="Duracion" className="form-label"> Duracion: </label>
+                        <input type="number" className="form-control" id="Duracion" {...register("Duracion", { required: "Este campo es requerido" })} />
+                        {errors.Duracion && (<span className="text-danger">{errors.Duracion.message}</span>)}
+                    </div>
+
                     {updateError && <p>{updateError}</p>}
                     <button type="submit" className="btn btn-primary mx-1 mt-2">
                         Actualizar

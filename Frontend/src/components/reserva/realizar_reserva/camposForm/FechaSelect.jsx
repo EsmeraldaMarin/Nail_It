@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./Reserva.scss"
+import "../Reserva.scss"
 
 const FechaSelect = ({ fecha, setFecha }) => {
     //esto es para evitar que el usuario seleccione una fecha mas adelante que un mes desde hoy

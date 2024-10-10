@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "./database.js";
 import { Servicios } from "./servicio_tabla.js";
+import { Clientes } from "./cliente_tabla.js";
+import { Admins } from "./admin_tabla.js";
 
 // tipo de servicio 
 export const Reservas = sequelize.define('Reservas', {
@@ -11,6 +13,10 @@ export const Reservas = sequelize.define('Reservas', {
     },
     horaInicio: {
         type: DataTypes.TIME,
+        allowNull: false
+    },
+    fecha:{
+        type: DataTypes.DATE,
         allowNull: false
     },
     comprobante: {
@@ -25,14 +31,26 @@ export const Reservas = sequelize.define('Reservas', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
-    cliente: {
+    id_cliente: {
         type: DataTypes.STRING,
+        references: {
+            model: Clientes,
+            key: 'id'
+        },
         allowNull: false
     },
     id_servicio: {
         type: DataTypes.STRING,
         references: {
             model: Servicios,
+            key: 'id'
+        },
+        allowNull: false
+    },
+    id_profesional: {
+        type: DataTypes.STRING,
+        references: {
+            model: Admins,
             key: 'id'
         },
         allowNull: false

@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import "./Reserva.scss"
+import "../Reserva.scss"
 
-const ProfesionalSelect = ({ profesional, setProfesional }) => {
-  const [profesionales, setProfesionales] = useState([]);
+const ProfesionalSelect = ({ profesional, profesionales, setProfesional }) => {
 
-  // Simulación de llamada al backend para obtener profesionales
-  useEffect(() => {
-    const fetchProfesionales = () => {
-      const data = [
-        { id: 1, nombre: 'Profesional 1' },
-        { id: 2, nombre: 'Profesional 2' },
-      ];
-      setProfesionales(data);
-    };
-    fetchProfesionales();
-  }, []);
 
   return (
     <div className="mb-3 col">

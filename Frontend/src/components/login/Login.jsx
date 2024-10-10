@@ -9,15 +9,17 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [formData, setFormData] = useState({
         email: '',
-        password: ''
+        password: '',
+        isAdmin: false
     });
 
     const navigate = useNavigate()
 
     const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: type === 'checkbox' ? checked : value // Si es checkbox, tomamos el valor de checked (true o false)
         });
     };
 
@@ -30,22 +32,29 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('/admin/login', {
+            let url = '/login'
+            if (formData.isAdmin == true) {
+                url = '/admin/login'
+            }
+            const response = await axios.post(url, {
                 email: formData.email,
                 password: formData.password,
             });
+            console.log("llegue aca")
             // Almacena el token en localStorage
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('rol', response.data.rol);
+            localStorage.setItem('userId', response.data.usuario.id);
+            localStorage.setItem('userEmail', response.data.usuario.email);
+            console.log("aca")
 
             // Redirigir o hacer algo después del inicio de sesión
-            if (response.data.rol == "admin" ) {
+            if (formData.isAdmin) {
                 navigate("/inicio_admin")
-            }else{
+            } else {
                 navigate("/inicio")
             }
         } catch (error) {
-            setError('Usuario o contraseña incorrecta');
+            setErrorMessage('Usuario o contraseña incorrecta');
         }
 
     };
@@ -73,6 +82,15 @@ const Login = () => {
                         onChange={handleChange}
                     />
 
+                </div>
+                <div className="form-group col-md-6">
+                    <label className="form-label">Soy admin</label>
+                    <input
+                        type="checkbox"
+                        checked={formData.isAdmin}
+                        name="isAdmin"
+                        onChange={handleChange}
+                    />
                 </div>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
 

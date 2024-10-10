@@ -7,8 +7,10 @@ import Registro from "./components/login/Registro";
 import Header from "./components/header/Header";
 import Inicio from "./components/inicio/Inicio";
 import InicioAdmin from "./components/inicio_admin/Inicio_admin";
-import Home from "./components/inicio_admin/Home";
-import Reservas from "./components/reserva_admin/Reservas";
+import ReservasPendientes from "./components/reserva_admin/ReservasPendientes";
+import ReservasConfirmadas from "./components/reserva_admin/ReservasConfirmadas";
+import Horarios from "./components/horarios_estilista/Horarios";
+import Servicios from "./components/servicios/Consulta"
 
 function App() {
     return (
@@ -17,8 +19,11 @@ function App() {
             <Routes>
                 <Route path="/inicio_admin" element={<InicioAdmin />}>
                     {/* Rutas internas que comparten el mismo layout */}
-                    <Route index element={<Home />} />
-                    <Route path="reservas" element={<Reservas />} />
+                    
+                    <Route index element={<ReservasConfirmadas />} />
+                    <Route path="reservas_pendientes" element={<ReservasPendientes />} />
+                    <Route path="horarios" element={<Horarios />} />
+                    <Route path="servicios" element={<Servicios />} />
                 </Route>
 
                 <Route path="/" element={<Navigate to="/login" />} />

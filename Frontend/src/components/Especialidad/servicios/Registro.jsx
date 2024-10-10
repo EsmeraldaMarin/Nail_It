@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 //revisar porfa, tipo debe ser select y precio debe ser alguna clase de decimal
 
-export default function Registro({ setAction, planId }) {
+export default function Registro({ setAction}) {
 
   const {
     register,
@@ -47,6 +47,12 @@ export default function Registro({ setAction, planId }) {
           <label htmlFor="Precio" className="form-label"> Precio: </label>
           <input type="number" className="form-control" id="Precio" {...register("Precio", { required: "Este campo es requerido" })} />
           {errors.Precio && (<span className="text-danger">{errors.Precio.message}</span>)}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="Duracion" className="form-label"> Duracion: </label>
+          <input type="number" className="form-control" id="Duracion" {...register("Duracion", { required: "Este campo es requerido" })} />
+          {errors.Duracion && (<span className="text-danger">{errors.Duracion.message}</span>)}
         </div>
 
         <div className="form-group text-center mt-3">

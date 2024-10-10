@@ -12,7 +12,8 @@ const Registro = () => {
         email: '',
         numero: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        isAdmin: ""
     });
 
 
@@ -23,6 +24,7 @@ const Registro = () => {
             ...formData,
             [name]: value
         });
+        console.log(formData)
     };
 
     // Maneja el envío del formulario
@@ -51,12 +53,18 @@ const Registro = () => {
         }
 
         try {
-            const response = await axios.post('/registro', {
+            let url = '/registro'
+            console.log(formData.isAdmin)
+            if (formData.isAdmin == "on"){
+                url = '/admin/registro'
+            }
+            const response = await axios.post(url, {
                 nombre: formData.nombre,
                 apellido: formData.apellido,
                 email: formData.email,
                 numero: formData.numero,
                 password: formData.password,
+                isAdmin:formData.isAdmin
             });
             navigate('/login')
         } catch (error) {
@@ -129,6 +137,14 @@ const Registro = () => {
                         name="confirmPassword"
                         className="form-control"
                         value={formData.confirmPassword}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-group col-md-6">
+                    <label className="form-label">Soy admin</label>
+                    <input
+                        type="checkbox"
+                        name="isAdmin"
                         onChange={handleChange}
                     />
                 </div>

@@ -24,7 +24,7 @@ routerClientes.get("/cliente/:id", async (req, res) => {
     const id = req.params.id;
     const datos = await gestorClientes.obtener_cliente(id);
     if (datos) {
-        res.status(200).json(datos.email);
+        res.status(200).json(datos);
     } else {
         res.status(404).send("Cliente inexistente");
     }
@@ -43,19 +43,19 @@ routerClientes.get("/cliente/:id", async (req, res) => {
 routerClientes.put("/cliente/:email", async (req, res) => {
 
 
-    try{
-        
+    try {
+
         const email = req.params.email.toLowerCase();
 
         const clienteExistente = await gestorClientes.obtener_cliente_por_email(email);
 
         console.log(email + " : " + clienteExistente);
-        
-        if (!clienteExistente){
+
+        if (!clienteExistente) {
             return res.status(401).send("Cliente no encontrado");
         }
 
-        const {password} = req.body ;
+        const { password } = req.body;
 
         req.body.password = await bcrypt.hash(password, 10);
 
@@ -64,11 +64,28 @@ routerClientes.put("/cliente/:email", async (req, res) => {
         console.log(updateCliente);
         res.status(202).json("Cliente modificado.");
     }
-    catch(error){
-        res.status(500).json({error: error.message });
+    catch (error) {
+        res.status(500).json({ error: error.message });
     }
-}); 
+});
 
+routerClientes.delete("/cliente/:email", async (req, res) => {
+    try {
+        const email = req.params.email.toLowerCase();
+
+        const clienteExistente = await gestorClientes.obtener_cliente_por_email(email);
+
+        if (!clienteExistente) {
+            return res.status(404).send("Cliente no encontrado");
+        }
+
+        await gestorClientes.eliminar_cliente_email(email);
+
+        res.status(204).json("Cliente removido."); // No hay contenido que devolver
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 routerClientes.post("/registro", async (req, res) => {
 
@@ -90,33 +107,34 @@ routerClientes.post("/registro", async (req, res) => {
         }
 
         const clienteARevisar = await gestorClientes.obtener_cliente_por_email(req.body.email);
-        if (clienteARevisar){
-            return res.status(400).json({message: "El email ya está registrado."})
+        if (clienteARevisar) {
+            return res.status(400).json({ message: "El email ya está registrado." })
         }
 
-        const {password} = req.body;
+        const { password } = req.body;
         req.body.password = await bcrypt.hash(password, 10);
 
         // Validación del email
         const tokenVerificacion = jwt.sign(
-            {user: req.body.email},
+            { user: req.body.email },
             process.env.JWT_SECRET,
-            {expiresIn: process.env.JWT_EXPIRATION}
+            { expiresIn: process.env.JWT_EXPIRATION }
         )
-       
+
         const mail = await enviarMailVerificacion(req.body.email, tokenVerificacion);
         console.log(mail);
-        if (mail.accepted === 0){
-           return res.status(500).send({status:"error", message:"Error enviando mail de verificación"})
+        if (mail.accepted === 0) {
+            return res.status(500).send({ status: "error", message: "Error enviando mail de verificación" })
         }
-    
-        const nuevoUsuario ={
+
+        const nuevoUsuario = {
             nombre: req.body.nombre,
-             apellido: req.body.apellido,
-             email: req.body.email,
-             numero: req.body.numero,
-             password: req.body.password,
-             verificado: 0};
+            apellido: req.body.apellido,
+            email: req.body.email,
+            numero: req.body.numero,
+            password: req.body.password,
+            verificado: 0
+        };
 
 
         const nuevoCliente = await gestorClientes.crear_cliente(nuevoUsuario);
@@ -131,11 +149,11 @@ routerClientes.post("/login", async (req, res) => {
     try {
         // Obtener el usuario por email
         const usuario = await gestorClientes.obtener_cliente_por_email(req.body.email);
-        
+        console.log(usuario)
         // Verificar si el usuario existe
-        if (!usuario || !usuario.verificado) {
-            return res.status(400).json({ message: "Email no registrado o no verificado." });
-        }
+        // if (!usuario || !usuario.verificado) {
+        //     return res.status(400).json({ message: "Email no registrado o no verificado." });
+        // }
 
         // Comparar la contraseña
         const passwordMatch = await bcrypt.compare(req.body.password, usuario.password);
@@ -143,9 +161,16 @@ routerClientes.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Contraseña incorrecta." });
         }
 
+        const payload = {
+            usuario: {
+                id: usuario.id,
+                email: usuario.email,
+                isAdmin: false
+            }
+        };
         // Si las credenciales son válidas, puedes generar un token aquí
-        
-        const token = jwt.sign({user:usuario.mail}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
         const cookieOption = {
             expiresIn: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 100,
             path: "/"
@@ -153,7 +178,14 @@ routerClientes.post("/login", async (req, res) => {
 
         res.cookie("jwt", token, cookieOption);
         // Responder con el token y un mensaje de éxito
-        res.status(200).json({message:"Cliente loggeado", redirect:"/inicio"})
+        res.json({
+            token,
+            usuario: {
+                id: usuario.id,
+                email: usuario.email,
+                isAdmin: usuario.isAdmin
+            }
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -164,5 +196,5 @@ routerClientes.post("/login", async (req, res) => {
 routerClientes.post("/logout", async (req, res) => {
     res.clearCookie(req.body.mail);
 
-    res.status(200).json({message: "Sesión cerrada exitosamente!", redirect:"/inicio"});
+    res.status(200).json({ message: "Sesión cerrada exitosamente!", redirect: "/inicio" });
 })

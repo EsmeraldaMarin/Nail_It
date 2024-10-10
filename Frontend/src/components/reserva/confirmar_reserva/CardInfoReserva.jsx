@@ -2,7 +2,8 @@ import React from 'react';
 import "./CardInfoReserva.scss"
 
 const CardInfoReserva = ({ setPasoActual, reservaData }) => {
-    const { profesional, fecha, servicio, tipoServicio, horario, monto } = reservaData;
+    const { profesional_data, fecha, servicio_data, tipoServicio, horario, precio } = reservaData;
+    console.log(reservaData.profesional_data)
     const handleConfirm = () => {
 
         // Lógica de confirmación de reserva aquí (opcional)
@@ -19,7 +20,7 @@ const CardInfoReserva = ({ setPasoActual, reservaData }) => {
                     <button onClick={() => setPasoActual(1)}><i className='bi bi-chevron-left'></i></button>
                     <p>
                         Reserva para:
-                        <span className='servicio'>{servicio}</span>
+                        <span className='servicio'>{servicio_data.nombre}</span>
                     </p>
                 </div>
                 <div >
@@ -33,12 +34,12 @@ const CardInfoReserva = ({ setPasoActual, reservaData }) => {
                     </div>
                 </div>
                 <div>
-                    <p>Profesional: <span className='profesional'>{profesional}</span></p>
+                    <p>Profesional: <span className='profesional'>{profesional_data.nombre}</span></p>
                 </div>
                 <div>
                     <div>
                         <p>Monto de Seña a abonar</p>
-                        <p className="monto">${monto}</p>
+                        <p className="monto">${precio}</p>
                     </div>
                     <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar">
                         Realizar Seña

@@ -5,6 +5,8 @@ function Logout() {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
         // Redirigir o realizar alguna acción después del cierre de sesión
         console.log('Sesión cerrada');
         navigate('/login')
