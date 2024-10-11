@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import { Especialidades } from "../db/especialidad_tabla.js";
 import { Servicios } from "../db/servicio_tabla.js";
 
@@ -46,6 +47,18 @@ export class GestorServicios {
         }catch(error){
             console.error(error);
         }
+    }
+
+    async actualizar_servicio(body, id){
+        return await Servicios.update(body, {
+            where: {id: id}
+        })
+    }
+
+    async eliminar_servicio(id){
+        return await Servicios.destroy({
+            where: {id: id}
+        })
     }
 
 }

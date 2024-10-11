@@ -43,7 +43,7 @@ routerVerificar.get("/:token", (req, res) => {
         // Cuando funcione el 
 
         gestorClientes.actualizar_cliente(usuarioAInsertar, decodificar.user);
-        gestorAdmins.actualizar_admin(usuarioAInsertar, decodificar.user);
+        gestorAdmins.actualizar_admin_por_email(usuarioAInsertar, decodificar.user);
         
         res.cookie("jwt", token, cookieOption);
         res.redirect("http://localhost:3000/inicio");
@@ -85,7 +85,7 @@ routerVerificar.get("/admin/:token", (req, res) => {
             verificado: true,
         }
 
-        gestorAdmins.actualizar_admin(usuarioAInsertar, decodificar.user);
+        gestorAdmins.actualizar_admin_por_email(usuarioAInsertar, decodificar.user);
         
         res.cookie("jwt", token, cookieOption);
         res.redirect("http://localhost:3000/inicio_admin");

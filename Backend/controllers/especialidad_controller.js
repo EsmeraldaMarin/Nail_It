@@ -14,16 +14,19 @@ export class GestorEspecialidades{
         return await Especialidades.findOne({where: {nombre:nombre}});
     }
 
+    async obtener_especialidad_por_id(id){
+        return await Especialidades.findOne({where: {id: id}});
+    }
 
-    async actualizar_especialidad(req_body, nombre){
+    async actualizar_especialidad(req_body, id){
         return await Especialidades.update(req_body, {
-            where: {nombre: nombre}
+            where: {id: id}
         });
     }
 
-    async eliminar_especialidad(nombre){
-        return await Clientes.destroy({
-            where: {nombre: nombre}
+    async eliminar_especialidad(id){
+        return await Especialidades.destroy({
+            where: {id: id}
         });
     }
 }
