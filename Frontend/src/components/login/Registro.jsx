@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Registro.scss';
 import axios from '../../axiosConfig/axiosConfig';
-const Registro = () => {
+const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect = "/login" }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate(); // Hook para redirigir
     const [errorMessage, setErrorMessage] = useState("");
@@ -14,16 +14,14 @@ const Registro = () => {
         numero: '',
         password: '',
         confirmPassword: '',
-        isAdmin: ""
+        isAdmin: isAdminParam
     });
 
-
-    // Maneja el cambio de cada input
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value // 
         });
     };
 
@@ -54,9 +52,10 @@ const Registro = () => {
         setLoading(true);
         try {
             let url = '/registro'
-            if (formData.isAdmin == "on") {
+            if (formData.isAdmin == true) {
                 url = '/admin/registro'
             }
+            console.log("Data: ", formData)
             const response = await axios.post(url, {
                 nombre: formData.nombre,
                 apellido: formData.apellido,
@@ -65,8 +64,9 @@ const Registro = () => {
                 password: formData.password,
                 isAdmin: formData.isAdmin
             });
+            console.log("Response: ", response)
             setLoading(false);
-            navigate('/login')
+            navigate(redirect)
         } catch (error) {
             console.error('Error en el registro:', error);
         }
@@ -141,20 +141,13 @@ const Registro = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <div className="form-group col-md-6">
-                    <label className="form-label">Soy admin</label>
-                    <input
-                        type="checkbox"
-                        name="isAdmin"
-                        onChange={handleChange}
-                    />
-                </div>
+
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <div className="col-12">
-                    <button className="btn btn-primary" type="submit">Registrarme</button>
+                    <button className="btn btn-primary" type="submit">{mensajeBoton}</button>
                 </div>
                 <hr></hr>
-                <div className="col-12">
+                <div className="col-12 pregunta_login">
                     <span>¿Ya tenés una cuenta?</span>
                     <Link to="/login" className="btn btn-secondary">Iniciar Sesión</Link>
                 </div>
@@ -164,7 +157,7 @@ const Registro = () => {
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-body text-center">
-                            <div class="loader" id="loader-1"></div>
+                            <div className="loader" id="loader-1"></div>
                         </div>
                     </div>
                 </div>

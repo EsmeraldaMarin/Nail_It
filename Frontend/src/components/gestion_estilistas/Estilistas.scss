@@ -1,10 +1,26 @@
+@import "../../variables.scss";
+
 .container {
-    .search-bar {
+    .search-ctn {
+        display: flex;
         margin-bottom: 20px;
-        .search-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
+        align-items: center;
+        > button {
+            margin-left: 50px;
+            background-color: $naranjaFuerte;
+            color: white;
+            i {
+                margin-left: 20px;
+                font-size: 1.2em;
+            }
+        }
+        .search-bar {
+            .search-input {
+                width: 500px;
+                padding: 10px;
+                font-size: 16px;
+                border-radius: 20px;
+            }
         }
     }
     .card-container {
@@ -15,7 +31,6 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            width: calc(33.333% - 20px);
             cursor: pointer;
             transition: background-color 0.3s ease;
             &:hover {
@@ -29,39 +44,48 @@
         padding: 20px;
         border-radius: 8px;
         position: absolute !important;
-        width: fit-content;
+        width: 50vw;
+        max-height: 90vh;
         height: fit-content;
         position: relative;
         max-width: 100%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: transparent;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
+        .modal-content {
+            .modal-body-crear-estilista {
+                #registro-container {
+                    .header {
+                        display: none;
+                    }
+                    form {
+                        margin: 0px;
+                        border: 0px;
+                        padding: 10px;
+                        width: 100%;
+                        .isAdmin-formGroup {
+                            display: none;
+                        }
+                        > .pregunta_login,
+                        hr {
+                            display: none;
+                        }
+                    }
+                }
+            }
         }
-
-        .delete-button,
-        .update-button {
-            padding: 10px;
-            margin-top: 10px;
-            width: 100%;
-            border: none;
-            cursor: pointer;
+        .info-estilista {
+            > div {
+                display: flex;
+                flex-direction: column;
+                input {
+                    margin: 10px 0;
+                    min-width: fit-content;
+                }
+            }
         }
-
-        .delete-button {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .update-button {
-            background-color: #007bff;
+        .btn-actualizar {
+            background-color: $info;
             color: white;
         }
     }

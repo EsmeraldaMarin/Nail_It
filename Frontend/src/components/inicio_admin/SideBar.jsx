@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import "./Inicio_admin.scss";
+import Logout from '../login/Logout';
 
 const SideBar = () => {
     return (
@@ -22,7 +23,7 @@ const SideBar = () => {
                             <li className="nav-item"><NavLink to="/inicio_admin/gestion_estilistas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Gestion Estilistas</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bookmarks"></i>Servicios</NavLink></li>
                             <li className="nav-item"><NavLink to="/nada" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-clock-history"></i>Historial</NavLink></li>
-                            <li className='nav-item logout'><button><i className="bi bi-box-arrow-left"></i>Cerrar Sesion</button></li>
+                            <li className='nav-item logout'><Logout /></li>
                         </ul>
                     </div>
                 </div>
