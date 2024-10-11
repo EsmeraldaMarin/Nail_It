@@ -50,7 +50,7 @@ export class GestorServicios {
     }
 
     async actualizar_servicio(body, id){
-        return await Servicios.update(body, {
+        return await Servicios.update(body,{
             where: {id: id}
         })
     }
