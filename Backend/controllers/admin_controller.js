@@ -16,7 +16,13 @@ export class GestorAdmins{
         return await Admins.findOne({where: {id:id}});
     }
 
-    async actualizar_admin(req_body, updateEmail){
+    async actualizar_admin_por_id(req_body, id){
+        return await Admins.update(req_body, {
+            where: {id: id}
+        });
+    }
+
+    async actualizar_admin_por_email(req_body, updateEmail){
         return await Admins.update(req_body, {
             where: {email: updateEmail}
         });
