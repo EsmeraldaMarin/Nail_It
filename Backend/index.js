@@ -20,6 +20,8 @@ import { Clientes } from "./db/cliente_tabla.js";
 import { GestorEstados } from "./controllers/estado_controller.js";
 import { routerEstados } from "./routes/estado_routes.js";
 import { Admins } from "./db/admin_tabla.js";
+import { routerVariablesGlobales } from "./routes/variables_globales_routes.js";
+import { GestorVariables } from "./controllers/variableGlobal_controller.js";
 
 const PORT = 5050;
 
@@ -36,6 +38,7 @@ export const gestorEspecialidades = new GestorEspecialidades();
 export const gestorServicios = new GestorServicios();
 export const gestorReservas = new GestorReservas();
 export const gestorEstados = new GestorEstados();
+export const gestorVariablesglobales = new GestorVariables();
 
 Especialidades.hasMany(Servicios, { foreignKey: 'id_especialidad' });
 Servicios.belongsTo(Especialidades, { foreignKey: 'id_especialidad' });
@@ -59,6 +62,7 @@ app.use("/servicio", routerServicios);
 app.use("/reserva", routerReservas);
 app.use("/verificar", routerVerificar);
 app.use("/estado", routerEstados);
+app.use("/variablesGlobales", routerVariablesGlobales);
 
 app.listen(PORT, () =>
     console.log(`Servidor corriendo en http://localhost:${PORT}`));
