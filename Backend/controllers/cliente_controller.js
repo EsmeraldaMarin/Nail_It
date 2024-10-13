@@ -17,9 +17,14 @@ export class GestorClientes{
         return await Clientes.findOne({where: {email: email}});
     }
 
-    async actualizar_cliente(req_body, email){
+    async actualizar_cliente_email(req_body, email){
         return await Clientes.update(req_body, {
             where: {email: email}
+        });
+    }
+    async actualizar_cliente(req_body, id){
+        return await Clientes.update(req_body, {
+            where: {id: id}
         });
     }
 

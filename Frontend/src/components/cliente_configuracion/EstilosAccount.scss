@@ -1,0 +1,16 @@
+@import "../../variables.scss";
+
+.account-info {
+    > h3 {
+        margin-bottom: 30px;
+        background-color: $primary;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+        border-radius: 20px;
+        color: white;
+    }
+    input{
+        border-radius: 20px;
+        padding: 0.1em 0.7em;
+    }
+}
