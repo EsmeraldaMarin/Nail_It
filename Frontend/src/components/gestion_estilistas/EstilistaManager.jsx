@@ -106,7 +106,7 @@ function EstilistaManager() {
                     const bootstrapModal = new window.bootstrap.Modal(modalElement);
                     bootstrapModal.show();
                 }}>Crear usuario<i className="bi bi-plus-circle"></i></button>
-                <FormCrearEstilista modalRef={modalRefCrearUsuario} />
+                <FormCrearEstilista modalRef={modalRefCrearUsuario} profesionales={profesionales} setProfesionales={setProfesionales} setFilteredProfesionales={setFilteredProfesionales} />
             </div>
             <EstilistaModal
                 selectedProfesional={selectedProfesional}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Registro.scss';
 import axios from '../../axiosConfig/axiosConfig';
-const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect = "/login" }) => {
+const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect = "/login", handleSubmitAdmin = () => { } }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate(); // Hook para redirigir
     const [errorMessage, setErrorMessage] = useState("");
@@ -66,6 +66,7 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
             });
             console.log("Response: ", response)
             setLoading(false);
+            handleSubmitAdmin(response.data)
             navigate(redirect)
         } catch (error) {
             console.error('Error en el registro:', error);
