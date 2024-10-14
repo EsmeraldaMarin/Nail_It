@@ -18,6 +18,8 @@ import SideBar from "./components/inicio_admin/SideBar";
 import EstilistaManager from "./components/gestion_estilistas/EstilistaManager";
 import Historial_turnos from "./components/historial_turnos_cli/Historial";
 import AccountInfo from "./components/cliente_configuracion/AccountInfo";
+import Servicios from "./components/servicios/Consulta"
+import Historial_turnos from "./components/historial_turnos_cli/Historial";
 
 function App() {
     return (
