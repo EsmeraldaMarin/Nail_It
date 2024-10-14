@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Estilistas.scss';
 import axios from '../../axiosConfig/axiosConfig';
+import SearchBar from './SearchBar';
+import EstilistaCard from './EstilistaCard';
+import EstilistaModal from './EstilistaModal';
+import FormCrearEstilista from './FormCrearEstilista';
 
 function EstilistaManager() {
-    const [filteredProfesionales, setFilteredProfesionales] = useState([]); // Estilistas filtrados
-    const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda
-    const [selectedProfesional, setSelectedProfesional] = useState(null); // Estilista seleccionado para el modal
-    const modalRef = useRef(null); // Referencia al modal de Bootstrap
+    const [filteredProfesionales, setFilteredProfesionales] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedProfesional, setSelectedProfesional] = useState(null);
+    const modalRef = useRef(null);
+    const modalRefCrearUsuario = useRef(null);
     const [profesionales, setProfesionales] = useState([]);
-
+    const [modoConsulta, setmodoConsulta] = useState(true);
+    const [estilistaData, setEstilistaData] = useState({});
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -17,7 +24,7 @@ function EstilistaManager() {
                 const response = await axios.get(`/admin`);
                 if (isMounted) {
                     setProfesionales(response.data);
-                    setFilteredProfesionales(response.data); // Mostrar todos al principio
+                    setFilteredProfesionales(response.data);
                 }
             } catch (error) {
                 if (isMounted) console.error('Error al obtener las profesionales', error);
@@ -25,18 +32,14 @@ function EstilistaManager() {
         };
         fetchProfesionales();
         return () => {
-            isMounted = false; // Al desmontar, se marca como desmontado
+            isMounted = false;
         };
     }, []);
 
-
-    // Función para manejar la búsqueda
-    const handleSearch = (e) => {
-        const term = e.target.value.toLowerCase();
+    const handleSearch = (term) => {
         setSearchTerm(term);
-
         if (term === '') {
-            setFilteredProfesionales(profesionales); // Mostrar todos si no hay búsqueda
+            setFilteredProfesionales(profesionales);
         } else {
             const filtered = profesionales.filter(profesional =>
                 profesional.nombre.toLowerCase().includes(term) ||
@@ -47,70 +50,84 @@ function EstilistaManager() {
         }
     };
 
-    // Función para abrir el modal con la información del profesional seleccionado
     const handleCardClick = (profesional) => {
         setSelectedProfesional(profesional);
-
-        // Mostrar el modal usando la API de Bootstrap
+        setEstilistaData({
+            id: profesional.id,
+            nombre: profesional.nombre,
+            apellido: profesional.apellido,
+            email: profesional.email,
+            numero: profesional.numero,
+        });
         const modalElement = modalRef.current;
         const bootstrapModal = new window.bootstrap.Modal(modalElement);
         bootstrapModal.show();
     };
 
+    const handleModificarClick = () => {
+        setmodoConsulta(!modoConsulta);
+    };
+
+    const handleGuardarCambios = async () => {
+        try {
+            // Llamada a la API para actualizar los datos del estilista
+            await axios.put(`/admin/${estilistaData.id}`, estilistaData);
+
+            // Actualizar el estado de profesionales con el estilista modificado
+            const updatedProfesionales = profesionales.map(profesional =>
+                profesional.id === estilistaData.id ? { ...profesional, ...estilistaData } : profesional
+            );
+
+            // Actualizar el estado con la lista modificada
+            setProfesionales(updatedProfesionales);
+            setFilteredProfesionales(updatedProfesionales); // También actualizar la lista filtrada
+
+            // Mostrar mensaje de éxito
+            setShowSuccessMessage(true);
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 3000);
+        } catch (error) {
+            console.error('Error al realizar la modificación', error);
+        }
+
+        // Cambiar modo de consulta de vuelta a lectura
+        setmodoConsulta(true);
+    };
+
+
     return (
         <div className="container">
             <h3>Gestor de Estilistas</h3>
-            <div className="search-bar">
-                <input
-                    type="text"
-                    placeholder="Buscar por nombre, apellido o email"
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    className="search-input"
-                />
+            <div className="search-ctn">
+                <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+                <button className="btn" onClick={() => {
+                    const modalElement = modalRefCrearUsuario.current;
+                    const bootstrapModal = new window.bootstrap.Modal(modalElement);
+                    bootstrapModal.show();
+                }}>Crear usuario<i className="bi bi-plus-circle"></i></button>
+                <FormCrearEstilista modalRef={modalRefCrearUsuario} profesionales={profesionales} setProfesionales={setProfesionales} setFilteredProfesionales={setFilteredProfesionales} />
             </div>
-            {/* Modal para mostrar y editar los detalles del estilista */}
-            <div className="modal fade" id="estilistaModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true" ref={modalRef}>
-                <div className="modal-dialog modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="modalLabel">Detalles de la Estilista</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            {selectedProfesional && (
-                                <>
-                                    <p><strong>Nombre:</strong> {selectedProfesional.nombre} {selectedProfesional.apellido}</p>
-                                    <p><strong>Email:</strong> {selectedProfesional.email}</p>
-                                    <p><strong>Horarios:</strong> { }</p>
-                                    {/* Aquí puedes agregar los horarios y otras opciones */}
-                                </>
-                            )}
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" className="btn btn-primary">Actualizar</button>
-                            <button type="button" className="btn btn-danger">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <EstilistaModal
+                selectedProfesional={selectedProfesional}
+                estilistaData={estilistaData}
+                setEstilistaData={setEstilistaData}
+                modalRef={modalRef}
+                modoConsulta={modoConsulta}
+                handleModificarClick={handleModificarClick}
+                handleGuardarCambios={handleGuardarCambios}
+                showSuccessMessage={showSuccessMessage}
+            />
 
             <div className="card-container">
                 {filteredProfesionales.length === 0 ? (
                     <p>No se encontraron estilistas.</p>
                 ) : (
                     filteredProfesionales.map((estilista) => (
-                        <button key={estilista.id} className="card" onClick={() => handleCardClick(estilista)}>
-                            <h2>{estilista.nombre} {estilista.apellido}</h2>
-                            <p>{estilista.email}</p>
-                            <p>Horarios: { }</p>
-                        </button>
+                        <EstilistaCard key={estilista.id} estilista={estilista} onClick={handleCardClick} />
                     ))
                 )}
             </div>
-
-
         </div>
     );
 }

@@ -20,7 +20,7 @@ const Menu = () => {
                             <li className="nav-item"><NavLink end to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-house"></i>Realizar Reserva</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio/mis_reservas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Mis Reservas</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Servicios</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio/mi_cuenta" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Mi Cuenta</NavLink></li>
+                            <li className="nav-item"><NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Mi Cuenta</NavLink></li>
                             <li className='nav-item logout'><Logout/></li>
 
                         </ul>
