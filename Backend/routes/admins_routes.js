@@ -16,6 +16,7 @@ routerAdmins.get("/", async (req, res) => {
         res.status(500).send("Error!")
     }
 })
+
 routerAdmins.get("/:id", async (req, res) => {
     const id = req.params.id;
     const datos = await gestorAdmins.obtener_admin(id);
@@ -122,6 +123,51 @@ routerAdmins.post("/login", async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+routerAdmins.put("/:id", async (req, res) => {
+    try {
+        const id = req.params.id.toLowerCase();
+
+        const adminExistente = await gestorAdmins.obtener_admin(id);
+
+        console.log(id + " : " + adminExistente);
+
+        if (!adminExistente) {
+            return res.status(401).send("Administrador no encontrado");
+        }
+
+        const { password } = req.body;
+
+        // Si se proporciona una nueva contraseña, la hasheamos
+        if (password) {
+            req.body.password = await bcrypt.hash(password, 10);
+        }
+
+        const updateAdmin = await gestorAdmins.actualizar_admin_por_id(req.body, id);
+
+        console.log(updateAdmin);
+        res.status(202).json("Administrador modificado.");
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+routerAdmins.delete("/:id", async (req, res) => {
+    const adminId = req.params.id;
+
+    try {
+        const resultado = await gestorAdmins.eliminar_admin(adminId);
+
+        if (resultado) {
+            res.status(200).json({ message: "Administrador eliminado con éxito" });
+        } else {
+            res.status(404).send("Administrador no encontrado");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al eliminar el administrador");
     }
 });
 

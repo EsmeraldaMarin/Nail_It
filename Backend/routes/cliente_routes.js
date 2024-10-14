@@ -40,9 +40,7 @@ routerClientes.get("/cliente/:id", async (req, res) => {
     }
 }); */
 
-routerClientes.put("/cliente/:email", async (req, res) => {
-
-
+/* routerClientes.put("/cliente/:email", async (req, res) => {
     try {
 
         const email = req.params.email.toLowerCase();
@@ -67,19 +65,47 @@ routerClientes.put("/cliente/:email", async (req, res) => {
     catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}); */
 
-routerClientes.delete("/cliente/:email", async (req, res) => {
+routerClientes.put("/cliente/:id", async (req, res) => {
     try {
-        const email = req.params.email.toLowerCase();
+        const clienteId = req.params.id;
 
-        const clienteExistente = await gestorClientes.obtener_cliente_por_email(email);
+        const clienteExistente = await gestorClientes.obtener_cliente(clienteId);
+
+        console.log(clienteId + " : " + clienteExistente);
 
         if (!clienteExistente) {
             return res.status(404).send("Cliente no encontrado");
         }
 
-        await gestorClientes.eliminar_cliente_email(email);
+        const { password } = req.body;
+
+        // Si se proporciona una nueva contraseña, la hasheamos
+        if (password) {
+            req.body.password = await bcrypt.hash(password, 10);
+        }
+
+        const updateCliente = await gestorClientes.actualizar_cliente(req.body, clienteId);
+
+        console.log(updateCliente);
+        res.status(202).json("Cliente modificado.");
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+routerClientes.delete("/cliente/:id", async (req, res) => {
+    try {
+        const clienteId = req.params.id;
+
+        const clienteExistente = await gestorClientes.obtener_cliente(clienteId);
+
+        if (!clienteExistente) {
+            return res.status(404).send("Cliente no encontrado");
+        }
+
+        await gestorClientes.eliminar_cliente(clienteId);
 
         res.status(204).json("Cliente removido."); // No hay contenido que devolver
     } catch (error) {

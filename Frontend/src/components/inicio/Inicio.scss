@@ -1,13 +1,18 @@
-.inicio{
+.inicio {
     padding: 40px 20px;
 }
-.title{
-    
-    h1{
+.title {
+    h1 {
         font-size: 1.5em;
     }
-    div{
+    div {
         display: flex;
         font-size: 0.8em;
+    }
+    .misTurnos-btn {
+        background-color: #f2884c;
+        color: white;
+        border: 0;
+        z-index: 10000;
     }
 }

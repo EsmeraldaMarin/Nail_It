@@ -15,6 +15,8 @@ import Servicios from "./components/servicios/Consulta"
 import RutaProtegida from "./components/login/RutaProtegida";
 import SideBar from "./components/inicio_admin/SideBar";
 import EstilistaManager from "./components/gestion_estilistas/EstilistaManager";
+import Historial_turnos from "./components/historial_turnos_cli/Historial";
+
 function App() {
     return (
         <div className="App">
@@ -38,6 +40,8 @@ function App() {
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/registro" element={<Registro />}></Route>
+                <Route path="/inicio" element={<Inicio />}></Route>
+                <Route path="/historial" element={<Historial_turnos />}></Route>
             </Routes>
         </div>
     );
