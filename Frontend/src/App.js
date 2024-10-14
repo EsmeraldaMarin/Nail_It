@@ -11,6 +11,7 @@ import ReservasPendientes from "./components/reserva_admin/ReservasPendientes";
 import ReservasConfirmadas from "./components/reserva_admin/ReservasConfirmadas";
 import Horarios from "./components/horarios_estilista/Horarios";
 import Servicios from "./components/servicios/Consulta"
+import Historial_turnos from "./components/historial_turnos_cli/Historial";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/registro" element={<Registro />}></Route>
                 <Route path="/inicio" element={<Inicio />}></Route>
+                <Route path="/historial" element={<Historial_turnos />}></Route>
             </Routes>
         </div>
     );
