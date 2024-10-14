@@ -4,7 +4,12 @@ import axios from 'axios';
 const UpdateProfile = ({ clienteInfo, setClienteInfo, userId, modoEdicion, setModoEdicion }) => {
 
     const [message, setMessage] = useState('');
-    const [clienteUpdatedData, setClienteUpdatedData] = useState(clienteInfo)
+    const [clienteUpdatedData, setClienteUpdatedData] = useState({
+        nombre: clienteInfo.nombre,
+        apellido: clienteInfo.apellido,
+        email: clienteInfo.email,
+        numero: clienteInfo.numero
+    })
 
     const handleUpdate = async () => {
         try {
