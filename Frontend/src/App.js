@@ -12,14 +12,12 @@ import InicioAdmin from "./components/inicio_admin/Inicio_admin";
 import ReservasPendientes from "./components/reserva_admin/ReservasPendientes";
 import ReservasConfirmadas from "./components/reserva_admin/ReservasConfirmadas";
 import Horarios from "./components/horarios_estilista/Horarios";
-import Servicios from "./components/servicios/Consulta";
 import RutaProtegida from "./components/login/RutaProtegida";
 import SideBar from "./components/inicio_admin/SideBar";
 import EstilistaManager from "./components/gestion_estilistas/EstilistaManager";
 import Historial_turnos from "./components/historial_turnos_cli/Historial";
 import AccountInfo from "./components/cliente_configuracion/AccountInfo";
 import Servicios from "./components/servicios/Consulta"
-import Historial_turnos from "./components/historial_turnos_cli/Historial";
 
 function App() {
     return (
@@ -49,8 +47,6 @@ function App() {
                 <Route path="/registro" element={<Registro />}></Route>
                 <Route path="/inicio" element={<Inicio />}></Route>
                 <Route path="/historial" element={<Historial_turnos />}></Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/registro" element={<Registro />} />
             </Routes>
         </div>
     );
