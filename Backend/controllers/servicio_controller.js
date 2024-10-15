@@ -21,7 +21,8 @@ export class GestorServicios {
                 include: [
                     {
                         model: Especialidades,
-                        key: 'id_especialidad'
+                        as: 'Especialidad',  // Utiliza el alias definido en la relación
+                        attributes: ['id', 'nombre', 'descripcion']  // Especifica los atributos que quieres incluir
                     }
                 ]
             });
@@ -37,7 +38,8 @@ export class GestorServicios {
                 include: [
                     {
                         model: Especialidades,
-                        key: 'id_especialidad'
+                        as: 'Especialidad',  // Utiliza el alias definido en la relación
+                        attributes: ['id', 'nombre', 'descripcion']  // Especifica los atributos que quieres incluir
                     }
                 ]
             });

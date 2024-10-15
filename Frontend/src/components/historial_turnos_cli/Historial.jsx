@@ -34,7 +34,7 @@ const Historial_turnos = () => {
                         <p><strong>Monto de Señal:</strong> {reserva.montoSenia}</p>
                         <p><strong>Monto Total:</strong> ${reserva.montoTotal}</p>
                         <p><strong>Servicio:</strong> {reserva.Servicio.nombre}</p>
-                        <p><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidade.nombre}</p>
+                        <p><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidad.nombre}</p>
                         <p>{reserva.estado}</p>
                     </li>
                 ))}
