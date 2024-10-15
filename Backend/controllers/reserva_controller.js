@@ -38,9 +38,11 @@ export class GestorReservas {
         }
     }
 
-
+    async obtener_reservas_por_cliente(id_cliente) {
+        return await Reservas.findAll({ where: { id_cliente: id_cliente } });
+    }
     async obtener_reservas_por_estado(estado) {
-        return await Reservas.findOne({ where: { estado: estado } });
+        return await Reservas.findAll({ where: { estado: estado } });
     }
 
     async actualizar_reserva(req_body, id_reserva) {
