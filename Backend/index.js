@@ -22,6 +22,9 @@ import { routerEstados } from "./routes/estado_routes.js";
 import { Admins } from "./db/admin_tabla.js";
 import { routerVariablesGlobales } from "./routes/variables_globales_routes.js";
 import { GestorVariables } from "./controllers/variableGlobal_controller.js";
+import { AdminHorarioEspecialidad } from "./db/adminHorarioEspecialidad_tabla.js";
+import { GestorAdminHorarioEspecialidad } from "./controllers/adminHorarioEspecialidad_controller.js";
+import { routerAdminHorarioEspecialidad } from "./routes/adminHorarioEspecialidad_routes.js";
 
 const PORT = 5050;
 
@@ -39,6 +42,7 @@ export const gestorServicios = new GestorServicios();
 export const gestorReservas = new GestorReservas();
 export const gestorEstados = new GestorEstados();
 export const gestorVariablesglobales = new GestorVariables();
+export const gestorAdminHorarioEspecialidad = new GestorAdminHorarioEspecialidad();
 
 Especialidades.hasMany(Servicios, { foreignKey: 'id_especialidad' });
 Servicios.belongsTo(Especialidades, { foreignKey: 'id_especialidad' });
@@ -53,6 +57,9 @@ Reservas.belongsTo(Admins, { foreignKey: 'id_profesional' });
 Admins.hasOne(Reservas, { foreignKey: 'id_profesional' });
 
 
+Admins.hasMany(AdminHorarioEspecialidad, { foreignKey: 'id_profesional' });
+AdminHorarioEspecialidad.hasOne(Admins, { foreignKey: 'id_profesional' });
+
 // Definición de relaciones entre tablas.
 
 app.use('', routerClientes);
@@ -62,6 +69,7 @@ app.use("/servicio", routerServicios);
 app.use("/reserva", routerReservas);
 app.use("/verificar", routerVerificar);
 app.use("/estado", routerEstados);
+app.use("/horario", routerAdminHorarioEspecialidad);
 app.use("/variablesGlobales", routerVariablesGlobales);
 
 app.listen(PORT, () =>

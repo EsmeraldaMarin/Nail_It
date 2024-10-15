@@ -57,9 +57,9 @@ const ReservasPendientes = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {reservas.map(reserva =>
+                        {reservas.map((reserva, index) =>
                             reserva.estado == "pendiente" &&
-                            <tr>
+                            <tr key={index}>
                                 <td>{reserva.Cliente.nombre}</td>
                                 <td>{reserva.Cliente.numero}</td>
                                 <td>{formatearFecha(reserva.fecha)}</td>
@@ -73,7 +73,7 @@ const ReservasPendientes = () => {
                                         Confirmar
                                     </button>
                                 </td>
-                            </tr> 
+                            </tr>
                         )}
 
 

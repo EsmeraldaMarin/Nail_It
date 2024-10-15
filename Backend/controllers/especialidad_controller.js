@@ -3,7 +3,12 @@ import { Especialidades } from "../db/especialidad_tabla.js";
 
 export class GestorEspecialidades{
     async obtener_especialidades(){
-        return await Especialidades.findAll();
+        try{
+
+            return await Especialidades.findAll();
+        }catch(err){
+            console.log(err)
+        }
     }
 
     async crear_especialidad(req_body){

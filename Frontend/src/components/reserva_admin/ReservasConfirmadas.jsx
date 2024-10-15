@@ -81,7 +81,6 @@ const ReservasConfirmadas = () => {
                             <th scope="col">Número</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
-                            <th scope="col">Monto</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,7 +92,6 @@ const ReservasConfirmadas = () => {
                                     <td>{reserva.Cliente.numero}</td>
                                     <td>{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
-                                    <td>${reserva.montoTotal}</td>
                                 </tr>
                               ))
                             : <tr><td colSpan="6">No hay reservas confirmadas</td></tr>}
