@@ -21,7 +21,6 @@ function ReservaContext() {
     const registrarReserva = async () => {
         const userId = localStorage.getItem('userId');
         try {
-            console.log(reservaData)
             const response = await axios.post(`/reserva`, {
                 horaInicio: reservaData.horario,
                 comprobante: reservaData.comprobante.name,

@@ -6,9 +6,7 @@ function FormCrearEstilista({ modalRef, profesionales, setProfesionales, setFilt
         setFilteredProfesionales([...profesionales, newProfesional]);
         const modalElement = modalRef.current;
         const bootstrapModal = new window.bootstrap.Modal(modalElement);
-        console.log(modalElement, bootstrapModal)
         bootstrapModal.hide();
-        console.log(bootstrapModal)
     }
     return (
         <div className="modal fade" id="FormCrearEstilista" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true" ref={modalRef}>

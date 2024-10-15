@@ -24,7 +24,6 @@ const Historial_turnos = () => {
 
     // Función para renderizar filas de la tabla
     const renderFilasReserva = (reservasFiltradas) => {
-        console.log(reservasFiltradas)
         return (
             <ul>
                 {reservasFiltradas.map((reserva, index) => (
@@ -35,7 +34,7 @@ const Historial_turnos = () => {
                         <p><strong>Monto de Señal:</strong> {reserva.montoSenia}</p>
                         <p><strong>Monto Total:</strong> ${reserva.montoTotal}</p>
                         <p><strong>Servicio:</strong> {reserva.Servicio.nombre}</p>
-                        <p><strong>Especialidad del Servicio:</strong> corregir aqui</p>
+                        <p><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidade.nombre}</p>
                         <p>{reserva.estado}</p>
                     </li>
                 ))}

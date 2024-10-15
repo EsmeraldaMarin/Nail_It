@@ -55,7 +55,6 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
             if (formData.isAdmin == true) {
                 url = '/admin/registro'
             }
-            console.log("Data: ", formData)
             const response = await axios.post(url, {
                 nombre: formData.nombre,
                 apellido: formData.apellido,
@@ -64,7 +63,6 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                 password: formData.password,
                 isAdmin: formData.isAdmin
             });
-            console.log("Response: ", response)
             setLoading(false);
             handleSubmitAdmin(response.data)
             navigate(redirect)
@@ -73,7 +71,6 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
         }
 
         // Aquí se podría enviar el formulario a una API o servicio
-        console.log('Datos enviados:', formData);
         setErrorMessage(""); // Reiniciar mensajes de error
     };
 
