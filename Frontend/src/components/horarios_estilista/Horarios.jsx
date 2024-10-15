@@ -14,7 +14,6 @@ export default function Horarios() {
             try {
                 const horarios = await axios.get(`/horario/estilista/${userId}`);
                 const response = await axios.get(`/especialidad`);
-                console.log(horarios.data)
                 setHorariosDelProfesional(horarios.data);
                 setTiposServicio(response.data);
             } catch (error) {

@@ -44,8 +44,8 @@ export const gestorEstados = new GestorEstados();
 export const gestorVariablesglobales = new GestorVariables();
 export const gestorAdminHorarioEspecialidad = new GestorAdminHorarioEspecialidad();
 
-Especialidades.hasMany(Servicios, { foreignKey: 'id_especialidad' });
 Servicios.belongsTo(Especialidades, { foreignKey: 'id_especialidad' });
+Especialidades.hasMany(Servicios, { foreignKey: 'id_especialidad' });
 
 Reservas.belongsTo(Servicios, { foreignKey: 'id_servicio' });
 Servicios.hasMany(Reservas, { foreignKey: 'id_servicio' });
@@ -56,9 +56,6 @@ Clientes.hasMany(Reservas, { foreignKey: 'id_cliente' });
 Reservas.belongsTo(Admins, { foreignKey: 'id_profesional' });
 Admins.hasOne(Reservas, { foreignKey: 'id_profesional' });
 
-
-Admins.hasMany(AdminHorarioEspecialidad, { foreignKey: 'id_profesional' });
-AdminHorarioEspecialidad.hasOne(Admins, { foreignKey: 'id_profesional' });
 
 // Definición de relaciones entre tablas.
 

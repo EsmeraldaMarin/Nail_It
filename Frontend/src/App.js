@@ -46,7 +46,7 @@ function App() {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/registro" element={<Registro />}></Route>
                 <Route path="/inicio" element={<Inicio />}></Route>
-                <Route path="/historial" element={<Historial_turnos />}></Route>
+                <Route path="/inicio/mis_reservas" element={<Historial_turnos />}></Route>
             </Routes>
         </div>
     );
