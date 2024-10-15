@@ -13,7 +13,7 @@ const Historial_turnos = () => {
     useEffect(() => {
         const fetchReservas = async () => {
             try {
-                const response = await axios.get('/reserva');
+                const response = await axios.get(`/reserva/user/${userId}`);
                 setReservas(response.data);
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
@@ -43,9 +43,9 @@ const Historial_turnos = () => {
     };
 
     // Filtrar reservas por usuario
-    const reservasCliente = reservas.filter(
-        reserva => reserva.id_cliente === userId
-    );
+    {/*const reservasCliente = reservas.filter(
+        reserva => reserva.id_cliente === userId)*/}
+    
     const navigate = useNavigate()
     const handleRedirect = () => {
 
@@ -72,7 +72,7 @@ const Historial_turnos = () => {
                         <p>Confirmada</p>
 
                     </div> */}
-                    {reservasCliente.length > 0 ? renderFilasReserva(reservasCliente): <tr><td colSpan="5">No tienes turnos</td></tr>}
+                    {reservas.length > 0 ? renderFilasReserva(reservas): <tr><td colSpan="5">No tienes turnos</td></tr>}
 
                 </div>
                 <div>
