@@ -9,7 +9,7 @@ dotenv.config();
 export const routerVerificar = Router();
 
 
-routerVerificar.get("/:token", (req, res) => {
+routerVerificar.get("/:token", async (req, res) => {
     try{
         if (!req.params.token){
             return res.redirect("/login");
@@ -28,22 +28,21 @@ routerVerificar.get("/:token", (req, res) => {
             path: "/"
         }
 
-        const usuarioAValidar = gestorClientes.obtener_cliente_por_email(decodificar.user);
-
+        const usuarioAValidar = await gestorClientes.obtener_cliente_por_email(decodificar.user);
+        
+        console.log("Usuario a validar: ", usuarioAValidar.dataValues)
 
         const usuarioAInsertar = {
             nombre: usuarioAValidar.nombre,
             apellido: usuarioAValidar.apellido,
             email: usuarioAValidar.email,
-            numero: usuarioAValidar.numero,
-            password: usuarioAValidar.password,
             verificado: true,
         }
 
         // Cuando funcione el 
 
-        gestorClientes.actualizar_cliente(usuarioAInsertar, decodificar.user);
-        gestorAdmins.actualizar_admin_por_email(usuarioAInsertar, decodificar.user);
+        await gestorClientes.actualizar_cliente(usuarioAInsertar, usuarioAValidar.dataValues.id);
+        // gestorAdmins.actualizar_admin_por_email(usuarioAInsertar, decodificar.user);
         
         res.cookie("jwt", token, cookieOption);
         res.redirect("http://localhost:3000/inicio");
