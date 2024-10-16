@@ -20,7 +20,8 @@ export class GestorReservas {
                     {
                         model: Servicios,  // Incluir el servicio
                         include: [{
-                            model: Especialidades,  // Incluir la especialidad dentro del servicio
+                            model: Especialidades,
+                            as: "Especialidad"  // Incluir la especialidad dentro del servicio
                         }]
                     },
                     {
@@ -99,7 +100,8 @@ export class GestorReservas {
                 {
                     model: Servicios,  // Incluir el servicio
                     include: [{
-                        model: Especialidades,  // Incluir la especialidad dentro del servicio
+                        model: Especialidades,
+                        as: "Especialidad"  // Incluir la especialidad dentro del servicio
                     }]
                 },
                 {
