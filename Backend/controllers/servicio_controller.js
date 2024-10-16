@@ -9,7 +9,8 @@ export class GestorServicios {
             include: [
                 {
                     model: Especialidades,
-                    key: 'id_especialidad'
+                    as: "Especialidad",
+                    key: 'id'
                 }
             ]
         });

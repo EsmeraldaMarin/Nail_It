@@ -21,8 +21,7 @@ export class GestorReservas {
                         model: Servicios,  // Incluir el servicio
                         include: [{
                             model: Especialidades,
-                            as: 'Especialidad',  // Utiliza el alias definido en la relación
-                            attributes: ['id', 'nombre', 'descripcion']  // Incluir la especialidad dentro del servicio
+                            as: "Especialidad"  // Incluir la especialidad dentro del servicio
                         }]
                     },
                     {
@@ -101,7 +100,8 @@ export class GestorReservas {
                 {
                     model: Servicios,  // Incluir el servicio
                     include: [{
-                        model: Especialidades,  // Incluir la especialidad dentro del servicio
+                        model: Especialidades,
+                        as: "Especialidad"  // Incluir la especialidad dentro del servicio
                     }]
                 },
                 {
