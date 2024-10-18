@@ -2,5 +2,5 @@
     font-family: "Afacad Flux", sans-serif;
 }
 body {
-    overflow: scroll;
+    overflow-y: scroll !important;
 }

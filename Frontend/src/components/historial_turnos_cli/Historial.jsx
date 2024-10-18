@@ -3,9 +3,7 @@ import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import { useNavigate } from 'react-router-dom';
-import Header from '../header/Header';
-
-
+import "./Historial.scss"
 
 const Historial_turnos = () => {
     const [reservas, setReservas] = useState([]);
@@ -59,7 +57,7 @@ const Historial_turnos = () => {
             <div className="row">
                 {reservas.map((reserva, index) => {
                     const clases = obtenerClasesCard(reserva.estado);
-    
+
                     return (
                         <div className="col-sm-12 col-md-6 col-lg-4" key={index}>
                             <div className={clases.card} style={{ maxWidth: '18rem' }}>
@@ -85,7 +83,7 @@ const Historial_turnos = () => {
             </div>
         );
     };
-    
+
 
     const navigate = useNavigate()
     const handleRedirect = () => {
@@ -96,35 +94,35 @@ const Historial_turnos = () => {
 
     const dividirReservas = (reservas) => {
         const fechaActual = new Date();
-    
+
         const reservasPasadas = reservas.filter(reserva => new Date(reserva.fecha) < fechaActual);
         const reservasFuturas = reservas.filter(reserva => new Date(reserva.fecha) >= fechaActual);
-    
+
         return { reservasPasadas, reservasFuturas };
     };
-    const {reservasPasadas, reservasFuturas} = dividirReservas(reservas)
+    const { reservasPasadas, reservasFuturas } = dividirReservas(reservas)
 
 
     return (
-        <div>
-            <Header></Header>
+        <div className='body-ctn'>
             <div>
-            <div className='container-fluid Reservas'>
-
-                <h4>Tus Turnos</h4>                   
-                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas): <tr><td colSpan="5">No tienes turnos</td></tr>}
-                    <h4>Tus Turnos Anteriores</h4> 
-                    {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas): <tr><td colSpan="5">No tienes turnos pasados</td></tr>}
-                </div>
                 <div>
-                    <button className='btn btn-secondary misTurnos-btn' onClick={handleRedirect}>Volver</button>
+                    <button className='btn btn-secondary misTurnos-btn' onClick={handleRedirect}>
+                        <i className='bi bi-arrow-left pe-2'></i>
+                        Volver</button>
                 </div>
-                
+                <div className='container-fluid Reservas'>
+
+                    <h4>Tus Turnos</h4>
+                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <tr><td colSpan="5">No tienes turnos</td></tr>}
+                    <h4>Tus Turnos Anteriores</h4>
+                    {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <tr><td colSpan="5">No tienes turnos pasados</td></tr>}
+                </div>
 
             </div>
-            </div>
-            
-        
+        </div>
+
+
     );
 
 }
