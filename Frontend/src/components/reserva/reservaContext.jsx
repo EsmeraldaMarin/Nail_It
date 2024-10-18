@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ReservaCard from './realizar_reserva/ReservaCard';
 import CardInfoReserva from './confirmar_reserva/CardInfoReserva';
-import CardInfoTranferencia from './adjuntar_comprobante/CardInfoTransferencia'
 import CardOpExitosa from './mensaje_exitoso/CardOpExitosa'
 import axios from '../../axiosConfig/axiosConfig';
 import ErrorEnRealizarReserva from '../errors/ErrorEnRealizarReserva'
@@ -33,20 +32,19 @@ function ReservaContext() {
                 estado: "pendiente"
             });
 
-            setPasoActual(4)
+            setPasoActual(3)
             setReservaData({});
         } catch (error) {
             console.error('Error al realizar la reserva', error);
-            setPasoActual(5)
+            setPasoActual(4)
         }
     };
     return (
         <div>
             {pasoActual === 1 && <ReservaCard setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} />}
-            {pasoActual === 2 && <CardInfoReserva setPasoActual={setPasoActual} reservaData={reservaData} />}
-            {pasoActual === 3 && <CardInfoTranferencia setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} registrarReserva={registrarReserva} />}
-            {pasoActual === 4 && <CardOpExitosa />}
-            {pasoActual === 5 && <ErrorEnRealizarReserva />}
+            {pasoActual === 2 && <CardInfoReserva setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} registrarReserva={registrarReserva} />}
+            {pasoActual === 3 && <CardOpExitosa />}
+            {pasoActual === 4 && <ErrorEnRealizarReserva />}
         </div>
     );
 }
