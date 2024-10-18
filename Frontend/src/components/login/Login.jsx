@@ -82,13 +82,15 @@ const Login = () => {
                     />
 
                 </div>
-                <div className="form-group col-md-6">
-                    <label className="form-label">Soy admin</label>
+                <div className="form-group col-md-6 form-check">
+                    <label class="form-check-label" htmlForor="gridCheck1">Soy admin</label>
                     <input
+                    class="form-check-input"
                         type="checkbox"
                         checked={formData.isAdmin}
                         name="isAdmin"
                         onChange={handleChange}
+                        id="gridCheck1"
                     />
                 </div>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}

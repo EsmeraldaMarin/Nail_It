@@ -41,17 +41,18 @@ const ReservasPendientes = () => {
     return (
         <div className='container-fluid Reservas'>
             <h3>Gestor de Reservas</h3>
-            <h4>Reservas pendientes de Comprobar el Pago</h4>
+            <h4 className="py-3">Reservas pendientes de Comprobar el Pago</h4>
 
-            <div className="table-ctn" style={{ overflowX: "auto" }}>
+            <div className="table-ctn table-responsive reservas-pendientes" >
                 <table className="table">
-                    <thead>
+                    <thead className="table-light">
                         <tr>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Numero</th>
+                            <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
-                            <th scope="col">Monto</th>
+                            <th scope="col">Seña</th>
+                            <th scope="col">Importe abonado</th>
                             <th scope="col">Comprobante</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -60,11 +61,12 @@ const ReservasPendientes = () => {
                         {reservas.map((reserva, index) =>
                             reserva.estado == "pendiente" &&
                             <tr key={index}>
-                                <td>{reserva.Cliente.nombre}</td>
+                                <td className="text-capitalize">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
                                 <td>{reserva.Cliente.numero}</td>
-                                <td>{formatearFecha(reserva.fecha)}</td>
+                                <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                 <td>{reserva.horaInicio}</td>
-                                <td>${reserva.montoSenia}</td>
+                                <td><strong>${reserva.montoSenia}</strong></td>
+                                <td><strong>$hacer</strong></td>
                                 <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
                                     Ver Comprobante
                                 </a></td>

@@ -1,29 +1,35 @@
+@import "../../variables.scss";
 .Reservas {
 
     h3, h4 {
         text-align: left;
-        margin-bottom: 20px;
         font-weight: 600;
         color: #333;
     }
 
-    .table-ctn {
-        margin-top: 20px;
-        padding: 20px;
+    .table-ctn{
+
         border-radius: 20px;
+        
+        &.mis-reservas {
+            border-left: 5px solid #007bff; /* Lateral azul para destacar tus reservas */
+            border-right: 5px solid #007bff; /* Lateral azul para destacar tus reservas */
+        }
+        &.reservas-gral {
+            border-left: 5px solid #6c757d; /* Lateral gris para destacar reservas generales */
+            border-right: 5px solid #6c757d; /* Lateral gris para destacar reservas generales */
+        }
+        &.reservas-pendientes {
+            border-left: 5px solid $primary; /* Lateral gris para destacar reservas generales */
+            border-right: 5px solid $primary; /* Lateral gris para destacar reservas generales */
+        }
+    }
+    .table {
         background-color: #fff;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        margin: 0;
     }
 
-    .mis-reservas {
-        margin-bottom: 15px;
-        border-left: 5px solid #007bff; /* Lateral azul para destacar tus reservas */
-    }
-
-    .reservas-gral {
-        margin-top: 20px;
-        border-left: 5px solid #6c757d; /* Lateral gris para destacar reservas generales */
-    }
 
     table {
         width: 100%;
@@ -35,11 +41,12 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
             font-size: 16px;
+            
         }
-
+    
         th {
-            background-color: #f8f9fa;
-            color: #495057;
+            //background-color: #f8f9fa;
+            //color: #495057;
             font-weight: 600;
         }
 
@@ -48,6 +55,7 @@
         }
 
         td {
+            vertical-align: middle;
             &.confirmada {
                 color: #28a745;
                 font-weight: 600;
