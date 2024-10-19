@@ -15,7 +15,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const [servicios, setServicios] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
 
-  
+
   useEffect(() => {
     const fetchProfesionales = async () => {
       try {
@@ -26,9 +26,21 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       }
     };
     fetchProfesionales();
-}, []);
+  }, []);
 
-  
+  useEffect(() => {
+    const fetchProfesionales = async () => {
+      if (reservaData.tipoServicio) {
+        try {
+          fetchServicios();
+        } catch (error) {
+          console.error('Error al obtener las profesionales', error);
+        }
+      }
+    };
+    fetchProfesionales();
+  }, [reservaData]);
+
   const fetchServicios = async () => {
     try {
       const response = await axios.get(`/servicio/especialidad/${tipoServicio}`);
@@ -38,13 +50,13 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     }
   };
   // Función que maneja el cambio de tipo de servicio
-  const handleProfesionalChange = async(nuevoProfesional) => {
+  const handleProfesionalChange = async (nuevoProfesional) => {
     const profesional_data = await axios.get(`/admin/${nuevoProfesional}`)
 
     setReservaData({
       ...reservaData,
       profesional: nuevoProfesional,// Resetea el horario cuando cambia el servicio
-      profesional_data : profesional_data.data,
+      profesional_data: profesional_data.data,
     });
   };
   const handleTipoServicioChange = (nuevoTipoServicio) => {
@@ -96,11 +108,11 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       {/* Verifica que el usuario haya seleccionado un servicio */}
       <HorarioSelect servicio={servicio} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
 
-      {horario && (
-        <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar">
-          Continuar
-        </button>
-      )}
+
+      <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar" disabled={horario ? false : true}>
+        Continuar
+      </button>
+
     </div>
   );
 };

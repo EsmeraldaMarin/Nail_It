@@ -18,10 +18,10 @@ const SideBar = () => {
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li className="nav-item"><NavLink end to="/inicio_admin" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-house"></i>Home</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/reservas_pendientes" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Reservas pendientes</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio_admin/horarios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-calendar-week"></i>Horarios de Atención</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio_admin/agenda" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-calendar-week"></i>Agenda</NavLink></li>
+                            <li className="nav-item"><NavLink to="/inicio_admin/agenda" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-calendar3"></i>Agenda</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/gestion_estilistas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Gestion Estilistas</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bookmarks"></i>Servicios</NavLink></li>
+                            <li className="nav-item"><NavLink to="/inicio_admin/horarios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi bi-calendar4-range"></i>Horarios de Atención</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/configuracion" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-gear"></i>Configuración</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio_admin/estadisticas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bar-chart"></i>Estadísticas</NavLink></li>
                             <li className='nav-item logout'><Logout /></li>
