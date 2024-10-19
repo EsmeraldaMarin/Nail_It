@@ -21,8 +21,8 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        border: 1px solid #bbb;
-        border-radius: 20px;
+        box-shadow: 0 0 2px #c5c5c5;
+        border-radius: 15px;
         padding: 0;
         overflow: hidden;
         width: 200px;
@@ -64,7 +64,7 @@
             &.ocupado {
                 background-color: grey;
             }
-            &:focus {
+            &:focus, &:active {
                 background-color: orange;
                 color: white;
                 font-weight: bold;

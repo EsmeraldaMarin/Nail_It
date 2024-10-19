@@ -4,12 +4,12 @@ import "../Reserva.scss"
 const InfoServicio = ({ reservaData, servicio }) => {
     return (
         <div className='infoServicio container-fluid'>
-            <p>Duracion</p>
+            <p>Duración</p>
             {servicio ?
                 <p className="duracion">{reservaData.duracion} minutos</p>
                 : <p className="duracion">? minutos</p>}
             <div>
-                <p>Senia</p>
+                <p>Seña</p>
                 <p>Precio</p>
             </div>
             <div>

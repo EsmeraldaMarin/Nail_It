@@ -97,7 +97,7 @@ function EstilistaManager() {
 
 
     return (
-        <div className="container">
+        <div className="ctn container-fluid">
             <h3>Gestor de Estilistas</h3>
             <div className="search-ctn">
                 <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />

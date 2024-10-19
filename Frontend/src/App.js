@@ -13,7 +13,6 @@ import ReservasPendientes from "./components/reserva_admin/ReservasPendientes";
 import ReservasConfirmadas from "./components/reserva_admin/ReservasConfirmadas";
 import Horarios from "./components/horarios_estilista/Horarios";
 import RutaProtegida from "./components/login/RutaProtegida";
-import SideBar from "./components/inicio_admin/SideBar";
 import EstilistaManager from "./components/gestion_estilistas/EstilistaManager";
 import Historial_turnos from "./components/historial_turnos_cli/Historial";
 import AccountInfo from "./components/cliente_configuracion/AccountInfo";
@@ -33,7 +32,7 @@ function App() {
                 </Route>
 
                 {/* Ruta para el admin con rutas anidadas */}
-                <Route path="/inicio_admin/*" element={<RutaProtegida><SideBar /><InicioAdmin /></RutaProtegida>}>
+                <Route path="/inicio_admin/*" element={<RutaProtegida><InicioAdmin /></RutaProtegida>}>
                     <Route index element={<ReservasConfirmadas />} />
                     <Route path="reservas_pendientes" element={<ReservasPendientes />} />
                     <Route path="horarios" element={<Horarios />} />

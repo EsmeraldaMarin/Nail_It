@@ -3,6 +3,23 @@ import { NavLink } from 'react-router-dom';
 import Logout from '../login/Logout';
 
 const Menu = () => {
+    const closeOffcanvas = () => {
+        // Encontrar el offcanvas activo y cerrarlo
+        const offcanvasElement = document.getElementById('offcanvasNavbar');
+        const bsOffcanvas = window.bootstrap.Offcanvas.getInstance(offcanvasElement);
+        if (bsOffcanvas) {
+            bsOffcanvas.hide();
+        }
+
+        // Forzar la eliminación de la clase 'show' y el fondo oscuro
+        offcanvasElement.classList.remove('show');
+        document.body.classList.remove('offcanvas-open'); // Esto elimina el fondo oscuro (overlay)
+        const backdrop = document.querySelector('.offcanvas-backdrop');
+        if (backdrop) {
+            backdrop.remove(); // Elimina el fondo oscuro (si sigue presente)
+        }
+    };
+
     return (
         <nav className="navbar navbar-expand-lg fixed-top">
             <div className="container-fluid">
@@ -17,18 +34,35 @@ const Menu = () => {
                     </div>
                     <div className="offcanvas-body menu">
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                            <li className="nav-item"><NavLink end to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-house"></i>Realizar Reserva</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio/mis_reservas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Mis Reservas</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bag"></i>Servicios</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-person"></i>Mi Cuenta</NavLink></li>
-                            <li className='nav-item logout'><Logout/></li>
-
+                            <li className="nav-item">
+                                <NavLink end to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
+                                    <i className="bi bi-house"></i> Realizar Reserva
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to="/inicio/mis_reservas" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
+                                    <i className="bi bi-journal-bookmark"></i> Mis Reservas
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to="/inicio/servicios" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
+                                    <i className="bi bi-bag"></i> Servicios
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
+                                    <i className="bi bi-person"></i> Mi Cuenta
+                                </NavLink>
+                            </li>
+                            <li className="nav-item logout">
+                                <Logout />
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </nav>
     );
-}
+};
 
 export default Menu;

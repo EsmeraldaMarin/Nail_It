@@ -8,7 +8,10 @@ const ReservasConfirmadas = () => {
     const [reservas, setReservas] = useState([]);
     const userId = localStorage.getItem('userId');
 
-    const formatearFecha = (fecha) => format(new Date(fecha), 'EEEE dd/MM', { locale: es });
+    const formatearFecha = (fecha) => {
+        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
+    };
 
     useEffect(() => {
         const fetchReservas = async () => {
@@ -54,7 +57,7 @@ const ReservasConfirmadas = () => {
 
     return (
         <div className='container-fluid Reservas'>
-            <h3>Gestor de Reservas</h3>
+            <h3>Gestor de turnos</h3>
 
             {/* Reservas del estilista */}
             <h4 className="py-3">Tus turnos de hoy</h4>
@@ -63,7 +66,7 @@ const ReservasConfirmadas = () => {
                     <thead className="table-primary">
                         <tr>
                             <th scope="col">Cliente</th>
-                            <th scope="col">Número</th>
+                            <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
                             <th scope="col">Precio de servicio</th>
@@ -88,7 +91,7 @@ const ReservasConfirmadas = () => {
                         <tr>
                             <th scope="col">Estilista</th>
                             <th scope="col">Cliente</th>
-                            <th scope="col">Número</th>
+                            <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
                         </tr>

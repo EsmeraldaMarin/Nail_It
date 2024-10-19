@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReservaCard from './realizar_reserva/ReservaCard';
 import CardInfoReserva from './confirmar_reserva/CardInfoReserva';
 import CardOpExitosa from './mensaje_exitoso/CardOpExitosa'
@@ -6,6 +6,7 @@ import axios from '../../axiosConfig/axiosConfig';
 import ErrorEnRealizarReserva from '../errors/ErrorEnRealizarReserva'
 function ReservaContext() {
     const [pasoActual, setPasoActual] = useState(1); // Estado para manejar el paso actual
+    
     const [reservaData, setReservaData] = useState({
         servicio: null,
         tipoServicio: null,

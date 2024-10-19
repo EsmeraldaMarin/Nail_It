@@ -83,9 +83,9 @@ const Login = () => {
 
                 </div>
                 <div className="form-group col-md-6 form-check">
-                    <label class="form-check-label" htmlForor="gridCheck1">Soy admin</label>
+                    <label className="form-check-label" htmlFor="gridCheck1">Soy admin</label>
                     <input
-                    class="form-check-input"
+                    className="form-check-input"
                         type="checkbox"
                         checked={formData.isAdmin}
                         name="isAdmin"

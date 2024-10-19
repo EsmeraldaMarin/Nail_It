@@ -8,8 +8,10 @@ const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
 
     const formatearFecha = (fecha) => {
-        return format(new Date(fecha), 'EEEE dd/MM', { locale: es });
+        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    
     useEffect(() => {
         const fetchReservas = async () => {
             try {
@@ -40,8 +42,8 @@ const ReservasPendientes = () => {
 
     return (
         <div className='container-fluid Reservas'>
-            <h3>Gestor de Reservas</h3>
-            <h4 className="py-3">Reservas pendientes de Comprobar el Pago</h4>
+            <h3>Gestor de reservas a confirmar</h3>
+            <h4 className="py-3">Reservas pendientes de comprobar su cobro</h4>
 
             <div className="table-ctn table-responsive reservas-pendientes" >
                 <table className="table">
