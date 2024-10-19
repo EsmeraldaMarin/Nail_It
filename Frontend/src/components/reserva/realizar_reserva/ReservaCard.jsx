@@ -12,62 +12,66 @@ import axios from '../../../axiosConfig/axiosConfig';
 const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const { profesional, fecha, servicio, tipoServicio, horario } = reservaData;
 
+  const [tiposServicio, setTiposServicio] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
 
-
   useEffect(() => {
-    const fetchProfesionales = async () => {
+    const fetchTiposServicio = async () => {
       try {
-        const response = await axios.get(`/admin`);
-        setProfesionales(response.data);
+        const response = await axios.get('/especialidad');
+        setTiposServicio(response.data);
       } catch (error) {
-        console.error('Error al obtener las profesionales', error);
+        console.error('Error al obtener las tiposServicio', error);
       }
     };
-    fetchProfesionales();
+    fetchTiposServicio();
   }, []);
 
+
+  //Esto se hace asi porque cuando se cambia la especialidad, no impacta hasta que se vuelve a renderizar el componente
   useEffect(() => {
-    const fetchProfesionales = async () => {
-      if (reservaData.tipoServicio) {
-        try {
-          fetchServicios();
-        } catch (error) {
-          console.error('Error al obtener las profesionales', error);
-        }
+    const fetchServicios = async () => {
+      try {
+        const response = await axios.get(`/servicio/especialidad/${tipoServicio}`);
+        setServicios(response.data);
+      } catch (error) {
+        console.error('Error al obtener las servicios', error);
       }
+    };
+    fetchServicios()
+  }, [reservaData]);
+
+  useEffect(() => {
+    const fetchProfesionales = () => {
+      const profesionalesUnicos = [...new Set(reservaData.horarios_disponibles?.map(horario => horario.id_profesional))];
+      profesionalesUnicos.forEach(async (id_profesional) => {
+        try {
+
+          const response = await axios.get(`/admin/${id_profesional}`);
+          setProfesionales(...profesionales, response.data);
+          console.log([...profesionales, response.data])
+
+        } catch (error) {
+          console.error('Error al obtener las servicios', error);
+        }
+      })
     };
     fetchProfesionales();
   }, [reservaData]);
 
-  const fetchServicios = async () => {
-    try {
-      const response = await axios.get(`/servicio/especialidad/${tipoServicio}`);
-      setServicios(response.data);
-    } catch (error) {
-      console.error('Error al obtener las servicios', error);
-    }
-  };
-  // Función que maneja el cambio de tipo de servicio
-  const handleProfesionalChange = async (nuevoProfesional) => {
-    const profesional_data = await axios.get(`/admin/${nuevoProfesional}`)
+  // Manejo de cambios en selects, para hacer la busqueda secuencial
 
-    setReservaData({
-      ...reservaData,
-      profesional: nuevoProfesional,// Resetea el horario cuando cambia el servicio
-      profesional_data: profesional_data.data,
-    });
-  };
   const handleTipoServicioChange = (nuevoTipoServicio) => {
     setReservaData({
       ...reservaData,
       tipoServicio: nuevoTipoServicio,
       servicio: null, // Resetea el servicio cuando cambia el tipo de servicio
       horario: '', // Resetea el horario cuando cambia el servicio
+      profesional_data: null,
+      fecha: '',
     });
   };
-
   const handleServicioChange = async (nuevoServicio) => {
     const servicio_data = await axios.get(`/servicio/${nuevoServicio}`)
     setReservaData({
@@ -80,6 +84,35 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     });
   };
 
+  // Función que maneja el cambio de tipo de servicio
+  const handleFechaChange = async (nuevaFecha) => {
+
+    const diasSemana = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
+    const fechaSeleccionada = new Date(fecha);
+    const indiceDia = fechaSeleccionada.getDay();
+    console.log(diasSemana[indiceDia])
+
+    const horarios_filtrados = await axios.get(`/horario?dia=${diasSemana[indiceDia]}&especialidad=${reservaData.tipoServicio}`);
+    console.log(`/horario?dia=${diasSemana[indiceDia]}&especialidad=${reservaData.tipoServicio}`, horarios_filtrados, reservaData)
+    setReservaData({
+      ...reservaData,
+      fecha: nuevaFecha,
+      profesional_data: null, //Resetea el profesional cuando cambia la 
+      horarios_disponibles: horarios_filtrados.data
+    });
+  };
+
+  // Función que maneja el cambio de tipo de servicio
+  const handleProfesionalChange = async (nuevoProfesional) => {
+    const profesional_data = await axios.get(`/admin/${nuevoProfesional}`)
+
+    setReservaData({
+      ...reservaData,
+      profesional: nuevoProfesional,
+      profesional_data: profesional_data.data,
+    });
+  };
+
   const handleConfirm = () => {
 
     // Lógica de confirmación de reserva aquí (opcional)
@@ -89,8 +122,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
   return (
     <div className="container-fluid">
-      <TipoServicioSelect tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} fetchServicios={fetchServicios} />
-
+      <TipoServicioSelect tiposServicio={tiposServicio} tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} />
 
       <div className="servicio-ctn">
         <ServicioSelect tipoServicio={tipoServicio} servicio={servicio} setServicio={handleServicioChange} servicios={servicios} />
@@ -98,8 +130,8 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       </div>
 
       <div className="row pt-4">
-        <FechaSelect servicio={servicio} fecha={fecha} setFecha={(nuevaFecha) => setReservaData({ ...reservaData, fecha: nuevaFecha })} />
-        <ProfesionalSelect  fecha={fecha}  profesionales={profesionales} setProfesional={handleProfesionalChange} />
+        <FechaSelect servicio={servicio} fecha={fecha} setFecha={handleFechaChange} />
+        <ProfesionalSelect fecha={fecha} profesional={profesional} profesionales={profesionales} setProfesional={handleProfesionalChange} />
       </div>
 
       <HorarioSelect profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />

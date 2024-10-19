@@ -6,8 +6,17 @@ export const routerAdminHorarioEspecialidad = Router();
 
 // Obtener todos los registros de AdminHorarioEspecialidad
 routerAdminHorarioEspecialidad.get("/", async (req, res) => {
+    const { dia, especialidad } = req.query;
+    const especialidadInt = parseInt(especialidad)
     try {
-        const datos = await gestorAdminHorarioEspecialidad.obtener_todos();
+
+        // Filtrar horarios en base a los parámetros de día y especialidad
+        let datos = await gestorAdminHorarioEspecialidad.obtener_todos();
+        console.log(datos)
+        if (dia && especialidad){
+            datos = datos.filter(horario => horario.dia_semana == dia && horario.id_especialidad == especialidadInt)
+        }
+        
         if (datos) {
             res.status(200).json(datos);
         } else {

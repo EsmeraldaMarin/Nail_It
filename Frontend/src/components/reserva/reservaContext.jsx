@@ -6,7 +6,7 @@ import axios from '../../axiosConfig/axiosConfig';
 import ErrorEnRealizarReserva from '../errors/ErrorEnRealizarReserva'
 function ReservaContext() {
     const [pasoActual, setPasoActual] = useState(1); // Estado para manejar el paso actual
-    
+
     const [reservaData, setReservaData] = useState({
         servicio: null,
         tipoServicio: null,
@@ -15,8 +15,9 @@ function ReservaContext() {
         profesional: '',
         precio: null,
         comprobante: null,
-        servicio_data:null,
-        profesional_data:null,
+        servicio_data: null,
+        profesional_data: null,
+        horarios_disponibles: null,
     }); // Estado para los datos de la reserva
     const registrarReserva = async () => {
         const userId = localStorage.getItem('userId');
