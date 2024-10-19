@@ -9,7 +9,10 @@ const Historial_turnos = () => {
     const [reservas, setReservas] = useState([]);
     const userId = localStorage.getItem('userId');
 
-    const formatearFecha = (fecha) => format(new Date(fecha), 'EEEE dd/MM', { locale: es });
+    const formatearFecha = (fecha) => {
+        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
+    };
 
     useEffect(() => {
         const fetchReservas = async () => {

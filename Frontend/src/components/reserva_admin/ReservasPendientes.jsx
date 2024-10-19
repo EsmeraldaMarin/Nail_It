@@ -8,8 +8,10 @@ const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
 
     const formatearFecha = (fecha) => {
-        return format(new Date(fecha), 'EEEE dd/MM', { locale: es });
+        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    
     useEffect(() => {
         const fetchReservas = async () => {
             try {
