@@ -26,11 +26,18 @@ const ReservasConfirmadas = () => {
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
-                <td>{reserva.Cliente.nombre}</td>
+                <td className="text-capitalize">{reserva.Cliente.nombre}</td>
                 <td>{reserva.Cliente.numero}</td>
-                <td>{formatearFecha(reserva.fecha)}</td>
+                <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
                 <td>${reserva.montoTotal}</td>
+                <td>${reserva.montoSenia}</td>
+                <td className="fs-5"><strong>${reserva.montoTotal - reserva.montoSenia}</strong></td>
+                <td>
+                    <button type="button" className="me-1 btn btn-primary">Llegó</button>
+                    <button type="button" className="me-1 btn btn-danger">No llegó</button>
+                    <button type="button" className="btn btn-success">Cobrado</button>
+                </td>
             </tr>
         ));
     };
@@ -50,20 +57,23 @@ const ReservasConfirmadas = () => {
             <h3>Gestor de Reservas</h3>
 
             {/* Reservas del estilista */}
-            <h4>Tus reservas</h4>
-            <div className="table-ctn mis-reservas" style={{ overflowX: "auto" }}>
-                <table className="table">
-                    <thead>
+            <h4 className="py-3">Tus turnos de hoy</h4>
+            <div className="table-ctn mis-reservas table-responsive">
+                <table className="table ">
+                    <thead className="table-primary">
                         <tr>
                             <th scope="col">Cliente</th>
                             <th scope="col">Número</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
-                            <th scope="col">Monto</th>
+                            <th scope="col">Precio de servicio</th>
+                            <th scope="col">Importe abonado</th>
+                            <th scope="col">Importe a cobrar</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {reservasEstilista.length > 0 
+                        {reservasEstilista.length > 0
                             ? renderFilasReserva(reservasEstilista)
                             : <tr><td colSpan="5">No tienes reservas confirmadas</td></tr>}
                     </tbody>
@@ -71,10 +81,10 @@ const ReservasConfirmadas = () => {
             </div>
 
             {/* Reservas generales */}
-            <h4>Reservas de hoy</h4>
-            <div className="table-ctn reservas-gral" style={{ overflowX: "auto" }}>
+            <h4 className="py-3">Turnos generales de hoy</h4>
+            <div className="table-ctn reservas-gral table-responsive">
                 <table className="table">
-                    <thead>
+                    <thead className="table-dark">
                         <tr>
                             <th scope="col">Estilista</th>
                             <th scope="col">Cliente</th>
@@ -84,16 +94,16 @@ const ReservasConfirmadas = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {reservasConfirmadas.length > 0 
+                        {reservasConfirmadas.length > 0
                             ? reservasConfirmadas.map((reserva, index) => (
                                 <tr key={index}>
-                                    <td>{reserva.Admin.nombre}</td>
-                                    <td>{reserva.Cliente.nombre}</td>
+                                    <th className="text-uppercase">{reserva.Admin.nombre}</th>
+                                    <td className="text-capitalize">{reserva.Cliente.nombre}</td>
                                     <td>{reserva.Cliente.numero}</td>
-                                    <td>{formatearFecha(reserva.fecha)}</td>
+                                    <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                 </tr>
-                              ))
+                            ))
                             : <tr><td colSpan="6">No hay reservas confirmadas</td></tr>}
                     </tbody>
                 </table>

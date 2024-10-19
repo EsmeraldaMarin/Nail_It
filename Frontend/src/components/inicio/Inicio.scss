@@ -1,5 +1,8 @@
 .inicio {
     padding: 40px 20px;
+    @media screen and (min-width: 800px) {
+        width: 60vw;
+    }
 }
 .title {
     h1 {

@@ -19,8 +19,8 @@ const Menu = () => {
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li className="nav-item"><NavLink end to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-house"></i>Realizar Reserva</NavLink></li>
                             <li className="nav-item"><NavLink to="/inicio/mis_reservas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Mis Reservas</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Servicios</NavLink></li>
-                            <li className="nav-item"><NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Mi Cuenta</NavLink></li>
+                            <li className="nav-item"><NavLink to="/inicio/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bag"></i>Servicios</NavLink></li>
+                            <li className="nav-item"><NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-person"></i>Mi Cuenta</NavLink></li>
                             <li className='nav-item logout'><Logout/></li>
 
                         </ul>

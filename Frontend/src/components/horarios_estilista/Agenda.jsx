@@ -7,7 +7,7 @@ export default function Horarios() {
 
     return (
         <div className="ctn-horarios">
-            <h3>Tus horarios</h3>
+            <h3>Tu agenda</h3>
             <div className="form-horario-atencion">
                 <div className="heads">
 

@@ -19,18 +19,17 @@ import Historial_turnos from "./components/historial_turnos_cli/Historial";
 import AccountInfo from "./components/cliente_configuracion/AccountInfo";
 import Servicio from "./components/Especialidad/Servicio"
 
+import Footer from "./components/footer/Footer";
 
 function App() {
     return (
         <div className="App">
             <Routes>
                 {/* Ruta para el cliente con rutas anidadas */}
-                <Route path="/inicio/*" element={
-                    <RutaProtegida><ClienteLayout /></RutaProtegida>
-                }>
+                <Route path="/inicio/*" element={<RutaProtegida><ClienteLayout /></RutaProtegida>}>
                     <Route path="" element={<Inicio />} />
                     <Route path="configuracion_cuenta" element={<AccountInfo />} />
-                    {/* Agrega más rutas de cliente aquí */}
+                    <Route path="mis_reservas" element={<Historial_turnos />}></Route>
                 </Route>
 
                 {/* Ruta para el admin con rutas anidadas */}
@@ -47,7 +46,6 @@ function App() {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/registro" element={<Registro />}></Route>
                 <Route path="/inicio" element={<Inicio />}></Route>
-                <Route path="/inicio/mis_reservas" element={<Historial_turnos />}></Route>
             </Routes>
         </div>
     );
@@ -56,12 +54,13 @@ function App() {
 const ClienteLayout = () => {
     return (
         <>
-            <Header /> {/* Header solo visible en rutas del cliente */}
+            <Header></Header>
             <Routes>
                 <Route path="/" element={<Inicio />} />
                 <Route path="/configuracion_cuenta" element={<AccountInfo />} />
-                {/* Aquí puedes agregar más rutas del cliente si es necesario */}
+                <Route path="/mis_reservas" element={<Historial_turnos />}></Route>
             </Routes>
+            <Footer></Footer>
         </>
     );
 };
