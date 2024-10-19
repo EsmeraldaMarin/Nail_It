@@ -9,7 +9,7 @@ const HorarioSelect = ({ profesional, horario, setHorario }) => {
 
     return (
         <div className="mb-3 horarios-select">
-            <label>Seleccione un horario</label>
+            <label>Seleccione el horario</label>
             <div className='btn-carrusel'>
                 <span className="line"></span>
                 {profesional ? horarios.map((h, index) => (

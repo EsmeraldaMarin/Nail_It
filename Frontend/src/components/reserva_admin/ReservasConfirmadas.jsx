@@ -66,7 +66,7 @@ const ReservasConfirmadas = () => {
                     <thead className="table-primary">
                         <tr>
                             <th scope="col">Cliente</th>
-                            <th scope="col">Número</th>
+                            <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
                             <th scope="col">Precio de servicio</th>
@@ -91,7 +91,7 @@ const ReservasConfirmadas = () => {
                         <tr>
                             <th scope="col">Estilista</th>
                             <th scope="col">Cliente</th>
-                            <th scope="col">Número</th>
+                            <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
                         </tr>

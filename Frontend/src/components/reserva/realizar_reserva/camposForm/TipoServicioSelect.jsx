@@ -21,7 +21,7 @@ const TipoServicio = ({ tipoServicio, setTipoServicio, fetchServicios }) => {
 
     return (
         <div className="mb-3 tipo-servicio">
-            <h5>Selecciona un tipo de servicio</h5>
+            <h5>Seleccione la especialidad</h5>
             <select
                 value={tipoServicio == null ? "" : tipoServicio}
                 onChange={(e) => {
