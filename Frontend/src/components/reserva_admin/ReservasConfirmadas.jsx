@@ -57,7 +57,7 @@ const ReservasConfirmadas = () => {
 
     return (
         <div className='container-fluid Reservas'>
-            <h3>Gestor de Reservas</h3>
+            <h3>Gestor de turnos</h3>
 
             {/* Reservas del estilista */}
             <h4 className="py-3">Tus turnos de hoy</h4>

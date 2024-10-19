@@ -69,7 +69,15 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
         } catch (error) {
             console.error('Error en el registro:', error);
         }
-
+        setFormData({
+            nombre: '',
+            apellido: '',
+            email: '',
+            numero: '',
+            password: '',
+            confirmPassword: '',
+            isAdmin: isAdminParam
+        })
         // Aquí se podría enviar el formulario a una API o servicio
         setErrorMessage(""); // Reiniciar mensajes de error
     };

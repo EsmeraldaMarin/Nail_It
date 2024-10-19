@@ -42,8 +42,8 @@ const ReservasPendientes = () => {
 
     return (
         <div className='container-fluid Reservas'>
-            <h3>Gestor de Reservas</h3>
-            <h4 className="py-3">Reservas pendientes de Comprobar el Pago</h4>
+            <h3>Gestor de reservas a confirmar</h3>
+            <h4 className="py-3">Reservas pendientes de comprobar su cobro</h4>
 
             <div className="table-ctn table-responsive reservas-pendientes" >
                 <table className="table">
