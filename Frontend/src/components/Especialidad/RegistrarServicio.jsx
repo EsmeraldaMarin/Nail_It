@@ -3,34 +3,34 @@ import React, { useState, useEffect } from 'react';
 import {useForm} from 'react-hook-form' 
 import axios from '../../axiosConfig/axiosConfig';
 
-export default function RegistrarServicio({onCancelar, item, actualizado}){
+
+
+export default function RegistrarServicio({onGuardar, onCancelar, item, actualizado,  registrarEsp, especialidades}){
     const {register, handleSubmit, formState: {errors}, setValue} = useForm({values: item})
 
-    const [especialidades, setEspecialidades] = useState([]);
+    
 
     useEffect(() => {
-        const fetchEspecialidades = async () => {
-            try {
-                const response = await axios.get('/especialidad');
-                setEspecialidades(response.data);
+        
                 if (item && item.id_especialidad) {
                     setValue('id_especialidad', item.id_especialidad);
                 }
-                
-            } catch (error) {
-                console.error('Error al obtener las especialidades', error);
-            }
-        };
-        fetchEspecialidades();
-    }, []);
+            } );
+
 
     const onSubmit = (data) => {
         if (item.id)
             actualizado(item.id,data) 
         else
-            console.log('aca guardo')
+            onGuardar(data)
     }
+    const especialidades2 = especialidades
 
+
+
+
+
+    
     return(
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -48,8 +48,8 @@ export default function RegistrarServicio({onCancelar, item, actualizado}){
                     {errors.precio && <span className="text-danger">{errors.precio.message}</span>}
                 </div>
                 <div className="form-group">
-                    <label htmlFor="duracion">Duracion del servicio (en minutos)</label>
-                    <textarea type="number" className="form-control" id="duracion" placeholder="Ingrese el precio (sin $)"
+                    <label htmlFor="duracion">Duracion del servicio (en minutos) </label>
+                    <textarea type="number" className="form-control" id="duracion" placeholder="Ingrese la duracion (en min)"
                     {...register('duracion', {required: 'Campo obligatorio'})} />
                     {errors.duracion && <span className="text-danger">{errors.duracion.message}</span>}
                 </div>
@@ -62,7 +62,7 @@ export default function RegistrarServicio({onCancelar, item, actualizado}){
                         {...register('id_especialidad', { required: 'Debe seleccionar una especialidad' })}
                     >
                         <option value="">Seleccione una especialidad</option>
-                        {especialidades.map((especialidad) => (
+                        {especialidades2.map((especialidad) => (
                             <option key={especialidad.id} value={especialidad.id}>
                                 {especialidad.nombre}
                             </option>
@@ -70,6 +70,13 @@ export default function RegistrarServicio({onCancelar, item, actualizado}){
                     </select>
                     {errors.especialidad && <span className="text-danger">{errors.especialidad.message}</span>}
                 </div>
+                {item.id === undefined && (
+                    <div className="form-group mt-2">
+                        <button type="button" className="btn btn-link" onClick={registrarEsp}>
+                            Agregar nueva especialidad
+                        </button>
+                    </div>
+                )}
                 <div className="form-group mt-3">
                     <button type="submit" className="btn btn-primary mx-1">Guardar</button>
                     <button type="button" onClick={onCancelar}  className="btn btn-secondary mx-1"> Cancelar</button>
