@@ -3,7 +3,6 @@ import './CardInfoReserva.scss';
 
 const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrarReserva }) => {
     const { profesional_data, fecha, servicio_data, tipoServicio, horario, precio, monto } = reservaData;
-    console.log(reservaData)
     // Traer de BD
     const alias = "hola.como.estas";
     const cbu = "0800056663332225";

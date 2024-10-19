@@ -1,7 +1,7 @@
 import React from 'react';
 import "../Reserva.scss"
 
-const HorarioSelect = ({ servicio, horario, setHorario }) => {
+const HorarioSelect = ({ profesional, horario, setHorario }) => {
     //hacer conexion con el back 
     const horariosDeMuestra = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM'];
     //ESTO SE CONSIGUE CON UN FETCH
@@ -12,12 +12,12 @@ const HorarioSelect = ({ servicio, horario, setHorario }) => {
             <label>Seleccione un horario</label>
             <div className='btn-carrusel'>
                 <span className="line"></span>
-                {servicio ? horarios.map((h, index) => (
-                    <button disabled={servicio === null} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
+                {profesional ? horarios.map((h, index) => (
+                    <button disabled={profesional ? false : true} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
                         {h}
                     </button>
                 )) : horariosDeMuestra.map((h, index) => (
-                    <button disabled={servicio === null} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
+                    <button disabled={profesional ? false : true} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
                         {h}
                     </button>
                 ))}

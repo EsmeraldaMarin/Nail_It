@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../Reserva.scss"
 
-const FechaSelect = ({ fecha, setFecha }) => {
+const FechaSelect = ({ servicio, fecha, setFecha }) => {
     //esto es para evitar que el usuario seleccione una fecha mas adelante que un mes desde hoy
     const [minDate, setMinDate] = useState('');
     const [maxDate, setMaxDate] = useState('');
@@ -24,6 +24,7 @@ const FechaSelect = ({ fecha, setFecha }) => {
         <div className="mb-3 col">
             <label>Fecha</label>
             <input
+                disabled={servicio ? false : true}
                 type="date"
                 value={fecha}
                 onChange={(e) => setFecha(e.target.value)}

@@ -89,25 +89,20 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
   return (
     <div className="container-fluid">
-      <div className="row">
-        <ProfesionalSelect profesional={profesional} profesionales={profesionales} setProfesional={handleProfesionalChange} />
-        <FechaSelect fecha={fecha} setFecha={(nuevaFecha) => setReservaData({ ...reservaData, fecha: nuevaFecha })} />
-      </div>
-
-      {/* ver como relacionar el tipo de servicio con el servicio */}
       <TipoServicioSelect tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} fetchServicios={fetchServicios} />
 
-      {/* Verifica que el usuario haya seleccionado un tipo de servicio */}
 
       <div className="servicio-ctn">
         <ServicioSelect tipoServicio={tipoServicio} servicio={servicio} setServicio={handleServicioChange} servicios={servicios} />
         <InfoServicio servicio={servicio} reservaData={reservaData} />
       </div>
 
+      <div className="row pt-4">
+        <FechaSelect servicio={servicio} fecha={fecha} setFecha={(nuevaFecha) => setReservaData({ ...reservaData, fecha: nuevaFecha })} />
+        <ProfesionalSelect  fecha={fecha}  profesionales={profesionales} setProfesional={handleProfesionalChange} />
+      </div>
 
-      {/* Verifica que el usuario haya seleccionado un servicio */}
-      <HorarioSelect servicio={servicio} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
-
+      <HorarioSelect profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
 
       <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar" disabled={horario ? false : true}>
         Continuar
