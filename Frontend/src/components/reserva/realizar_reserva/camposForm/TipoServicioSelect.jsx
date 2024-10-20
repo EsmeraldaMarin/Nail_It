@@ -11,6 +11,8 @@ const TipoServicio = ({ tiposServicio, tipoServicio, setTipoServicio }) => {
                 value={tipoServicio == null ? "" : tipoServicio}
                 onChange={(e) => { setTipoServicio(e.target.value) }}
                 className="form-select">
+                <option value="">Seleccione una especialidad</option>
+
                 {tiposServicio.map((tipoServ, index) => (
                     <option key={index} value={tipoServ.id}>
                         {tipoServ.nombre}
