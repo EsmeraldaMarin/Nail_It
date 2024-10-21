@@ -9,9 +9,9 @@ import InfoServicio from './camposForm/InfoServicio';
 import "./Reserva.scss"
 import axios from '../../../axiosConfig/axiosConfig';
 
-const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
+const ReservaCard = ({ setPasoActual, reservaData, setReservaData, setAllReservas }) => {
   const { profesional, fecha, servicio, tipoServicio, horario } = reservaData;
-
+  const [mensaje, setMensaje] = useState("")
   const [tiposServicio, setTiposServicio] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
@@ -119,7 +119,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       profesional_data: null, //Resetea el profesional cuando cambia la 
       horarios_disponibles: horarios_filtrados.data,
       horario: "",
-      profesional:''
+      profesional: ''
     });
   };
 
@@ -135,6 +135,11 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     });
   };
 
+  // const handleAddOther = () => {
+  //   setAllReservas(reservaData)
+  //   setReservaData({});
+  // }
+
   const handleConfirm = () => {
 
     // Lógica de confirmación de reserva aquí (opcional)
@@ -144,6 +149,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
   return (
     <div className="container-fluid">
+      {mensaje}
       <TipoServicioSelect tiposServicio={tiposServicio} tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} />
 
       <div className="servicio-ctn">
@@ -158,6 +164,17 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
       <HorarioSelect horarios={reservaData.horariosXprofesional} servicio_data={reservaData.servicio_data} profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
 
+      <a href='#' onClick={() => {
+        setAllReservas()
+        setMensaje(
+          <div className="alert alert-success" role="alert">
+            <p className='m-0'>Reserva agregada con éxito!</p>
+            <p className='m-0'>Agrega otra reserva</p>
+          </div>)
+
+      }} className="btn btn-secondary" disabled={horario ? false : true}>
+        Agregar otra reserva
+      </a>
       <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar" disabled={horario ? false : true}>
         Continuar
       </button>

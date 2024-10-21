@@ -1,8 +1,8 @@
 import React from 'react';
 import './CardInfoReserva.scss';
 
-const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrarReserva }) => {
-    const { profesional_data, fecha, servicio_data, tipoServicio, horario, precio, monto } = reservaData;
+const CardInfoReserva = ({ setPasoActual, allReservas, comprobante, setComprobante, registrarReserva, modificarReserva }) => {
+
     // Traer de BD
     const alias = "hola.como.estas";
     const cbu = "0800056663332225";
@@ -10,14 +10,11 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
-        setReservaData({
-            ...reservaData,
-            comprobante: selectedFile,
-        });
+        setComprobante(selectedFile)
     };
 
     const handleConfirm = () => {
-        if (reservaData.comprobante) {
+        if (comprobante) {
             registrarReserva();
         }
         setPasoActual(3);
@@ -28,33 +25,34 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
             <h5 className="mb-4">Información sobre tu reserva</h5>
 
             <div className="card shadow-sm p-4 mb-4">
-                <div className="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                    <button className="btn btn-outline-secondary rounded-circle" onClick={() => setPasoActual(1)}>
-                        <i className="bi bi-chevron-left"></i>
-                    </button>
-                    <p className="mb-0">
-                        Reserva para: <span className="fw-bold servicio">{servicio_data.nombre}</span>
-                    </p>
-                </div>
-
-                <div className="mb-3">
-                    <div className="d-flex justify-content-between">
-                        <p className="fw-bold mb-0">Profesional</p>
-                        <p className="text-end mb-0">{profesional_data.nombre}</p>
+                {allReservas.map((reserva, index) => (
+                    <div key={index}>
+                        <div className="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                            <p className="mb-0">
+                                Reserva para: <span className="fw-bold servicio">{reserva.servicio_data.nombre}</span>
+                            </p>
+                        </div>
+                        <div className="mb-3">
+                            <div className="d-flex justify-content-between">
+                                <p className="fw-bold mb-0">Profesional</p>
+                                <p className="text-end mb-0">{reserva.profesional_data.nombre}</p>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <p className="fw-bold mb-0">Fecha</p>
+                                <p className="text-end mb-0">{reserva.fecha}</p>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <p className="fw-bold mb-0">Horario</p>
+                                <p className="text-end mb-0">{reserva.horario} hs</p>
+                            </div>
+                            <button className='btn btn-warning' onClick={() => { modificarReserva(index) }}>Modificar reserva</button>
+                        </div>
                     </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="fw-bold mb-0">Fecha</p>
-                        <p className="text-end mb-0">{fecha}</p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="fw-bold mb-0">Horario</p>
-                        <p className="text-end mb-0">{horario} hs</p>
-                    </div>
-                </div>
-
+                ))
+                }
                 <div className="mb-4">
                     <p className="fw-bold mb-1">Importe de seña a abonar</p>
-                    <p className="fs-5">${precio}</p>
+                    <p className="fs-5">$ corregirr</p>
                 </div>
 
                 <button
@@ -89,7 +87,7 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
                 <button
                     onClick={handleConfirm}
                     className="btn btn-primary w-100 mt-4"
-                    disabled={!reservaData.comprobante}
+                    disabled={!comprobante}
                 >
                     Listo <i className="bi bi-check"></i>
                 </button>
