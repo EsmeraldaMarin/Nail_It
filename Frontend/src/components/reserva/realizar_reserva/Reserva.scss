@@ -1,4 +1,12 @@
-
+.reserva-card {
+    padding: 30px;
+    box-shadow: 0 0 5px #aaa;
+    border-radius: 30px;
+    @media (min-width: 920px) {
+        width: 80vh;
+        margin: 0 auto;
+    }
+}
 //SERVICIO E INFO DEL SERVICIO
 .servicio-ctn {
     display: flex;
@@ -59,7 +67,8 @@
             &.ocupado {
                 background-color: grey;
             }
-            &:focus, &:active {
+            &:focus,
+            &:active {
                 background-color: orange;
                 color: white;
                 font-weight: bold;

@@ -10,7 +10,7 @@ section {
 }
 
 section.main {
-    padding-top: 3em;
+    padding-top: 1em;
     padding-bottom: 3em;
 }
 
@@ -39,8 +39,10 @@ section, .section, .row.relative {
 }
 
 .block-img-round, .block-img-round img {
-    max-height: 275px;
-    max-width: 275px;
+    max-height: 200px;
+    max-width: 200px;
+    min-height: 200px;
+    min-width: 200px;
     position: relative;
     margin-left: auto;
     margin-right: auto;

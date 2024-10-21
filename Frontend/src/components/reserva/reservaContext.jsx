@@ -44,7 +44,7 @@ function ReservaContext() {
         }
     };
     return (
-        <div>
+        <div className='p-3'>
             {pasoActual === 1 && <ReservaCard setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} />}
             {pasoActual === 2 && <CardInfoReserva setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} registrarReserva={registrarReserva} />}
             {pasoActual === 3 && <CardOpExitosa setPasoActual={setPasoActual}/>}
