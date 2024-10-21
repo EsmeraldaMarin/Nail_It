@@ -1,6 +1,6 @@
-.inicio {
+.inicio.container-fluid {
     padding: 40px 20px;
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 920px) {
         width: 60vw;
     }
 }

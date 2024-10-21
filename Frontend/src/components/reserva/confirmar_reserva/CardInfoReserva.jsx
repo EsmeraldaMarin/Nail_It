@@ -54,7 +54,7 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
 
                 <div className="mb-4">
                     <p className="fw-bold mb-1">Importe de seña a abonar</p>
-                    <p className="fs-5">${precio}</p>
+                    <p className="fs-5">${reservaData.montoSenia}</p>
                 </div>
 
                 <button

@@ -1,10 +1,25 @@
-.active {
-    background-color: #f2884c; /* Color de fondo */
-    border: 2px solid transparent; /* Borde transparente */
-    border-radius: 10px; /* Bordes redondeados */
-    color: #fff; /* Color del texto */
-    font-weight: bold; /* Texto en negrita */
-    padding: 10px 20px; /* Aumenta el tamaño del botón */
-    font-size: 16px; /* Aumenta el tamaño de la fuente, ajusta según sea necesario */
-    cursor: pointer
+@import "../../variables.scss";
+.Reservas {
+    .ss {
+        @media screen and (max-width: 920px) {
+            flex-direction: column;
+        }
+        .btn.active {
+            background-color: $naranjaFuerte; /* Color de fondo */
+            border: 2px solid transparent; /* Borde transparente */
+            border-radius: 10px; /* Bordes redondeados */
+            color: #fff; /* Color del texto */
+            font-size: 16px; /* Aumenta el tamaño de la fuente, ajusta según sea necesario */
+            cursor: pointer;
+            i {
+                margin-left: 20px;
+                font-size: 1.2em;
+            }
+        }
+    }
+    .cc {
+        margin-top: 20px;
+        max-height: 250px;
+        overflow-y: scroll;
+    }
 }

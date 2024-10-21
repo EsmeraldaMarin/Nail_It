@@ -97,15 +97,18 @@ function EstilistaManager() {
 
 
     return (
-        <div className="ctn container-fluid">
-            <h3>Gestor de Estilistas</h3>
-            <div className="search-ctn">
-                <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-                <button className="btn" onClick={() => {
+        <div className="ctn container-fluid mt-5">
+            <div className="ss d-flex justify-content-between align-items-center">
+                <h3>Gestor de Operadoras</h3>
+                <button className="btn btn-crear-usuario" onClick={() => {
                     const modalElement = modalRefCrearUsuario.current;
                     const bootstrapModal = new window.bootstrap.Modal(modalElement);
                     bootstrapModal.show();
                 }}>Crear usuario<i className="bi bi-plus-circle"></i></button>
+
+            </div>
+            <div className="search-ctn">
+                {/* <SearchBar searchTerm={searchTerm} onSearch={handleSearch} /> */}
                 <FormCrearEstilista modalRef={modalRefCrearUsuario} profesionales={profesionales} setProfesionales={setProfesionales} setFilteredProfesionales={setFilteredProfesionales} />
             </div>
             <EstilistaModal
@@ -119,7 +122,7 @@ function EstilistaManager() {
                 showSuccessMessage={showSuccessMessage}
             />
 
-            <div className="card-container">
+            <div className="card-container mt-4">
                 {filteredProfesionales.length === 0 ? (
                     <p>No se encontraron estilistas.</p>
                 ) : (

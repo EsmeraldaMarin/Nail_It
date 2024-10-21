@@ -6,12 +6,14 @@ import axios from '../../axiosConfig/axiosConfig';
 
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
+    const [botonConfirmacion, setBotonConfirmacion] = useState(null);
+    const userId = localStorage.getItem('userId');
 
     const formatearFecha = (fecha) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
-    
+
     useEffect(() => {
         const fetchReservas = async () => {
             try {
@@ -24,6 +26,10 @@ const ReservasPendientes = () => {
         };
         fetchReservas();
     }, []);
+
+    const handleClickConfirmar = (id) => {
+        setBotonConfirmacion(id)
+    }
 
     const handleConfirmarReserva = async (id) => {
         try {
@@ -38,8 +44,14 @@ const ReservasPendientes = () => {
         } catch (error) {
             console.error('Error al confirmar la reserva', error);
         }
+        setBotonConfirmacion(null);
     };
 
+
+    // Filtrar reservas por estilista
+    const reservasEstilista = reservas.filter(
+        reserva => reserva.estado === "pendiente" && reserva.id_profesional === userId
+    );
     return (
         <div className='container-fluid Reservas'>
             <h3>Gestor de reservas a confirmar</h3>
@@ -60,8 +72,8 @@ const ReservasPendientes = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {reservas.map((reserva, index) =>
-                            reserva.estado == "pendiente" &&
+                        {reservasEstilista.map((reserva, index) =>
+
                             <tr key={index}>
                                 <td className="text-capitalize">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
                                 <td>{reserva.Cliente.numero}</td>
@@ -73,9 +85,21 @@ const ReservasPendientes = () => {
                                     Ver Comprobante
                                 </a></td>
                                 <td>
-                                    <button className="btn-confirmacion" onClick={() => handleConfirmarReserva(reserva.id)}>
-                                        Confirmar
-                                    </button>
+                                    {botonConfirmacion === reserva.id ? (
+                                        <div>
+                                            <button className="btn btn-danger" onClick={() => handleConfirmarReserva(reserva.id)}>
+                                                Confirmar
+                                            </button>
+                                            <button className="btn btn-light ms-2" onClick={() => setBotonConfirmacion(null)}>
+                                                <i className="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button className="btn-confirmacion" onClick={() => handleClickConfirmar(reserva.id)}>
+                                            Confirmar
+                                        </button>
+                                    )}
+
                                 </td>
                             </tr>
                         )}

@@ -1,17 +1,12 @@
 @import "../../variables.scss";
 
 .ctn {
-    .search-ctn {
-        display: flex;
-        margin-bottom: 20px;
-        align-items: center;
+    .ss {
         @media screen and (max-width: 920px) {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
+           flex-direction: column;
         }
-        > button {
-            margin-left: 50px;
+        .btn-crear-usuario {
+            // margin-left: 50px;
             background-color: $naranjaFuerte;
             color: white;
             @media screen and (max-width: 920px) {
@@ -23,22 +18,45 @@
                 font-size: 1.2em;
             }
         }
-        .search-bar {
-            @media screen and (max-width: 920px) {
-                width: 100%;
-            }
-            .search-input {
-                width: 500px;
-                padding: 10px;
-                font-size: 16px;
-                border-radius: 20px;
-                @media screen and (max-width: 920px) {
-                    margin-top: 10px;
-                    width: 100%;
-                }
-            }
-        }
     }
+    // .search-ctn {
+    //     display: flex;
+    //     margin-bottom: 20px;
+    //     align-items: center;
+    //     @media screen and (max-width: 920px) {
+    //         display: flex;
+    //         flex-direction: column;
+    //         align-items: start;
+    //     }
+    //     > button {
+    //         // margin-left: 50px;
+    //         background-color: $naranjaFuerte;
+    //         color: white;
+    //         @media screen and (max-width: 920px) {
+    //             margin: 0;
+    //             margin-top: 20px;
+    //         }
+    //         i {
+    //             margin-left: 20px;
+    //             font-size: 1.2em;
+    //         }
+    //     }
+    //     .search-bar {
+    //         @media screen and (max-width: 920px) {
+    //             width: 100%;
+    //         }
+    //         .search-input {
+    //             width: 500px;
+    //             padding: 10px;
+    //             font-size: 16px;
+    //             border-radius: 20px;
+    //             @media screen and (max-width: 920px) {
+    //                 margin-top: 10px;
+    //                 width: 100%;
+    //             }
+    //         }
+    //     }
+    // }
     .card-container {
         display: flex;
         padding: 10px 0;
@@ -47,7 +65,7 @@
         scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0);
         scrollbar-width: thin;
         min-height: 250px;
-        
+
         .card {
             min-width: 250px;
             padding: 20px;
@@ -81,6 +99,9 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        @media screen and (max-width: 920px) {
+            width: 90vw;
+        }
         .modal-content {
             .modal-body-crear-estilista {
                 #registro-container {
