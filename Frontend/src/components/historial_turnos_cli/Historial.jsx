@@ -109,17 +109,18 @@ const Historial_turnos = () => {
     return (
         <div className='body-ctn'>
             <div>
-                <div>
-                    <button className='btn btn-secondary misTurnos-btn' onClick={handleRedirect}>
-                        <i className='bi bi-arrow-left pe-2'></i>
-                        Volver</button>
-                </div>
+               
                 <div className='container-fluid Reservas'>
 
-                    <h4>Tus Turnos</h4>
-                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <tr><td colSpan="5">No tienes turnos</td></tr>}
-                    <h4>Tus Turnos Anteriores</h4>
-                    {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <tr><td colSpan="5">No tienes turnos pasados</td></tr>}
+                    <h4>Mis Reservas</h4>
+                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <tr><td colSpan="5">No tienes reservas</td></tr>}
+                    <h4>Mis Reservas anteriores</h4>
+                    {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <tr><td colSpan="5">No tienes reservas pasados</td></tr>}
+                </div>
+                <div>
+                    <button className='btn misTurnos-btn' onClick={handleRedirect}>
+                        <i className='bi bi-arrow-left pe-2'></i>
+                        Volver</button>
                 </div>
 
             </div>

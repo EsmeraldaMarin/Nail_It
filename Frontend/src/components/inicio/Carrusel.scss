@@ -1,0 +1,26 @@
+
+.carousel-item.active {
+    border: none !important; /* Elimina el borde del elemento activo */
+    box-shadow: none !important; 
+    background-color: #f2894c00 !important;/* Elimina cualquier sombra del elemento activo */
+    padding: 0px 0px;
+}
+
+@media (min-width: 426px) {
+    .carousel-img {
+        height: 75vh; /* Dos tercios de la altura de la pantalla */
+        object-fit: cover;
+    }
+}
+
+/* Para pantallas menores o iguales a 425px */
+@media (max-width: 425px) {
+    .carousel-img {
+        height: 33vh; /* Un tercio de la altura de la pantalla */
+        object-fit: cover;
+    }
+}
+
+
+
+

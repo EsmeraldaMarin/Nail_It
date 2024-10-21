@@ -19,7 +19,7 @@ import AccountInfo from "./components/cliente_configuracion/AccountInfo";
 import Servicio from "./components/Especialidad/Servicio"
 
 import Footer from "./components/footer/Footer";
-
+import ReservaContext from "./components/reserva/reservaContext";
 function App() {
     return (
         <div className="App">
@@ -27,6 +27,7 @@ function App() {
                 {/* Ruta para el cliente con rutas anidadas */}
                 <Route path="/inicio/*" element={<RutaProtegida><ClienteLayout /></RutaProtegida>}>
                     <Route path="" element={<Inicio />} />
+                    <Route path="realizar_reserva" element={<ReservaContext/>}></Route>
                     <Route path="configuracion_cuenta" element={<AccountInfo />} />
                     <Route path="mis_reservas" element={<Historial_turnos />}></Route>
                 </Route>
@@ -58,6 +59,7 @@ const ClienteLayout = () => {
                 <Route path="/" element={<Inicio />} />
                 <Route path="/configuracion_cuenta" element={<AccountInfo />} />
                 <Route path="/mis_reservas" element={<Historial_turnos />}></Route>
+                <Route path="/realizar_reserva" element={<ReservaContext/>}></Route>
             </Routes>
             <Footer></Footer>
         </>

@@ -1,27 +1,23 @@
-.inicio {
-    padding: 40px 20px;
-    @media screen and (min-width: 800px) {
-        width: 60vw;
-    }
+
+  
+  /* Para asegurarte de que el contenedor ocupe todo el ancho */
+  .inicio {
+    padding: 0;
+  }
+
+
+  .main-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Optional, vertically centers items */
+    gap: 20px; /* Space between the components */
+    padding: 20px;
+    width: 100%;
 }
-.title {
-    h1 {
-        font-size: 1.5em;
-    }
-    div {
-        display: flex;
-        font-size: 0.8em;
-    }
-    .misTurnos-btn {
-        background-color: #f2884c;
-        color: white;
-        border: 0;
-        z-index: 10000;
-    }
-}
-.misTurnos-btn{
-    background-color:  #F2884C;
-    color:white;
-    border: 0;
-    z-index: 10000;
+
+.horarios-container,
+.map-container {
+    width: 100%;
+    max-width: 600px; /* Or adjust max-width to ensure both have the same width */
 }
