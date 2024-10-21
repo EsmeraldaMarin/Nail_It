@@ -134,9 +134,14 @@ export default function Horarios() {
                                 <li key={index} className="list-group-item d-flex align-items-center justify-content-between">
                                     <p>De <strong>{horario.hora_inicio}</strong> a <strong>{horario.hora_fin}</strong> <span className="mx-2">|</span> <strong>{horario.Especialidad.nombre}</strong></p>
                                     {botonConfirmacion === horario.id ? (
-                                        <button className="btn btn-danger" onClick={() => handleConfirmDelete(horario.id)}>
-                                            Confirmar
-                                        </button>
+                                        <div>
+                                            <button className="btn btn-danger" onClick={() => handleConfirmDelete(horario.id)}>
+                                                Confirmar
+                                            </button>
+                                            <button className="btn btn-light ms-2" onClick={() => setBotonConfirmacion(null)}>
+                                                <i className="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
                                     ) : (
                                         <button className="btn btn-light" onClick={() => handleDeleteClick(horario.id)}>
                                             <i className="bi bi-trash3"></i>
@@ -151,14 +156,6 @@ export default function Horarios() {
                     <hr />
                     <div className="form">
                         <div>
-                            <label htmlFor="hora_inicio">Hora desde</label>
-                            <input disabled={horarioData.dia_semana ? false : true} className="form-control" id="hora_inicio" type="time" value={horarioData.hora_inicio} onChange={(e) => setHorarioData({ ...horarioData, hora_inicio: e.target.value })} />
-                        </div>
-                        <div>
-                            <label htmlFor="hora_fin">Hora hasta</label>
-                            <input disabled={horarioData.dia_semana ? false : true} className="form-control" id="hora_fin" type="time" value={horarioData.hora_fin} onChange={(e) => setHorarioData({ ...horarioData, hora_fin: e.target.value })} />
-                        </div>
-                        <div>
                             <label htmlFor="especialidad">Especialidad</label>
                             <select
                                 value={horarioData.id_especialidad}
@@ -166,16 +163,32 @@ export default function Horarios() {
                                 disabled={horarioData.dia_semana ? false : true}
                                 onChange={(e) => {
                                     setHorarioData({ ...horarioData, id_especialidad: e.target.value });
+                                    setMensaje("")
                                 }}
                                 className="form-select"
                             >
-                                <option value="">Ninguno</option>
+                                <option value="">Selecciona aquí</option>
                                 {tiposServicio.map((tipoServ, index) => (
                                     <option key={index} value={tipoServ.id}>
                                         {tipoServ.nombre}
                                     </option>
                                 ))}
                             </select>
+                        </div>
+                        <div>
+                            <label htmlFor="hora_inicio">Hora desde</label>
+                            <input disabled={horarioData.dia_semana && horarioData.id_especialidad ? false : true} className="form-control" id="hora_inicio" type="time" value={horarioData.hora_inicio} onChange={(e) => {
+                                setHorarioData({ ...horarioData, hora_inicio: e.target.value })
+                                setMensaje("")
+
+                            }} />
+                        </div>
+                        <div>
+                            <label htmlFor="hora_fin">Hora hasta</label>
+                            <input disabled={horarioData.dia_semana && horarioData.hora_inicio ? false : true} className="form-control" id="hora_fin" type="time" value={horarioData.hora_fin} onChange={(e) => {
+                                setHorarioData({ ...horarioData, hora_fin: e.target.value })
+                                setMensaje("")
+                            }} />
                         </div>
                         <button className="add-horario" onClick={handleAddHorario}>
                             <i className="bi bi-plus-circle"></i>

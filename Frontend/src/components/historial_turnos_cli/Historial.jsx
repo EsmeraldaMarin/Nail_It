@@ -78,7 +78,7 @@ const Historial_turnos = () => {
                                         <li className="list-group-item"><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidad.nombre}</li>
                                     </ul>
                                 </div>
-                                <div className={clases.footer}>{reserva.estado}</div>
+                                <div className={clases.footer + " text-uppercase"}>{reserva.estado}</div>
                             </div>
                         </div>
                     );

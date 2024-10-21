@@ -37,8 +37,8 @@ function App() {
                     <Route index element={<ReservasConfirmadas />} />
                     <Route path="reservas_pendientes" element={<ReservasPendientes />} />
                     <Route path="horarios" element={<Horarios />} />
-                    <Route path="servicios" element={<Servicio/>} />
-                    <Route path="gestion_estilistas" element={<EstilistaManager />} />
+                    <Route path="servicios" element={<Servicio />} />
+                    <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
                 </Route>
 
                 {/* Rutas básicas */}

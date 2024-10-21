@@ -27,6 +27,7 @@ const ReservasConfirmadas = () => {
 
     // Función para renderizar filas de la tabla
     const renderFilasReserva = (reservasFiltradas) => {
+        console.log(reservasFiltradas)
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
                 <td className="text-capitalize">{reserva.Cliente.nombre}</td>
@@ -69,7 +70,7 @@ const ReservasConfirmadas = () => {
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
-                            <th scope="col">Precio de servicio</th>
+                            <th scope="col">Precio servicio</th>
                             <th scope="col">Importe abonado</th>
                             <th scope="col">Importe a cobrar</th>
                             <th scope="col">Acciones</th>

@@ -25,7 +25,7 @@ const AccountInfo = () => {
 
     return (
         <div className="container-sm account-info py-5 px-4 d-flex flex-column justify-content-center">
-            <h3 className="text-center">Tu Cuenta</h3>
+            <h3 className="text-center">Mi Cuenta</h3>
             {!modoEdicion &&
                 <>
                     <ul className="list-group list-group-flush">

@@ -14,10 +14,12 @@ function ReservaContext() {
         horario: '',
         profesional: '',
         precio: null,
+        montoSenia: 2000,
         comprobante: null,
         servicio_data: null,
         profesional_data: null,
         horarios_disponibles: null,
+        horariosXprofesional: null,
     }); // Estado para los datos de la reserva
     const registrarReserva = async () => {
         const userId = localStorage.getItem('userId');
@@ -26,7 +28,7 @@ function ReservaContext() {
                 horaInicio: reservaData.horario,
                 comprobante: reservaData.comprobante.name,
                 fecha: reservaData.fecha,
-                montoSenia: 200,
+                montoSenia: reservaData.montoSenia,
                 montoTotal: reservaData.precio,
                 id_servicio: reservaData.servicio,
                 id_cliente: userId,
@@ -45,7 +47,7 @@ function ReservaContext() {
         <div>
             {pasoActual === 1 && <ReservaCard setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} />}
             {pasoActual === 2 && <CardInfoReserva setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} registrarReserva={registrarReserva} />}
-            {pasoActual === 3 && <CardOpExitosa />}
+            {pasoActual === 3 && <CardOpExitosa setPasoActual={setPasoActual}/>}
             {pasoActual === 4 && <ErrorEnRealizarReserva />}
         </div>
     );

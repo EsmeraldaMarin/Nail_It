@@ -13,9 +13,9 @@ const InfoServicio = ({ reservaData, servicio }) => {
                 <p>Precio</p>
             </div>
             <div>
-                <p className='senia'>$X.XXX</p>
+                <p className='senia'>${reservaData.montoSenia}</p>
                 {servicio ?
-                    <p className="precio">{reservaData.precio}</p>
+                    <p className="precio">${reservaData.precio}</p>
                     : <p className="precio">?</p>}
             </div>
 

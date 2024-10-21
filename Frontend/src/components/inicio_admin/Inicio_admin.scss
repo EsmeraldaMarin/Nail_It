@@ -99,6 +99,7 @@
         }
         nav.sideBar {
             background-color: white;
+            height: calc(100vh - 60px);
             width: 250px;
             position: sticky;
             top: 60px;
@@ -228,7 +229,10 @@
                 width: 100%;
             }
             .dashboard {
-                padding: 20px;
+                padding: 40px 80px;
+                @media screen and (max-width: 920px) {
+                    padding: 20px;
+                }
             }
         }
     }

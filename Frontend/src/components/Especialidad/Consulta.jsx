@@ -20,28 +20,30 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar 
 
     return (
         <div className='container-fluid Reservas'>
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between align-items-center ss">
                 <h3>Gestor de Servicios</h3>
-                <button type="button" className="active" onClick={onNewClick}>
-                    Registrar servicio
+                <button type="button" className="btn active" onClick={onNewClick}>
+                    Registrar servicio<i className="bi bi-plus-circle"></i>
                 </button>
             </div>
 
             {/* Reservas del estilista */}
-            <div className="table-ctn mis-reservas" style={{ overflowX: "auto" }}>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Servicio</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Duración</th>
-                            <th scope="col">Especialidad</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tbody}
-                    </tbody>
-                </table>
+            <div className="cc">
+                <div className="table-ctn mis-reservas" style={{ overflowX: "auto" }}>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Servicio</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Duración</th>
+                                <th scope="col">Especialidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tbody}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

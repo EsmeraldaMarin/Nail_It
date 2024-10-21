@@ -15,7 +15,7 @@ const SideBar = () => {
                         <li className="nav-item"><NavLink end to="/inicio_admin" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-house"></i>Home</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/reservas_pendientes" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-journal-bookmark"></i>Reservas pendientes</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/agenda" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-calendar3"></i>Agenda</NavLink></li>
-                        <li className="nav-item"><NavLink to="/inicio_admin/gestion_estilistas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Gestion Estilistas</NavLink></li>
+                        <li className="nav-item"><NavLink to="/inicio_admin/administracion_general" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Administración General</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bookmarks"></i>Servicios</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/horarios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi bi-calendar4-range"></i>Horarios de Atención</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/configuracion" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-gear"></i>Configuración</NavLink></li>
