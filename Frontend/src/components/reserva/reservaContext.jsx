@@ -18,6 +18,7 @@ function ReservaContext() {
         servicio_data: null,
         profesional_data: null,
         horarios_disponibles: null,
+        horariosXprofesional: null,
     }); // Estado para los datos de la reserva
     const registrarReserva = async () => {
         const userId = localStorage.getItem('userId');

@@ -68,7 +68,7 @@ routerAdminHorarioEspecialidad.get("/estilista/:id_profesional", async (req, res
 
         const datos = await gestorAdminHorarioEspecialidad.obtener_por_id_profesional(id_profesional);
 
-        if (datos && datos.length > 0) {
+        if (datos) {
             res.status(200).json(datos);
         } else {
             res.status(404).json({ message: "No se encontraron registros para este estilista" });

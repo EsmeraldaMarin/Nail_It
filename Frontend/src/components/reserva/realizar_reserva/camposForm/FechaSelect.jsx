@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import "../Reserva.scss";
 
-const FechaSelect = ({ servicio, fecha, setFecha }) => {
+const FechaSelect = ({ servicio, fecha, setFecha, fechaInput, setFechaInput }) => {
     const [minDate, setMinDate] = useState('');
     const [maxDate, setMaxDate] = useState('');
     const [mostrarMsg, setMostrarMsg] = useState(false);
-    const [fechaInput, setFechaInput] = useState(fecha); // Para mantener la fecha temporalmente
 
     useEffect(() => {
         // Obtener la fecha actual
@@ -51,14 +50,16 @@ const FechaSelect = ({ servicio, fecha, setFecha }) => {
                 disabled={!servicio} // Si no hay servicio seleccionado, deshabilitar el input
                 type="date"
                 value={fechaInput} // Muestra la fecha temporal
-                onChange={handleFechaChange} // Cambia mientras el usuario escribe
+                onChange={(e) => {
+                    handleFechaChange(e);
+                }} // Cambia mientras el usuario escribe
                 className="form-control"
                 required
                 min={minDate} // Fecha mínima: hoy
                 max={maxDate} // Fecha máxima: hoy + 1 mes
             />
             {mostrarMsg && (
-                <span className="text-danger position-absolute" style={{fontSize:"14px"}}>
+                <span className="text-danger position-absolute" style={{ fontSize: "14px" }}>
                     Selecciona una fecha entre {minDate} y {maxDate}
                 </span>
             )}
