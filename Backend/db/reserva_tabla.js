@@ -56,7 +56,7 @@ export const Reservas = sequelize.define('Reservas', {
         allowNull: false
     },
     estado: {
-        type: DataTypes.ENUM('pendiente', 'confirmada', 'cancelada'),
+        type: DataTypes.ENUM('pendiente', 'confirmada', 'cancelada', 'por_reembolzar'),
         allowNull: false,
         defaultValue: 'pendiente'
     }
