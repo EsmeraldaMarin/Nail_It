@@ -21,7 +21,7 @@ const MostrarServicios = () => {
 
 
     const row =  servicios.map((servicio) => (
-        <div className="col-sm-4" key={servicio.id}>
+        <div className="col-sm-3" key={servicio.id}>
                         <div className="block-content">
                         <div className="block-img-round">
                             <img className="mb-0" alt="" src={circulo} />

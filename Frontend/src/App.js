@@ -17,9 +17,10 @@ import EstilistaManager from "./components/gestion_estilistas/EstilistaManager";
 import Historial_turnos from "./components/historial_turnos_cli/Historial";
 import AccountInfo from "./components/cliente_configuracion/AccountInfo";
 import Servicio from "./components/Especialidad/Servicio"
-
 import Footer from "./components/footer/Footer";
 import ReservaContext from "./components/reserva/reservaContext";
+import constructionImage from './img/construction.svg'
+
 function App() {
     return (
         <div className="App">
@@ -27,7 +28,7 @@ function App() {
                 {/* Ruta para el cliente con rutas anidadas */}
                 <Route path="/inicio/*" element={<RutaProtegida><ClienteLayout /></RutaProtegida>}>
                     <Route path="" element={<Inicio />} />
-                    <Route path="realizar_reserva" element={<ReservaContext/>}></Route>
+                    <Route path="realizar_reserva" element={<ReservaContext />}></Route>
                     <Route path="configuracion_cuenta" element={<AccountInfo />} />
                     <Route path="mis_reservas" element={<Historial_turnos />}></Route>
                 </Route>
@@ -39,6 +40,9 @@ function App() {
                     <Route path="horarios" element={<Horarios />} />
                     <Route path="servicios" element={<Servicio />} />
                     <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
+                    <Route path="configuracion" element={<div className="d-flex flex-column justify-content-center align-items-center"><strong className="fs-3">En desarrollo...</strong><img className="h-25 mt-5 w-25" src={constructionImage} /></div>}></Route>
+                    <Route path="estadisticas" element={<div className="d-flex flex-column justify-content-center align-items-center"><strong className="fs-3">En desarrollo...</strong><img className="h-25 mt-5 w-25" src={constructionImage} /></div>}></Route>
+                    <Route path="agenda" element={<div className="d-flex flex-column justify-content-center align-items-center"><strong className="fs-3">En desarrollo...</strong><img className="h-25 mt-5 w-25" src={constructionImage} /></div>}></Route>
                 </Route>
 
                 {/* Rutas básicas */}
@@ -59,7 +63,7 @@ const ClienteLayout = () => {
                 <Route path="/" element={<Inicio />} />
                 <Route path="/configuracion_cuenta" element={<AccountInfo />} />
                 <Route path="/mis_reservas" element={<Historial_turnos />}></Route>
-                <Route path="/realizar_reserva" element={<ReservaContext/>}></Route>
+                <Route path="/realizar_reserva" element={<ReservaContext />}></Route>
             </Routes>
             <Footer></Footer>
         </>
