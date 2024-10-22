@@ -45,8 +45,8 @@ export class GestorReservas {
         }
     }
 
-    async obtener_reservas_por_id(id_reserva) {
-        return await Reservas.findAll({
+    async obtener_reserva_por_id(id_reserva) {
+        return await Reservas.findOne({
             where: { id: id_reserva },
             include: [
                 {
