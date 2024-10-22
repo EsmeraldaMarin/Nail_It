@@ -8,11 +8,40 @@ import "./Historial.scss"
 const Historial_turnos = () => {
     const [reservas, setReservas] = useState([]);
     const userId = localStorage.getItem('userId');
+    const [item, setItem] = useState([])
 
     const formatearFecha = (fecha) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+
+    const calcularDiferenciaHoras = (fechaReserva) => {
+        const fechaActual = new Date();
+        const diferenciaMilisegundos = new Date(fechaReserva) - fechaActual;
+        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60); // Convertir de milisegundos a horas
+        return diferenciaHoras;
+    };
+
+    const onActualizar = async (id, reservaData) => {
+        console.log(reservaData)
+        
+        const result = await axios.put(`/reserva/${id}`, {
+            horaInicio: reservaData.horaInicio,
+            comprobante: reservaData.comprobante,
+            fecha: reservaData.fecha,
+            montoSenia: reservaData.montoSenia,
+            montoTotal: reservaData.montoTotal,
+            id_servicio: reservaData.id_servicio,
+            id_cliente: reservaData. id_cliente,
+            id_profesional: reservaData.id_profesional,
+            estado: calcularDiferenciaHoras(reservaData.fecha) >= 48 ? "por_reembolsar" : "cancelada"
+        });
+        if(result){
+            const response = await axios.get(`/reserva/user/${userId}`);
+            setReservas(response.data);
+            setItem({})
+        }
+    }
 
     useEffect(() => {
         const fetchReservas = async () => {
@@ -55,6 +84,28 @@ const Historial_turnos = () => {
         }
     };
 
+    const esCancelable = (reserva) => {
+        const fechaActual = new Date();
+        const fechaReserva = new Date(reserva.fecha);
+        
+        // Comparar las fechas
+        if (fechaReserva > fechaActual) {
+            return true; // La fecha de la reserva es mayor que la fecha actual
+        } else if (fechaReserva.toDateString() === fechaActual.toDateString()) {
+            // Si es el mismo día, comparar la hora
+            const [horaReserva, minutosReserva] = reserva.horaInicio.split(':').map(Number);
+            const horaActual = fechaActual.getHours();
+            const minutosActuales = fechaActual.getMinutes();
+            
+            // Verificar si la hora de inicio es mayor que la hora actual
+            if (horaReserva > horaActual || (horaReserva === horaActual && minutosReserva > minutosActuales)) {
+                return true;
+            }
+        }
+    
+        return false; // No es cancelable si la fecha y hora no cumplen con los criterios
+    };
+
     const renderFilasReservas = (reservas) => {
         return (
             <div className="row">
@@ -66,6 +117,13 @@ const Historial_turnos = () => {
                             <div className={clases.card} style={{ maxWidth: '18rem' }}>
                                 <div className={clases.header}>
                                     Turno {reserva.Servicio.Especialidad.nombre}
+                                        { 
+                                    
+                                        (reserva.estado === 'pendiente' || reserva.estado === 'confirmada' ) && esCancelable(reserva) && (
+                                            <button className="btn btn-danger btn-sm ms-4"  onClick={() => onActualizar(reserva.id,reserva)} >
+                                                Cancelar
+                                            </button>
+                                        )}
                                 </div>
                                 <div className="card-body text-success">
                                     <ul className="list-group list-group-flush">
@@ -78,7 +136,7 @@ const Historial_turnos = () => {
                                         <li className="list-group-item"><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidad.nombre}</li>
                                     </ul>
                                 </div>
-                                <div className={clases.footer + " text-uppercase"}>{reserva.estado}</div>
+                                <div className={clases.footer + " text-uppercase"}> {reserva.estado === 'por_reembolsar' ? 'pendiente de reembolso' : reserva.estado}</div>
                             </div>
                         </div>
                     );
@@ -99,7 +157,7 @@ const Historial_turnos = () => {
         const fechaActual = new Date();
 
         const reservasPasadas = reservas.filter(reserva => new Date(reserva.fecha) < fechaActual);
-        const reservasFuturas = reservas.filter(reserva => new Date(reserva.fecha) >= fechaActual);
+        const reservasFuturas = reservas.filter(reserva => new Date(reserva.fecha) >= fechaActual).reverse();
 
         return { reservasPasadas, reservasFuturas };
     };
@@ -113,7 +171,7 @@ const Historial_turnos = () => {
                 <div className='container-fluid Reservas'>
 
                     <h4>Mis Reservas</h4>
-                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <tr><td colSpan="5">No tienes reservas</td></tr>}
+                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <tr><td colSpan="5">No tienes reservas proximas</td></tr>}
                     <h4>Mis Reservas anteriores</h4>
                     {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <tr><td colSpan="5">No tienes reservas pasados</td></tr>}
                 </div>

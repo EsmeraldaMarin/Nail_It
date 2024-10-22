@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
+import ReservasAReembolzar from "./ReservasAReembolzar";
 
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
@@ -52,6 +53,28 @@ const ReservasPendientes = () => {
     const reservasEstilista = reservas.filter(
         reserva => reserva.estado === "pendiente" && reserva.id_profesional === userId
     );
+   //reembolzo 
+   const handleReembolzoReserva = async (id, reservaData) => {
+    console.log(reservaData)
+    
+    const result = await axios.put(`/reserva/${id}`, {
+        horaInicio: reservaData.horaInicio,
+        comprobante: reservaData.comprobante,
+        fecha: reservaData.fecha,
+        montoSenia: reservaData.montoSenia,
+        montoTotal: reservaData.montoTotal,
+        id_servicio: reservaData.id_servicio,
+        id_cliente: reservaData. id_cliente,
+        id_profesional: reservaData.id_profesional,
+        estado: "cancelada"
+    });
+    if(result){
+        const response = await axios.get('/reserva');
+        setReservas(response.data);
+    }
+}
+    
+
     return (
         <div className='container-fluid Reservas'>
             <h3>Gestor de reservas a confirmar</h3>
@@ -108,6 +131,7 @@ const ReservasPendientes = () => {
                     </tbody>
                 </table>
             </div>
+            <ReservasAReembolzar reservas = {reservas} handleReembolzoReserva={handleReembolzoReserva} formatearFecha={formatearFecha}></ReservasAReembolzar>
         </div>
 
 

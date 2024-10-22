@@ -1,8 +1,9 @@
 import React from 'react';
+import "./Footer.scss"
 
 const Footer = () => {
     return (
-        <footer className="bg-dark text-light pt-4">
+        <footer className="bg-dark text-light pt-4 borde">
             <div className="container">
                 <div className="row">
                     {/* Sección de contacto y redes sociales */}

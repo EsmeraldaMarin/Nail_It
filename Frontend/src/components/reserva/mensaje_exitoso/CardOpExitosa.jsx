@@ -11,7 +11,7 @@ const CardOpExitosa = ({ setPasoActual }) => {
             <div className="ctn-exito">
                 <i className='bi bi-check-circle'></i>
                 <p>¡Tu reserva ya está registrada!</p>
-                <span>Recibirás un mensaje de confirmación por Whatsapp cuando la estilista compruebe el pago</span>
+                <span>Recibirás un mail de confirmacion cuando la estilista compruebe el pago</span>
                 <span>Podés ver la información de tus reservas en “Mis Reservas”</span>
                 <Link to="/inicio/mis_reservas" className="btn" onClick={()=>setPasoActual(1)}>Ir a Mis Reservas</Link>
             </div>

@@ -97,3 +97,36 @@ routerReservas.delete("/:id", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+routerReservas.put("/:id", async (req, res) => {
+    try {
+        const reservaId = req.params.id;
+
+        console.log(req.body)
+        if (!req.body.horaInicio || typeof req.body.horaInicio !== 'string' || req.body.horaInicio.trim() === '') {
+            return res.status(400).json({ message: "horaInicio de especialidad es requerido" });
+        }
+        if (!req.body.comprobante || typeof req.body.comprobante !== 'string' || req.body.comprobante.trim() === '') {
+            return res.status(400).json({ message: "comprobante de especialidad es requerido" });
+        }
+        if (!req.body.estado || typeof req.body.estado !== 'string' || req.body.estado.trim() === '') {
+            return res.status(400).json({ message: "estado de especialidad es requerido" });
+        }
+        if (!req.body.id_servicio || typeof req.body.id_servicio !== 'string' || req.body.id_servicio.trim() === '') {
+            return res.status(400).json({ message: "id_servicio de especialidad es requerido" });
+        }
+        const reserva_existente = await gestorReservas.obtener_reservas_por_id(reservaId);
+        if (!reserva_existente) {
+            return res.status(404).json({ message: "Servicio no encontrado." });
+        }
+
+        const Modificado = await gestorReservas.actualizar_reserva(req.body, reservaId);
+        res.status(200).json({message: "Reserva modificado!"});
+        
+
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    
+    }
+
+})
