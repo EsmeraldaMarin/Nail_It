@@ -28,8 +28,8 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar 
             </div>
 
             {/* Reservas del estilista */}
-            <div className="cc">
-                <div className="table-ctn mis-reservas" style={{ overflowX: "auto" }}>
+            <div className="table-ctn mis-reservas p-2">
+                <div className="  cc" style={{ overflowX: "auto" }}>
                     <table className="table">
                         <thead>
                             <tr>
@@ -37,6 +37,7 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar 
                                 <th scope="col">Precio</th>
                                 <th scope="col">Duración</th>
                                 <th scope="col">Especialidad</th>
+                                <th scope="col">Acción</th>
                             </tr>
                         </thead>
                         <tbody>

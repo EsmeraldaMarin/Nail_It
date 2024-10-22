@@ -17,9 +17,15 @@
             }
         }
     }
-    .cc {
+    .table-ctn {
+        box-shadow: 0 0 5px #888;
         margin-top: 20px;
+    }
+    .cc {
         max-height: 250px;
         overflow-y: scroll;
+        scrollbar-color: $primary white;
+        scrollbar-width: thin;
+
     }
 }

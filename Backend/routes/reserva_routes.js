@@ -115,7 +115,7 @@ routerReservas.put("/:id", async (req, res) => {
         if (!req.body.id_servicio || typeof req.body.id_servicio !== 'string' || req.body.id_servicio.trim() === '') {
             return res.status(400).json({ message: "id_servicio de especialidad es requerido" });
         }
-        const reserva_existente = await gestorReservas.obtener_reservas_por_id(reservaId);
+        const reserva_existente = await gestorReservas.obtener_reserva_por_id(reservaId);
         if (!reserva_existente) {
             return res.status(404).json({ message: "Servicio no encontrado." });
         }
