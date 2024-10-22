@@ -1,0 +1,45 @@
+@import "../../variables.scss";
+/* Para asegurarte de que el contenedor ocupe todo el ancho */
+.inicio {
+  padding: 0;
+  .reservar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .btn-reservar {
+      position: relative;
+      width: 90%;
+      height: 50px;
+      background-color: $naranjaFuerte;
+      color: white;
+      transition: background-color 0.3s ease;
+      &:hover{
+        background-color: $primary;
+        font-weight: bold;
+      }
+      @media (min-width: 920px) {
+        width: 300px;
+      }
+      i {
+        position: absolute;
+        right: 40px;
+      }
+    }
+  }
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Optional, vertically centers items */
+  gap: 20px; /* Space between the components */
+  padding: 20px;
+  width: 100%;
+}
+
+.horarios-container,
+.map-container {
+  width: 100%;
+  max-width: 600px; /* Or adjust max-width to ensure both have the same width */
+}

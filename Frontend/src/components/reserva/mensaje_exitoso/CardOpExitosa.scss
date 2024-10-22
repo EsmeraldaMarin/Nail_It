@@ -1,0 +1,28 @@
+.ctn-exito{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #bbb;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    @media (min-width: 920px) {
+        width: 50vw;
+        margin: 0 auto;
+    }
+    i{
+        color: green;
+        font-size: 3em;
+    }
+    p{
+        font-size: 1.1em;
+        font-weight: bold;
+    }
+    span{
+        margin: 15px 0px;
+    }
+    a{
+        text-decoration: underline;
+        font-weight: bold;
+    }
+}

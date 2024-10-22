@@ -1,0 +1,16 @@
+.body-ctn {
+    padding: 40px 20px;
+    @media screen and (min-width: 800px) {
+        width: 60vw;
+        margin: 0 auto;
+    }
+    .misTurnos-btn {
+        margin-bottom: 20px;
+        background-color:#f2884c ;
+    }
+    .Reservas {
+        padding: 0;
+    }
+}
+
+

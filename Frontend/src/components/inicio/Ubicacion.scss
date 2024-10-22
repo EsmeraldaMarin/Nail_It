@@ -1,0 +1,26 @@
+.map-container {
+  height: 450px;
+  position: relative;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 600px; /* Ajusta a un tamaño máximo similar al de Horarios */
+  width: 100%;
+  @media (max-width: 920px) {
+    max-width: 300px;
+    min-width: 300px;
+  }
+
+  iframe {
+    width: 100%; /* Asegura que el iframe ocupe todo el ancho disponible */
+    height: 350px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  h5 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
