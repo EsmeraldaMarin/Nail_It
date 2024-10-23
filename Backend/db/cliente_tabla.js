@@ -9,6 +9,7 @@ export const Clientes = sequelize.define('Clientes', {
     email: { type: DataTypes.STRING, /* unique: true */ },
     password: {type: DataTypes.STRING},
     verificado: {type: DataTypes.BOOLEAN},
+    cbu: {type: DataTypes.STRING, allowNull: true}
 
 
 }, {
