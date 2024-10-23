@@ -4,11 +4,62 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import "./Historial.scss"
+import { Toast, ToastContainer } from 'react-bootstrap';
 
 const Historial_turnos = () => {
     const [reservas, setReservas] = useState([]);
     const userId = localStorage.getItem('userId');
-    const [item, setItem] = useState([])
+    const [showToast, setShowToast] = useState(false);
+    const [alerta, setAlerta] = useState(null);
+    
+    
+
+const Alerta1 = (id, reservaData)  => {
+    return (
+    <div>
+    <p>Debido a que faltan menos de 48hs para su turno, al cacelarlo su seña no sera devuelta</p>
+    <p>¿Desea Cancelarlo?</p>
+    <button className="btn btn-danger btn-sm ms-4"  onClick={() => handleCancelacion(id, reservaData, "cancelada") } >Cancelar Reserva </button>
+    </div>)
+    
+}
+
+const Alerta2 = (id, reservaData)  => {
+    return (
+    <div>
+    <p>Debido a que faltan mas de 48hs para su turno, al cacelarlo su seña sera devuelta</p>
+    <p>¿Desea Cancelarlo?</p>
+    <button className="btn btn-danger btn-sm ms-4"  onClick={() => handleCancelacion(id, reservaData, "por_reembolzar") } >Cancelar Reserva </button>
+    </div>)
+    
+}
+
+
+const handleCancelacion = async (id, reservaData, estado) => {
+    try {
+        console.log(reservaData);
+        const result = await axios.put(`/reserva/${id}`, {
+            horaInicio: reservaData.horaInicio,
+            comprobante: reservaData.comprobante,
+            fecha: reservaData.fecha,
+            montoSenia: reservaData.montoSenia,
+            montoTotal: reservaData.montoTotal,
+            id_servicio: reservaData.id_servicio,
+            id_cliente: reservaData.id_cliente,
+            id_profesional: reservaData.id_profesional,
+            estado: estado
+        });
+
+        if (result.status === 200) {  // Verificar que la respuesta sea exitosa
+            const response = await axios.get(`/reserva/user/${userId}`);
+            setReservas(response.data);
+            setShowToast(false)
+        }
+    } catch (error) {
+        console.error('Error al actualizar la reserva:', error);
+    }
+};
+
 
     const formatearFecha = (fecha) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
@@ -23,25 +74,18 @@ const Historial_turnos = () => {
     };
 
     const onActualizar = async (id, reservaData) => {
-        console.log(reservaData)
-        
-        const result = await axios.put(`/reserva/${id}`, {
-            horaInicio: reservaData.horaInicio,
-            comprobante: reservaData.comprobante,
-            fecha: reservaData.fecha,
-            montoSenia: reservaData.montoSenia,
-            montoTotal: reservaData.montoTotal,
-            id_servicio: reservaData.id_servicio,
-            id_cliente: reservaData. id_cliente,
-            id_profesional: reservaData.id_profesional,
-            estado: calcularDiferenciaHoras(reservaData.fecha) >= 48 ? "por_reembolsar" : "cancelada"
-        });
-        if(result){
-            const response = await axios.get(`/reserva/user/${userId}`);
-            setReservas(response.data);
-            setItem({})
-        }
-    }
+            if ( calcularDiferenciaHoras(reservaData.fecha) < 48) {
+                setAlerta(Alerta1(id, reservaData));
+                setShowToast(true);
+
+            }
+            else {
+                setAlerta(Alerta2(id,reservaData))
+                setShowToast(true);
+            }
+    
+            
+    };
 
     useEffect(() => {
         const fetchReservas = async () => {
@@ -182,6 +226,14 @@ const Historial_turnos = () => {
                 </div>
 
             </div>
+            <ToastContainer position="top-center" className="p-3">
+                <Toast onClose={() => setShowToast(false)} show={showToast}>
+                    <Toast.Header>
+                        <strong className="me-auto">Aviso</strong>
+                    </Toast.Header>
+                    <Toast.Body>{alerta}</Toast.Body>
+                </Toast>
+            </ToastContainer>
         </div>
 
 
