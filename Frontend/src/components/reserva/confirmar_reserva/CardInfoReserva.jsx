@@ -27,7 +27,7 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
         <div className="container">
             <h5 className="mb-4">Información sobre tu reserva</h5>
 
-            <div className="card shadow-sm p-4 mb-4">
+            <div className="card shadow-sm p-4 mb-4 info-ctn">
                 <div className="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                     <button className="btn btn-outline-secondary rounded-circle" onClick={() => setPasoActual(1)}>
                         <i className="bi bi-chevron-left"></i>

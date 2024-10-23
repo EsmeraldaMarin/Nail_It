@@ -18,8 +18,8 @@ routerReservas.get("/:id", async (req, res) => {
         const id_reserva = req.params.id;
 
         // Obtener la reserva por ID
-        const reserva = await gestorReservas.obtener_reservas_por_id(id_reserva);
-        
+        const reserva = await gestorReservas.obtener_reserva_por_id(id_reserva);
+
         if (!reserva) {
             return res.status(404).json({ message: "reserva no encontrada." });
         }
@@ -35,7 +35,7 @@ routerReservas.get("/user/:id", async (req, res) => {
 
         // Obtener la reserva por ID
         const reserva = await gestorReservas.obtener_reservas_por_cliente(id_cliente);
-        
+
         if (!reserva) {
             return res.status(404).json({ message: "reserva no encontrada." });
         }
@@ -81,6 +81,22 @@ routerReservas.post("/", async (req, res) => {
     };
 });
 
+routerReservas.delete("/:id", async (req, res) => {
+    try {
+        const reservaId = req.params.id;
+
+        const reserva_existente = await gestorReservas.obtener_reserva_por_id(reservaId);
+        if (!reserva_existente) {
+            return res.status(404).json({ message: "Reserva no encontrada." });
+        }
+
+        await gestorReservas.eliminar_reserva(reservaId);
+
+        res.status(204).json(); // No hay contenido que devolver
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 routerReservas.put("/:id", async (req, res) => {
     try {
@@ -99,7 +115,7 @@ routerReservas.put("/:id", async (req, res) => {
         if (!req.body.id_servicio || typeof req.body.id_servicio !== 'string' || req.body.id_servicio.trim() === '') {
             return res.status(400).json({ message: "id_servicio de especialidad es requerido" });
         }
-        const reserva_existente = await gestorReservas.obtener_reservas_por_id(reservaId);
+        const reserva_existente = await gestorReservas.obtener_reserva_por_id(reservaId);
         if (!reserva_existente) {
             return res.status(404).json({ message: "Servicio no encontrado." });
         }

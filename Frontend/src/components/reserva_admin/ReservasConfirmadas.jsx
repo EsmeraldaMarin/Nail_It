@@ -1,9 +1,8 @@
 import "./Reservas.scss";
-import { format } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
-
 const ReservasConfirmadas = () => {
     const [reservas, setReservas] = useState([]);
     const userId = localStorage.getItem('userId');
@@ -25,11 +24,27 @@ const ReservasConfirmadas = () => {
         fetchReservas();
     }, []);
 
-    // Función para renderizar filas de la tabla
+    // Obtener la fecha de hoy
+    const hoy = new Date();
+
+    // Filtrar reservas por estilista y fecha de hoy
+    const reservasEstilista = reservas.filter(
+        reserva =>
+            reserva.estado === "confirmada" &&
+            reserva.id_profesional === userId &&
+            isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
+    );
+
+    // Filtrar reservas generales confirmadas y fecha de hoy
+    const reservasConfirmadas = reservas.filter(
+        reserva =>
+            reserva.estado === "confirmada" &&
+            isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
+    );
     const renderFilasReserva = (reservasFiltradas) => {
-        console.log(reservasFiltradas)
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
+                <td className="text-capitalize">{reserva.Servicio.nombre}</td>
                 <td className="text-capitalize">{reserva.Cliente.nombre}</td>
                 <td>{reserva.Cliente.numero}</td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
@@ -45,17 +60,6 @@ const ReservasConfirmadas = () => {
             </tr>
         ));
     };
-
-    // Filtrar reservas por estilista
-    const reservasEstilista = reservas.filter(
-        reserva => reserva.estado === "confirmada" && reserva.id_profesional === userId
-    );
-
-    // Filtrar reservas para mostrar todas las confirmadas
-    const reservasConfirmadas = reservas.filter(
-        reserva => reserva.estado === "confirmada"
-    );
-
     return (
         <div className='container-fluid Reservas'>
             <h3>Gestor de turnos</h3>
@@ -66,6 +70,7 @@ const ReservasConfirmadas = () => {
                 <table className="table ">
                     <thead className="table-primary">
                         <tr>
+                            <th scope="col">Servicio</th>
                             <th scope="col">Cliente</th>
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
@@ -79,7 +84,7 @@ const ReservasConfirmadas = () => {
                     <tbody>
                         {reservasEstilista.length > 0
                             ? renderFilasReserva(reservasEstilista)
-                            : <tr><td colSpan="5">No tienes reservas confirmadas</td></tr>}
+                            : <tr><td colSpan="5">No tienes reservas confirmadas para hoy</td></tr>}
                     </tbody>
                 </table>
             </div>
@@ -91,6 +96,7 @@ const ReservasConfirmadas = () => {
                     <thead className="table-dark">
                         <tr>
                             <th scope="col">Estilista</th>
+                            <th scope="col">Servicio</th>
                             <th scope="col">Cliente</th>
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
@@ -102,18 +108,20 @@ const ReservasConfirmadas = () => {
                             ? reservasConfirmadas.map((reserva, index) => (
                                 <tr key={index}>
                                     <th className="text-uppercase">{reserva.Admin.nombre}</th>
+                                    <td>{reserva.Servicio.nombre}</td>
                                     <td className="text-capitalize">{reserva.Cliente.nombre}</td>
                                     <td>{reserva.Cliente.numero}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                 </tr>
                             ))
-                            : <tr><td colSpan="6">No hay reservas confirmadas</td></tr>}
+                            : <tr><td colSpan="6">No hay reservas confirmadas para hoy</td></tr>}
                     </tbody>
                 </table>
             </div>
         </div>
     );
 };
+
 
 export default ReservasConfirmadas;

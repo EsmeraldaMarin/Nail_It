@@ -104,12 +104,19 @@
             position: sticky;
             top: 60px;
             transition: width 0.2s ease;
+
             &.show {
                 width: 70px;
                 overflow-x: hidden;
                 box-shadow: 0 0 3px #bbb;
+                @media screen and (max-width: 500px) {
+                    height: 400px !important;
+                }
                 ~ .content {
                     width: calc(100% - 70px);
+                    @media screen and (max-width: 920px) {
+                        width: 100%;
+                    }
                 }
                 .title {
                     color: white;
@@ -117,6 +124,9 @@
                 .menu {
                     ul {
                         padding-right: 0px;
+                        @media screen and (max-width: 500px) {
+                            display: flex;
+                        }
                         li {
                             a,
                             button {
