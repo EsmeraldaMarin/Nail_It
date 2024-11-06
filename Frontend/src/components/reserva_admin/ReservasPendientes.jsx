@@ -55,7 +55,7 @@ const ReservasPendientes = () => {
     );
     //reembolzo 
     const handleReembolzoReserva = async (id, reservaData) => {
-        console.log(reservaData)
+        
 
         const result = await axios.put(`/reserva/${id}`, {
             horaInicio: reservaData.horaInicio,

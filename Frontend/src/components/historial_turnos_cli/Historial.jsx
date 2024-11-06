@@ -4,62 +4,50 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import "./Historial.scss"
-import { Toast, ToastContainer } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap'
 
 const Historial_turnos = () => {
     const [reservas, setReservas] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [reservaParaCancelar, setReservaParaCancelar] = useState(null);
     const userId = localStorage.getItem('userId');
-    const [showToast, setShowToast] = useState(false);
-    const [alerta, setAlerta] = useState(null);
+    const cbuUser = ""
+    const navigate = useNavigate();
+    const [cbu, setCbu] = useState("");
     
-    
+    const [showCBUModal, setShowCBUModal] = useState(false);
 
-const Alerta1 = (id, reservaData)  => {
-    return (
-    <div>
-    <p>Debido a que faltan menos de 48hs para su turno, al cacelarlo su seña no sera devuelta</p>
-    <p>¿Desea Cancelarlo?</p>
-    <button className="btn btn-danger btn-sm ms-4"  onClick={() => handleCancelacion(id, reservaData, "cancelada") } >Cancelar Reserva </button>
-    </div>)
-    
-}
+    const handleCancelacion = async (id, reservaData, estado, cbu = null) => {
+        try {
+            const result = await axios.put(`/reserva/${id}`, {
+                ...reservaData,
+                estado
+                
+            });
+            if (cbu != cbuUser) {
+                const user = await axios.get(`/cliente/${userId}`);
+                const result2 = await axios.put(`/cliente/${userId}`, {
+                    nombre: user.data.nombre,
+                    apellido: user.data.apellido,
+                    numero: user.data.numero,
+                    email: user.data.email,
+                    password: user.data.password,
+                    verificado: user.data.verificado,
+                    cbu: cbu // Agrega el CBU al cliente
+                });
+            }
 
-const Alerta2 = (id, reservaData)  => {
-    return (
-    <div>
-    <p>Debido a que faltan mas de 48hs para su turno, al cacelarlo su seña sera devuelta</p>
-    <p>¿Desea Cancelarlo?</p>
-    <button className="btn btn-danger btn-sm ms-4"  onClick={() => handleCancelacion(id, reservaData, "por_reembolzar") } >Cancelar Reserva </button>
-    </div>)
-    
-}
 
-
-const handleCancelacion = async (id, reservaData, estado) => {
-    try {
-        console.log(reservaData);
-        const result = await axios.put(`/reserva/${id}`, {
-            horaInicio: reservaData.horaInicio,
-            comprobante: reservaData.comprobante,
-            fecha: reservaData.fecha,
-            montoSenia: reservaData.montoSenia,
-            montoTotal: reservaData.montoTotal,
-            id_servicio: reservaData.id_servicio,
-            id_cliente: reservaData.id_cliente,
-            id_profesional: reservaData.id_profesional,
-            estado: estado
-        });
-
-        if (result.status === 200) {  // Verificar que la respuesta sea exitosa
-            const response = await axios.get(`/reserva/user/${userId}`);
-            setReservas(response.data);
-            setShowToast(false)
+            if (result.status === 200) {
+                const response = await axios.get(`/reserva/user/${userId}`);
+                setReservas(response.data);
+                setShowModal(false);
+                setReservaParaCancelar(null);
+            }
+        } catch (error) {
+            console.error('Error al actualizar la reserva:', error);
         }
-    } catch (error) {
-        console.error('Error al actualizar la reserva:', error);
-    }
-};
-
+    };
 
     const formatearFecha = (fecha) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
@@ -69,22 +57,39 @@ const handleCancelacion = async (id, reservaData, estado) => {
     const calcularDiferenciaHoras = (fechaReserva) => {
         const fechaActual = new Date();
         const diferenciaMilisegundos = new Date(fechaReserva) - fechaActual;
-        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60); // Convertir de milisegundos a horas
+        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60);
         return diferenciaHoras;
     };
 
     const onActualizar = async (id, reservaData) => {
-            if ( calcularDiferenciaHoras(reservaData.fecha) < 48) {
-                setAlerta(Alerta1(id, reservaData));
-                setShowToast(true);
+        setReservaParaCancelar({ id, reservaData });
+        if (calcularDiferenciaHoras(reservaData.fecha) < 48) {
+           
+            setShowModal(true);
+        } else {
+            setShowCBUModal(true); // Muestra el nuevo modal si faltan más de 48 horas
+        }
+    };
 
-            }
-            else {
-                setAlerta(Alerta2(id,reservaData))
-                setShowToast(true);
-            }
-    
-            
+    const handleCBUChange = (event) => {
+        setCbu(event.target.value); // Actualiza el estado cbuUser con el valor ingresado
+    }
+    const handleCBUModalConfirm = async () => {
+        // Verifica el CBU y envía la solicitud de cancelación
+        
+        
+        try {
+            await handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "por_reembolsar", cbu);
+            setShowCBUModal(false);
+     
+        } catch (error) {
+            console.error('Error al cancelar con devolución de seña:', error);
+        }
+    };
+    const handleModalConfirm = () => {
+        if (reservaParaCancelar) {
+            handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "cancelada");
+        }
     };
 
     useEffect(() => {
@@ -92,6 +97,11 @@ const handleCancelacion = async (id, reservaData, estado) => {
             try {
                 const response = await axios.get(`/reserva/user/${userId}`);
                 setReservas(response.data);
+                const clientResponse = await axios.get(`/cliente/${userId}`);
+                if (clientResponse.data && clientResponse.data.cbu) {
+                    setCbu(clientResponse.data.cbu)
+                    cbuUser = clientResponse.data.cbu
+                }
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
             }
@@ -128,28 +138,6 @@ const handleCancelacion = async (id, reservaData, estado) => {
         }
     };
 
-    const esCancelable = (reserva) => {
-        const fechaActual = new Date();
-        const fechaReserva = new Date(reserva.fecha);
-        
-        // Comparar las fechas
-        if (fechaReserva > fechaActual) {
-            return true; // La fecha de la reserva es mayor que la fecha actual
-        } else if (fechaReserva.toDateString() === fechaActual.toDateString()) {
-            // Si es el mismo día, comparar la hora
-            const [horaReserva, minutosReserva] = reserva.horaInicio.split(':').map(Number);
-            const horaActual = fechaActual.getHours();
-            const minutosActuales = fechaActual.getMinutes();
-            
-            // Verificar si la hora de inicio es mayor que la hora actual
-            if (horaReserva > horaActual || (horaReserva === horaActual && minutosReserva > minutosActuales)) {
-                return true;
-            }
-        }
-    
-        return false; // No es cancelable si la fecha y hora no cumplen con los criterios
-    };
-
     const renderFilasReservas = (reservas) => {
         return (
             <div className="row">
@@ -162,9 +150,8 @@ const handleCancelacion = async (id, reservaData, estado) => {
                                 <div className={clases.header}>
                                     Turno {reserva.Servicio.Especialidad.nombre}
                                         { 
-                                    
-                                        (reserva.estado === 'pendiente' || reserva.estado === 'confirmada' ) && esCancelable(reserva) && (
-                                            <button className="btn btn-danger btn-sm ms-4"  onClick={() => onActualizar(reserva.id,reserva)} >
+                                        (reserva.estado === 'pendiente' || reserva.estado === 'confirmada') && (
+                                            <button className="btn btn-danger btn-sm ms-4" onClick={() => onActualizar(reserva.id,reserva)}>
                                                 Cancelar
                                             </button>
                                         )}
@@ -180,7 +167,9 @@ const handleCancelacion = async (id, reservaData, estado) => {
                                         <li className="list-group-item"><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidad.nombre}</li>
                                     </ul>
                                 </div>
-                                <div className={clases.footer + " text-uppercase"}> {reserva.estado === 'por_reembolsar' ? 'pendiente de reembolso' : reserva.estado}</div>
+                                <div className={clases.footer + " text-uppercase"}>
+                                    {reserva.estado === 'por_reembolsar' ? 'pendiente de reembolso' : reserva.estado}
+                                </div>
                             </div>
                         </div>
                     );
@@ -189,56 +178,79 @@ const handleCancelacion = async (id, reservaData, estado) => {
         );
     };
 
-
-    const navigate = useNavigate()
     const handleRedirect = () => {
-
-        navigate('/inicio')
-    }
-
+        navigate('/inicio');
+    };
 
     const dividirReservas = (reservas) => {
         const fechaActual = new Date();
-
         const reservasPasadas = reservas.filter(reserva => new Date(reserva.fecha) < fechaActual);
         const reservasFuturas = reservas.filter(reserva => new Date(reserva.fecha) >= fechaActual).reverse();
-
         return { reservasPasadas, reservasFuturas };
     };
-    const { reservasPasadas, reservasFuturas } = dividirReservas(reservas)
 
+    const { reservasPasadas, reservasFuturas } = dividirReservas(reservas);
 
     return (
         <div className='body-ctn'>
-            <div>
-               
-                <div className='container-fluid Reservas'>
-
-                    <h4>Mis Reservas</h4>
-                    {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <tr><td colSpan="5">No tienes reservas proximas</td></tr>}
-                    <h4>Mis Reservas anteriores</h4>
-                    {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <tr><td colSpan="5">No tienes reservas pasados</td></tr>}
-                </div>
-                <div>
-                    <button className='btn misTurnos-btn' onClick={handleRedirect}>
-                        <i className='bi bi-arrow-left pe-2'></i>
-                        Volver</button>
-                </div>
-
+            <div className='container-fluid Reservas'>
+                <h4>Mis Reservas</h4>
+                {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <p>No tienes reservas próximas.</p>}
+                <h4>Mis Reservas anteriores</h4>
+                {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <p>No tienes reservas pasadas.</p>}
             </div>
-            <ToastContainer position="top-center" className="p-3">
-                <Toast onClose={() => setShowToast(false)} show={showToast}>
-                    <Toast.Header>
-                        <strong className="me-auto">Aviso</strong>
-                    </Toast.Header>
-                    <Toast.Body>{alerta}</Toast.Body>
-                </Toast>
-            </ToastContainer>
+            <div>
+                <button className='btn misTurnos-btn' onClick={handleRedirect}>
+                    <i className='bi bi-arrow-left pe-2'></i> Volver
+                </button>
+            </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                <Modal.Header closeButton className="custom-modal-header">
+                    <Modal.Title className="modal-title-custom">Cancelar reserva</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-custom">
+                    <div className="modal-content-wrapper">
+                        <p className="modal-message">
+                            Debido a que faltan menos de 48 horas para su turno, su seña no será devuelta.
+                        </p>
+                        <div className="modal-buttons">
+                            <button className="btn btn-danger confirm-btn" onClick={handleModalConfirm}>Confirmar cancelación</button>
+                            <button className="btn btn-secondary cancel-btn" onClick={() => setShowModal(false)}>Conservar mi reserva</button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+            <Modal show={showCBUModal} onHide={() => setShowCBUModal(false)} centered>
+                <Modal.Header closeButton className="custom-modal-header">
+                    <Modal.Title className="modal-title-custom">Cancelar reserva</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-custom">
+                    <div className="modal-content-wrapper">
+                        <p className="modal-message">
+                            Debido a que faltan más de 48 horas para su turno, su seña será devuelta.
+                        </p>
+                        <div className="form-group mt-3">
+                            <label htmlFor="cbu">Ingrese su CBU para el reembolso:</label>
+                            <input
+                                type="text"
+                                id="cbu"
+                                className="form-control"
+                                value={cbu}
+                               onChange={handleCBUChange}
+                              
+                            />
+                        </div>
+                        <div className="modal-buttons mt-3">
+                            <button className="btn btn-danger confirm-btn" onClick={handleCBUModalConfirm}>Confirmar cancelación</button>
+                            <button className="btn btn-secondary cancel-btn" onClick={() => setShowCBUModal(false)}>Conservar mi reserva</button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+
+          
         </div>
-
-
     );
-
 }
 
-export default Historial_turnos
+export default Historial_turnos;

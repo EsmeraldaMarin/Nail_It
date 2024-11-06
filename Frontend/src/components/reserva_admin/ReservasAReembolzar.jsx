@@ -28,6 +28,7 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
                                 <th scope="col">Seña</th>
                                 <th scope="col">Importe abonado</th>
                                 <th scope="col">Comprobante</th>
+                                <th scope="col">CBU o Alias</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -44,11 +45,15 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
                                     <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
                                         Ver Comprobante
                                     </a></td>
+                                    <td><strong>{reserva.Cliente.cbu}</strong></td>
                                     <td>
                                         {
                                             <div>
-                                                <button className="btn btn-danger" onClick={() => handleReembolzoReserva(reserva.id, reserva)}>
-                                                    cancelar
+                                                <button className="btn btn-danger" onClick={() => {
+                                                        if (window.confirm("Esta confimando la cancelacion de la reserva, asegurese de haber devuelto la seña")) {
+                                                            handleReembolzoReserva(reserva.id, reserva);
+                                                        }}}>
+                                                    cancelar Reserva
                                                 </button>
 
                                             </div>
