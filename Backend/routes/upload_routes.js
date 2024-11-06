@@ -20,13 +20,13 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage, 
     limits: {
-        fileSize: 1 * 1024 * 512 // 512Kb de maximo tamaño por archivo.
+        fileSize: 1 * 1024 * 20240 // 512Kb de maximo tamaño por archivo.
     }
  });
 export const uploadRouter = Router();
 
 
-uploadRouter.post("/upload", upload.single('comprobante'), (req, res) => {
+uploadRouter.post("/uploads", upload.single('comprobante'), (req, res) => {
     if (req.file) {
         return res.json({ message: "Archivo subido con éxito!", file: req.file });
     }
