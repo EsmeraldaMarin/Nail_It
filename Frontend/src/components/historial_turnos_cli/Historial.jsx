@@ -31,7 +31,6 @@ const Historial_turnos = () => {
                     apellido: user.data.apellido,
                     numero: user.data.numero,
                     email: user.data.email,
-                    password: user.data.password,
                     verificado: user.data.verificado,
                     cbu: cbu // Agrega el CBU al cliente
                 });

@@ -5,7 +5,11 @@ import { Servicios } from "../db/servicio_tabla.js";
 import { Especialidades } from "../db/especialidad_tabla.js";
 
 export class GestorReservas {
-    async obtener_reservas(condicion) {
+    async obtener_reservas(fecha, id_profesional) {
+        let condicion = [];
+        fecha && condicion.push({fecha: `${fecha}`})
+        id_profesional && condicion.push({id_profesional: `${id_profesional}`})
+
         try {
             return await Reservas.findAll({
                 where: condicion,
@@ -55,7 +59,7 @@ export class GestorReservas {
                 {
                     model: Servicios,  // Incluir el servicio
                     include: [{
-                        model: Especialidades, 
+                        model: Especialidades,
                         as: 'Especialidad',  // Utiliza el alias definido en la relación
                         attributes: ['id', 'nombre', 'descripcion'] // Incluir la especialidad dentro del servicio
                     }]

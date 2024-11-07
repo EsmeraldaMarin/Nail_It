@@ -64,11 +64,9 @@
             padding: 16px 8px;
             min-width: 100px;
             border-radius: 30px;
-            &.ocupado {
-                background-color: grey;
-            }
             &:focus,
-            &:active {
+            &:active, 
+            &.active {
                 background-color: orange;
                 color: white;
                 font-weight: bold;
