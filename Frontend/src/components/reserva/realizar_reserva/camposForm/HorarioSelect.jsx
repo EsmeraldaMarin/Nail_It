@@ -38,7 +38,7 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
             const res = horariosOcupados.find(horarioOcupado =>
                 (timeToMinutes(horarioOcupado.horaInicio) <= time && time < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion))
                 ||
-                (time + servicio_data.duracion >= timeToMinutes(horarioOcupado.horaInicio) && time + servicio_data.duracion < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion)
+                (time + servicio_data.duracion > timeToMinutes(horarioOcupado.horaInicio) && time + servicio_data.duracion < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion)
             ))
     if (res) {
         //console.log(time, res, timeToMinutes(res.horaInicio), timeToMinutes(res.horaInicio) + res.Servicio.duracion)

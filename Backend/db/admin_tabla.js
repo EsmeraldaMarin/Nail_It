@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "./database.js";
+import { GestorAdmins } from "../controllers/admin_controller.js";
 
 
 export const Admins = sequelize.define("Admins", {
@@ -14,6 +15,7 @@ export const Admins = sequelize.define("Admins", {
     tableName: 'Admins',
     timestamps: false
 });
+
 
 Admins.prototype.toString = function (){
     return `|${this.nombre} | ${this.apellido}|${this.email}|${this.usuario}`
