@@ -12,7 +12,6 @@ const Horarios = () => {
             try {
                 const response = await axios.get('/variablesGlobales');
                 setVar(response.data);
-                console.log(vari)
             } catch (error) {
                 console.error('Error al obtener las veriable globales', error);
             }
