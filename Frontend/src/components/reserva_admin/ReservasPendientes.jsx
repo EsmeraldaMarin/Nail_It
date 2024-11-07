@@ -4,6 +4,7 @@ import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import ReservasAReembolzar from "./ReservasAReembolzar";
+import VisualizadorComprobante from "./VisualizadorComprobante"
 
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
@@ -55,7 +56,7 @@ const ReservasPendientes = () => {
     );
     //reembolzo 
     const handleReembolzoReserva = async (id, reservaData) => {
-        
+
 
         const result = await axios.put(`/reserva/${id}`, {
             horaInicio: reservaData.horaInicio,
@@ -107,9 +108,7 @@ const ReservasPendientes = () => {
                                     <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
                                     <td><strong>${reserva.montoSenia}</strong></td>
                                     <td><strong>$hacer</strong></td>
-                                    <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
-                                        Ver Comprobante
-                                    </a></td>
+                                    <td><VisualizadorComprobante comprobanteURL={"https://imgv2-1-f.scribdassets.com/img/document/628368179/original/d929c33054/1729712028?v=1"} /></td>
                                     <td>
                                         {botonConfirmacion === reserva.id ? (
                                             <div>
