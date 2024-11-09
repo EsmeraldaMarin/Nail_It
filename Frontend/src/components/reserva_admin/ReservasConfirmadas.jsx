@@ -65,7 +65,7 @@ const ReservasConfirmadas = () => {
             <h3>Gestor de turnos</h3>
 
             {/* Reservas del estilista */}
-            <h4 className="py-3">Tus turnos de hoy</h4>
+            <h4 className="py-3">Mis turnos de hoy</h4>
             <div className="table-ctn mis-reservas table-responsive">
                 <table className="table ">
                     <thead className="table-primary">

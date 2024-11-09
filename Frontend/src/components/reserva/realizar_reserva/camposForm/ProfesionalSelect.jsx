@@ -35,12 +35,12 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
 
       {profesionales.length == 0 && fecha ?
         <div>
-          <span>No hay profesionales para esa fecha</span>
+          <span>No hay estilistas para esa fecha</span>
 
         </div>
         :
         <select disabled={fecha ? false : true} value={profesional} onChange={(e) => handleHange(e)} className="form-select">
-          <option value="">Seleccione un profesional</option>
+          <option value="">Seleccione un estilista</option>
           {profesionales?.map((pro, index) => (
             <option key={index} value={pro.id}>
               {pro.nombre}
