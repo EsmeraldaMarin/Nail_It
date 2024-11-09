@@ -4,7 +4,10 @@ import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import ReservasAReembolzar from "./ReservasAReembolzar";
+<<<<<<< HEAD
 import VisualizadorComprobante from "./VisualizadorComprobante"
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
@@ -56,7 +59,11 @@ const ReservasPendientes = () => {
     );
     //reembolzo 
     const handleReembolzoReserva = async (id, reservaData) => {
+<<<<<<< HEAD
 
+=======
+        console.log(reservaData)
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
         const result = await axios.put(`/reserva/${id}`, {
             horaInicio: reservaData.horaInicio,
@@ -91,6 +98,10 @@ const ReservasPendientes = () => {
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
                                 <th scope="col">Servicio</th>
+<<<<<<< HEAD
+=======
+                                <th scope="col">Seña</th>
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                 <th scope="col">Importe abonado</th>
                                 <th scope="col">Comprobante</th>
                                 <th scope="col">Acciones</th>
@@ -105,8 +116,16 @@ const ReservasPendientes = () => {
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                     <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
+<<<<<<< HEAD
                                     <td><strong>{reserva.montoSenia}</strong></td>
                                     <td><VisualizadorComprobante comprobanteURL={"https://imgv2-1-f.scribdassets.com/img/document/628368179/original/d929c33054/1729712028?v=1"} /></td>
+=======
+                                    <td><strong>${reserva.montoSenia}</strong></td>
+                                    <td><strong>$hacer</strong></td>
+                                    <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
+                                        Ver Comprobante
+                                    </a></td>
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                     <td>
                                         {botonConfirmacion === reserva.id ? (
                                             <div>
@@ -118,6 +137,7 @@ const ReservasPendientes = () => {
                                                 </button>
                                             </div>
                                         ) : (
+<<<<<<< HEAD
                                             <>
                                                 <button className="btn-confirmacion me-2" onClick={() => handleClickConfirmar(reserva.id)}>
                                                     <i className="bi bi-check"></i>
@@ -126,6 +146,11 @@ const ReservasPendientes = () => {
                                                     <i className="bi bi-x"></i>
                                                 </button>
                                             </>
+=======
+                                            <button className="btn-confirmacion" onClick={() => handleClickConfirmar(reserva.id)}>
+                                                Confirmar
+                                            </button>
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                         )}
 
                                     </td>

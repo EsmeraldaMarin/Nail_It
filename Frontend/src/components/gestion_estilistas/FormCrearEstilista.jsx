@@ -30,7 +30,11 @@ function FormCrearEstilista({ modalRef, profesionales, setProfesionales, setFilt
                         <Registro
                             mensajeBoton={"Crear Estilista"}
                             isAdminParam={true}
+<<<<<<< HEAD
                             redirect="/inicio_admin/administracion_general"
+=======
+                            redirect="/inicio_admin/gestion_estilistas"
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                             handleSubmitAdmin={handleSubmitAdmin}
                         />
                     </div>

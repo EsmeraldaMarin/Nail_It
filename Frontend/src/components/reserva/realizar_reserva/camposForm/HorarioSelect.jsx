@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import "../Reserva.scss";
 
@@ -5,6 +6,15 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
 
     let horarios_disponibles = [];
     const horariosDeMuestra = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"]
+=======
+import React from 'react';
+import "../Reserva.scss"
+
+const HorarioSelect = ({ horarios, servicio_data, profesional, horario, setHorario }) => {
+
+    let horarios_disponibles = [];
+    const horariosDeMuestra =["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"]
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
     // Función para convertir una cadena de tiempo "HH:MM" a minutos
     const timeToMinutes = (time) => {
@@ -34,6 +44,7 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
 
         // Generar horarios a partir de la hora de inicio, mientras estén dentro del rango
         for (let time = hora_inicio; time + duracion <= hora_fin; time += duracion) {
+<<<<<<< HEAD
 
             const res = horariosOcupados.find(horarioOcupado =>
                 (timeToMinutes(horarioOcupado.horaInicio) <= time && time < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion))
@@ -69,6 +80,29 @@ return (
         </div>
     </div>
 );
+=======
+            horarios_disponibles.push(minutesToTime(time));
+        }
+    });
+
+    return (
+        <div className="mb-3 horarios-select">
+            <label>Seleccione el horario</label>
+            <div className='btn-carrusel'>
+                <span className="line"></span>
+                {profesional ? horarios_disponibles.map((h, index) => (
+                    <button disabled={profesional ? false : true} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
+                        {h}
+                    </button>
+                )) : horariosDeMuestra.map((h, index) => (
+                    <button disabled={profesional ? false : true} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
+                        {h}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 };
 
 export default HorarioSelect;

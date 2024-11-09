@@ -99,7 +99,10 @@ routerAdmins.post("/login", async (req, res) => {
         const payload = {
             usuario: {
                 id: usuario.id,
+<<<<<<< HEAD
                 nombre: usuario.nombre,
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 email: usuario.email,
                 isAdmin: false
             }
@@ -119,7 +122,10 @@ routerAdmins.post("/login", async (req, res) => {
             usuario: {
                 id: usuario.id,
                 email: usuario.email,
+<<<<<<< HEAD
                 nombre: usuario.nombre,
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 isAdmin: usuario.isAdmin
             }
         });

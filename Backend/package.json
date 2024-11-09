@@ -19,8 +19,11 @@
     "express": "^4.21.1",
     "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
     "multer": "*",
     "node": "^22.11.0",
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     "nodemailer": "^6.9.15",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",

@@ -69,6 +69,7 @@
                 width: 25px;
             }
 
+<<<<<<< HEAD
             button {
                 &.btn-confirmacion{
                     color: #28a745;
@@ -97,6 +98,17 @@
                 transition: all 0.2s ease;
                 color: #007bff;
                 font-size: 22px;
+=======
+            .btn-confirmacion {
+                background-color: #fff;
+                border-radius: 10px;
+                border: 0;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                padding: 0.4em 1em;
+                transition: all 0.2s ease;
+                color: #007bff;
+                font-size: 16px;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
                 &:hover {
                     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);

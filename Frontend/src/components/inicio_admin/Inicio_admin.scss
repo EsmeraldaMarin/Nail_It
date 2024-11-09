@@ -1,7 +1,11 @@
 @import "../../variables.scss";
+<<<<<<< HEAD
 
 @keyframes swing {
 
+=======
+@keyframes swing {
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     0%,
     30%,
     50%,
@@ -38,6 +42,7 @@
         position: sticky;
         top: 0;
         z-index: 100;
+<<<<<<< HEAD
 
         @media screen and (max-width: 920px) {
             p.soporte {
@@ -45,6 +50,8 @@
             }
         }
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
         .btn-toggle-menu {
             position: fixed;
             top: 80px;
@@ -57,26 +64,41 @@
             justify-content: center;
             align-items: center;
             border: 0;
+<<<<<<< HEAD
 
             &.active {
                 background-color: #ee9968;
                 left: 50px;
 
+=======
+            &.active {
+                background-color: #ee9968;
+                left: 50px;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 i {
                     display: inline-block;
                     transform: rotate(270deg);
                 }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
             i {
                 display: inline-block;
                 transform: rotate(90deg);
             }
+<<<<<<< HEAD
 
             span {
                 display: none;
             }
 
+=======
+            span {
+                display: none;
+            }
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
             @media screen and (max-width: 920px) {
                 position: relative;
                 border: 1px solid black;
@@ -87,21 +109,33 @@
                 border-radius: 20px;
                 padding: 0.3em 1em;
                 z-index: 200;
+<<<<<<< HEAD
 
                 &.active {
                     background-color: #ee9968;
                     left: 20px;
 
+=======
+                &.active {
+                    background-color: #ee9968;
+                    left: 20px;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                     i {
                         display: inline-block;
                         transform: rotate(180deg);
                     }
                 }
+<<<<<<< HEAD
 
                 span {
                     display: inline-block;
                 }
 
+=======
+                span {
+                    display: inline-block;
+                }
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 i {
                     margin-left: 5px;
                     transform: rotate(0deg);
@@ -109,6 +143,7 @@
             }
         }
     }
+<<<<<<< HEAD
 
     .body-content {
         display: flex;
@@ -118,6 +153,14 @@
             flex-direction: column;
         }
 
+=======
+    .body-content {
+        display: flex;
+        width: 100%;
+        @media screen and (max-width: 920px) {
+            flex-direction: column;
+        }
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
         nav.sideBar {
             background-color: white;
             height: calc(100vh - 60px);
@@ -130,6 +173,7 @@
                 width: 70px;
                 overflow-x: hidden;
                 box-shadow: 0 0 3px #bbb;
+<<<<<<< HEAD
 
                 @media screen and (max-width: 500px) {
                     height: 400px !important;
@@ -138,10 +182,18 @@
                 ~.content {
                     width: calc(100% - 70px);
 
+=======
+                @media screen and (max-width: 500px) {
+                    height: 400px !important;
+                }
+                ~ .content {
+                    width: calc(100% - 70px);
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                     @media screen and (max-width: 920px) {
                         width: 100%;
                     }
                 }
+<<<<<<< HEAD
 
                 .title {
                     color: white;
@@ -161,6 +213,21 @@
                             button {
                                 width: 38px;
 
+=======
+                .title {
+                    color: white;
+                }
+                .menu {
+                    ul {
+                        padding-right: 0px;
+                        @media screen and (max-width: 500px) {
+                            display: flex;
+                        }
+                        li {
+                            a,
+                            button {
+                                width: 38px;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                 i {
                                     margin-right: 100px;
                                 }
@@ -169,7 +236,10 @@
                     }
                 }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
             @media screen and (max-width: 920px) {
                 width: 100%;
                 height: 0px;
@@ -180,6 +250,7 @@
                     width: 100%;
                     height: 250px;
                     box-shadow: 0 0 3px #bbb;
+<<<<<<< HEAD
 
                     .menu {
                         padding: 20px;
@@ -193,6 +264,16 @@
                                 button {
                                     width: 100%;
 
+=======
+                    .menu {
+                        padding: 20px;
+                        ul {
+                            padding-right: 0px;
+                            li {
+                                a,
+                                button {
+                                    width: 100%;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                     i {
                                         margin-right: 10px;
                                     }
@@ -208,16 +289,24 @@
                 width: 100%;
                 height: 100%;
                 box-shadow: inset 0 2px 3px #bbb;
+<<<<<<< HEAD
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 .title {
                     @media screen and (max-width: 920px) {
                         display: none;
                     }
                 }
+<<<<<<< HEAD
 
                 ul {
                     padding: 0 !important;
 
+=======
+                ul {
+                    padding: 0;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                     @media screen and (max-width: 920px) {
                         display: grid;
                         grid-template-columns: repeat(2, 1fr);
@@ -225,9 +314,13 @@
                         grid-column-gap: 10px;
                         grid-row-gap: 0px;
                     }
+<<<<<<< HEAD
 
                     li {
 
+=======
+                    li {
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                         a,
                         button {
                             display: inline-block;
@@ -240,27 +333,39 @@
                             color: #777;
                             text-decoration: none;
                             white-space: nowrap;
+<<<<<<< HEAD
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                             &.active {
                                 background-color: #f2884c;
                                 border-radius: 10px;
                                 color: #fff;
                                 font-weight: bold;
                             }
+<<<<<<< HEAD
 
                             &:hover {
                                 color: #000;
 
+=======
+                            &:hover {
+                                color: #000;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                 i {
                                     display: inline-block;
                                     animation: swing 0.5s ease-in-out 1 alternate;
                                 }
                             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                             i {
                                 margin-right: 15px;
                             }
                         }
+<<<<<<< HEAD
 
                         &.logout {
                             margin-top: 30px;
@@ -268,6 +373,12 @@
                             @media screen and (max-width: 920px) {
                                 margin: 0;
 
+=======
+                        &.logout {
+                            margin-top: 30px;
+                            @media screen and (max-width: 920px) {
+                                margin: 0;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                                 button {
                                     color: $danger;
                                 }
@@ -277,13 +388,17 @@
                 }
             }
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
         .content {
             width: calc(100% - 250px);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+<<<<<<< HEAD
 
             @media screen and (max-width: 920px) {
                 width: 100%;
@@ -292,10 +407,21 @@
             .dashboard {
                 padding: 40px 15px 40px 30px;
 
+=======
+            @media screen and (max-width: 920px) {
+                width: 100%;
+            }
+            .dashboard {
+                padding: 40px 80px;
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 @media screen and (max-width: 920px) {
                     padding: 20px;
                 }
             }
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836

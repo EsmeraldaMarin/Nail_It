@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import "../Reserva.scss";
 import axios from '../../../../axiosConfig/axiosConfig';
 
@@ -29,6 +30,11 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
     fecha = convertToISO(fecha);
     buscarReservasEnDiayProfesionalSeleccionado(fecha, e.target.value);
   }
+=======
+import "../Reserva.scss"
+
+const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional }) => {
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
   return (
     <div className="mb-3 col">
       <label>Profesional</label>
@@ -39,7 +45,11 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
 
         </div>
         :
+<<<<<<< HEAD
         <select disabled={fecha ? false : true} value={profesional} onChange={(e) => handleHange(e)} className="form-select">
+=======
+        <select disabled={fecha ? false : true} value={profesional} onChange={(e) => setProfesional(e.target.value)} className="form-select">
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
           <option value="">Seleccione un profesional</option>
           {profesionales?.map((pro, index) => (
             <option key={index} value={pro.id}>

@@ -20,7 +20,10 @@ import Servicio from "./components/Especialidad/Servicio"
 import Footer from "./components/footer/Footer";
 import ReservaContext from "./components/reserva/reservaContext";
 import constructionImage from './img/construction.svg'
+<<<<<<< HEAD
 import Vacaciones from "./components/horarios_estilista/Vacaciones";
+=======
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
 function App() {
     return (
@@ -38,7 +41,11 @@ function App() {
                 <Route path="/inicio_admin/*" element={<RutaProtegida><InicioAdmin /></RutaProtegida>}>
                     <Route index element={<ReservasConfirmadas />} />
                     <Route path="reservas_pendientes" element={<ReservasPendientes />} />
+<<<<<<< HEAD
                     <Route path="horarios" element={<><Horarios /><Vacaciones/></>} />
+=======
+                    <Route path="horarios" element={<Horarios />} />
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                     <Route path="servicios" element={<Servicio />} />
                     <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
                     <Route path="configuracion" element={<div className="d-flex flex-column justify-content-center align-items-center"><strong className="fs-3">En desarrollo...</strong><img className="h-25 mt-5 w-25" src={constructionImage} /></div>}></Route>

@@ -95,7 +95,11 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
                 </button>
             </div>
 
+<<<<<<< HEAD
             {/* <span className="text-muted">* Mensaje de confirmación aparecerá aquí</span> */}
+=======
+            <span className="text-muted">* Mensaje de confirmación aparecerá aquí</span>
+>>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
         </div>
     );
 };
