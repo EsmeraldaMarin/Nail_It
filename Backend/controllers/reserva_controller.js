@@ -9,8 +9,7 @@ export class GestorReservas {
         let condicion = [];
         fecha && condicion.push({fecha: `${fecha}`})
         id_profesional && condicion.push({id_profesional: `${id_profesional}`})
-    }
-    async obtener_reservas(condicion) {
+
         try {
             return await Reservas.findAll({
                 where: condicion,
@@ -60,7 +59,7 @@ export class GestorReservas {
                 {
                     model: Servicios,  // Incluir el servicio
                     include: [{
-                        model: Especialidades, 
+                        model: Especialidades,
                         as: 'Especialidad',  // Utiliza el alias definido en la relación
                         attributes: ['id', 'nombre', 'descripcion'] // Incluir la especialidad dentro del servicio
                     }]
