@@ -14,7 +14,11 @@ const Historial_turnos = () => {
     const cbuUser = ""
     const navigate = useNavigate();
     const [cbu, setCbu] = useState("");
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
     const [showCBUModal, setShowCBUModal] = useState(false);
 
     const handleCancelacion = async (id, reservaData, estado, cbu = null) => {
@@ -22,7 +26,11 @@ const Historial_turnos = () => {
             const result = await axios.put(`/reserva/${id}`, {
                 ...reservaData,
                 estado
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
             });
             if (cbu != cbuUser) {
                 const user = await axios.get(`/cliente/${userId}`);
@@ -47,7 +55,10 @@ const Historial_turnos = () => {
             console.error('Error al actualizar la reserva:', error);
         }
     };
+<<<<<<< HEAD
 
+=======
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
 
     const formatearFecha = (fecha) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
@@ -57,14 +68,18 @@ const Historial_turnos = () => {
     const calcularDiferenciaHoras = (fechaReserva) => {
         const fechaActual = new Date();
         const diferenciaMilisegundos = new Date(fechaReserva) - fechaActual;
-        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60); // Convertir de milisegundos a horas
+        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60);
         return diferenciaHoras;
     };
 
     const onActualizar = async (id, reservaData) => {
         setReservaParaCancelar({ id, reservaData });
         if (calcularDiferenciaHoras(reservaData.fecha) < 48) {
+<<<<<<< HEAD
 
+=======
+           
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
             setShowModal(true);
         } else {
             setShowCBUModal(true); // Muestra el nuevo modal si faltan más de 48 horas
@@ -76,12 +91,21 @@ const Historial_turnos = () => {
     }
     const handleCBUModalConfirm = async () => {
         // Verifica el CBU y envía la solicitud de cancelación
+<<<<<<< HEAD
 
 
         try {
             await handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "por_reembolsar", cbu);
             setShowCBUModal(false);
 
+=======
+        
+        
+        try {
+            await handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "por_reembolsar", cbu);
+            setShowCBUModal(false);
+     
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
         } catch (error) {
             console.error('Error al cancelar con devolución de seña:', error);
         }
@@ -138,28 +162,6 @@ const Historial_turnos = () => {
         }
     };
 
-    const esCancelable = (reserva) => {
-        const fechaActual = new Date();
-        const fechaReserva = new Date(reserva.fecha);
-        
-        // Comparar las fechas
-        if (fechaReserva > fechaActual) {
-            return true; // La fecha de la reserva es mayor que la fecha actual
-        } else if (fechaReserva.toDateString() === fechaActual.toDateString()) {
-            // Si es el mismo día, comparar la hora
-            const [horaReserva, minutosReserva] = reserva.horaInicio.split(':').map(Number);
-            const horaActual = fechaActual.getHours();
-            const minutosActuales = fechaActual.getMinutes();
-            
-            // Verificar si la hora de inicio es mayor que la hora actual
-            if (horaReserva > horaActual || (horaReserva === horaActual && minutosReserva > minutosActuales)) {
-                return true;
-            }
-        }
-    
-        return false; // No es cancelable si la fecha y hora no cumplen con los criterios
-    };
-
     const renderFilasReservas = (reservas) => {
         return (
             <div className="row">
@@ -171,9 +173,15 @@ const Historial_turnos = () => {
                             <div className={clases.card} style={{ maxWidth: '18rem' }}>
                                 <div className={clases.header}>
                                     Turno {reserva.Servicio.Especialidad.nombre}
+<<<<<<< HEAD
                                     {
                                         (reserva.estado === 'pendiente' || reserva.estado === 'confirmada') && (
                                             <button className="btn btn-danger btn-sm ms-4" onClick={() => onActualizar(reserva.id, reserva)}>
+=======
+                                        { 
+                                        (reserva.estado === 'pendiente' || reserva.estado === 'confirmada') && (
+                                            <button className="btn btn-danger btn-sm ms-4" onClick={() => onActualizar(reserva.id,reserva)}>
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
                                                 Cancelar
                                             </button>
                                         )}
@@ -190,9 +198,13 @@ const Historial_turnos = () => {
                                     </ul>
                                 </div>
                                 <div className={clases.footer + " text-uppercase"}>
+<<<<<<< HEAD
                                     {reserva.estado === 'pendiente' ? 'Pendiente de confirmar seña' :
                                         reserva.estado === 'por_reembolsar' ? 'pendiente de reembolso' :
                                             reserva.estado}
+=======
+                                    {reserva.estado === 'por_reembolsar' ? 'pendiente de reembolso' : reserva.estado}
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
                                 </div>
                             </div>
                         </div>
@@ -260,8 +272,13 @@ const Historial_turnos = () => {
                                 id="cbu"
                                 className="form-control"
                                 value={cbu}
+<<<<<<< HEAD
                                 onChange={handleCBUChange}
 
+=======
+                               onChange={handleCBUChange}
+                              
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
                             />
                         </div>
                         <div className="modal-buttons mt-3">
@@ -272,7 +289,11 @@ const Historial_turnos = () => {
                 </Modal.Body>
             </Modal>
 
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
         </div>
     );
 }

@@ -34,6 +34,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
   //Esto se hace asi porque cuando se cambia la especialidad, no impacta hasta que se vuelve a renderizar el componente
   useEffect(() => {
+
     const fetchServicios = async () => {
       if (tipoServicio != "") {
         try {
