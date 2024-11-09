@@ -15,15 +15,9 @@ function VisualizadorComprobante({ comprobanteURL }) {
     return (
         <div>
             {/* Botón para abrir el modal */}
-<<<<<<< HEAD
             <a style={{color:"#00f", cursor:"pointer"}} onClick={handleShow}>
                 Ver Comprobante
             </a>
-=======
-            <Button variant="primary" onClick={handleShow}>
-                Ver Comprobante
-            </Button>
->>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
 
             {/* Modal para visualizar el comprobante */}
             <Modal show={showModal} onHide={handleClose} size="lg" centered>

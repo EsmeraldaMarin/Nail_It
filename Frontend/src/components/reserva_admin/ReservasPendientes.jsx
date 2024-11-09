@@ -56,10 +56,6 @@ const ReservasPendientes = () => {
     );
     //reembolzo 
     const handleReembolzoReserva = async (id, reservaData) => {
-<<<<<<< HEAD
-=======
-
->>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
 
         const result = await axios.put(`/reserva/${id}`, {
             horaInicio: reservaData.horaInicio,
@@ -108,12 +104,7 @@ const ReservasPendientes = () => {
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                     <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
-<<<<<<< HEAD
                                     <td><strong>{reserva.montoSenia}</strong></td>
-=======
-                                    <td><strong>${reserva.montoSenia}</strong></td>
-                                    <td><strong>$hacer</strong></td>
->>>>>>> f9d4aa594f0000fe48ecbf44a1df1fdd89f03b53
                                     <td><VisualizadorComprobante comprobanteURL={"https://imgv2-1-f.scribdassets.com/img/document/628368179/original/d929c33054/1729712028?v=1"} /></td>
                                     <td>
                                         {botonConfirmacion === reserva.id ? (
