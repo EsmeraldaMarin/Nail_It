@@ -108,17 +108,11 @@ export default function Horarios() {
 
     return (
         <div className="ctn-horarios">
-<<<<<<< HEAD
             <h3>Mis horarios de atención</h3>
             <div className="form-horario-atencion">
                 <p>Seleccione un día:</p>
                 <div className="heads">
 
-=======
-            <h3>Tus horarios de atención</h3>
-            <div className="form-horario-atencion">
-                <div className="heads">
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                     {
                         ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"].map((dia, index) => (
                             <button
@@ -205,10 +199,7 @@ export default function Horarios() {
                     {mensaje}
                 </div>
             </div>
-<<<<<<< HEAD
             
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
         </div >
     );
 }

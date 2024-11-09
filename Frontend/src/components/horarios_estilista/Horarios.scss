@@ -2,11 +2,7 @@
 .ctn-horarios {
     width: 100%;
     max-width: 600px;
-<<<<<<< HEAD
     margin: 20px auto;
-=======
-    margin: 50px auto;
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     padding: 20px;
     background-color: #f8f8f8;
     border-radius: 10px;
@@ -33,22 +29,14 @@
                 font-size: 14px;
                 border: none;
                 border-radius: 5px;
-<<<<<<< HEAD
                 background-color: #bbb;
-=======
-                background-color: #f85b00;
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 color: white;
                 cursor: pointer;
 
                 &.active,
                 &:active,
                 &:focus {
-<<<<<<< HEAD
                     background-color: #f85b00;
-=======
-                    background-color: #bbb;
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                 }
                 &:focus{
                     outline: auto;

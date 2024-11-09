@@ -5,14 +5,9 @@ import { gestorReservas } from "../index.js";
 export const routerReservas = Router();
 
 routerReservas.get("/", async (req, res) => {
-<<<<<<< HEAD
     const fecha = req.query.fecha;
     const id_profesional = req.query.id_profesional;
     const datos = await gestorReservas.obtener_reservas(fecha, id_profesional);
-    
-=======
-    const datos = await gestorReservas.obtener_reservas();
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     if (datos) {
         res.status(200).json(datos);
     } else {

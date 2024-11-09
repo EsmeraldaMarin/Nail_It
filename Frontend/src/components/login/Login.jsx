@@ -44,10 +44,7 @@ const Login = () => {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userId', response.data.usuario.id);
             localStorage.setItem('userEmail', response.data.usuario.email);
-<<<<<<< HEAD
             localStorage.setItem('userName', response.data.usuario.nombre);
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
             localStorage.setItem('auth', "true");
 
             // Redirigir o hacer algo después del inicio de sesión

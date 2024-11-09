@@ -17,10 +17,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const [profesionales, setProfesionales] = useState([]);
   //esto es para fecha select
   const [fechaInput, setFechaInput] = useState(fecha); // Para mantener la fecha temporalmente
-<<<<<<< HEAD
   const [horariosOcupados, setHorariosOcupados] = useState([]);
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
   useEffect(() => {
     const fetchTiposServicio = async () => {
@@ -37,10 +34,6 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
   //Esto se hace asi porque cuando se cambia la especialidad, no impacta hasta que se vuelve a renderizar el componente
   useEffect(() => {
-<<<<<<< HEAD
-
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     const fetchServicios = async () => {
       if (tipoServicio != "") {
         try {
@@ -127,11 +120,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       profesional_data: null, //Resetea el profesional cuando cambia la 
       horarios_disponibles: horarios_filtrados.data,
       horario: "",
-<<<<<<< HEAD
       profesional: ''
-=======
-      profesional:''
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     });
   };
 
@@ -166,17 +155,10 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
       <div className="row pt-4">
         <FechaSelect servicio={servicio} fecha={fecha} setFecha={handleFechaChange} fechaInput={fechaInput} setFechaInput={setFechaInput} />
-<<<<<<< HEAD
         <ProfesionalSelect fecha={fecha} profesional={profesional} profesionales={profesionales} setProfesional={handleProfesionalChange} setHorariosOcupados={setHorariosOcupados} />
       </div>
 
       <HorarioSelect horarios={reservaData.horariosXprofesional} horariosOcupados={horariosOcupados} servicio_data={reservaData.servicio_data} profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
-=======
-        <ProfesionalSelect fecha={fecha} profesional={profesional} profesionales={profesionales} setProfesional={handleProfesionalChange} />
-      </div>
-
-      <HorarioSelect horarios={reservaData.horariosXprofesional} servicio_data={reservaData.servicio_data} profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
       <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar" disabled={horario ? false : true}>
         Continuar

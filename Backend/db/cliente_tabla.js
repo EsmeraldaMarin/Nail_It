@@ -8,15 +8,10 @@ export const Clientes = sequelize.define('Clientes', {
     numero: {type:DataTypes.INTEGER},
     email: { type: DataTypes.STRING, /* unique: true */ },
     password: {type: DataTypes.STRING},
-<<<<<<< HEAD
     verificado: {type: DataTypes.BOOLEAN},
     cbu: {type: DataTypes.STRING, allowNull: true},
     titular_cuenta: {type: DataTypes.STRING, allowNull: true}
 },{
-=======
-    verificado: {type: DataTypes.BOOLEAN}
-}, {
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
     tableName: 'Clientes',
     timestamps: false
 });

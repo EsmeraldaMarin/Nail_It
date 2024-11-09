@@ -46,12 +46,9 @@ const AccountInfo = () => {
                             <span>{clienteInfo.email}</span>
                         </li>
                     </ul>
-<<<<<<< HEAD
                     <div className="col-12 text-end pt-2">
                         <a href="#" >Olvidé mi contraseña</a>
                     </div>
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
                     <button className="btn btn-dark mt-3" onClick={() => setModoEdicion(!modoEdicion)}>Editar</button>
                 </>
             }

@@ -25,10 +25,7 @@ import { GestorVariables } from "./controllers/variableGlobal_controller.js";
 import { AdminHorarioEspecialidad } from "./db/adminHorarioEspecialidad_tabla.js";
 import { GestorAdminHorarioEspecialidad } from "./controllers/adminHorarioEspecialidad_controller.js";
 import { routerAdminHorarioEspecialidad } from "./routes/adminHorarioEspecialidad_routes.js";
-<<<<<<< HEAD
 import { uploadRouter } from "./routes/upload_routes.js";
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
 const PORT = 5050;
 
@@ -65,11 +62,7 @@ AdminHorarioEspecialidad.belongsTo(Especialidades, { foreignKey: 'id_especialida
 
 
 // Definición de relaciones entre tablas.
-<<<<<<< HEAD
 app.use('uploads/', express.static('uploads'))
-=======
-
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 app.use('', routerClientes);
 app.use('/admin', routerAdmins);
 app.use("/especialidad", routerEspecialidades);
@@ -79,10 +72,7 @@ app.use("/verificar", routerVerificar);
 app.use("/estado", routerEstados);
 app.use("/horario", routerAdminHorarioEspecialidad);
 app.use("/variablesGlobales", routerVariablesGlobales);
-<<<<<<< HEAD
 app.use("/api", uploadRouter);
-=======
->>>>>>> ecba6c62ded3697c51d1ad22b4f35c711d1fe836
 
 app.listen(PORT, () =>
     console.log(`Servidor corriendo en http://localhost:${PORT}`));
