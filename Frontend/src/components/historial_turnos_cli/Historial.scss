@@ -1,0 +1,64 @@
+.body-ctn {
+    padding: 40px 20px;
+    @media screen and (min-width: 800px) {
+        width: 60vw;
+        margin: 0 auto;
+    }
+    .misTurnos-btn {
+        margin-bottom: 20px;
+        background-color:#f2884c ;
+    }
+    .Reservas {
+        padding: 0;
+    }
+}
+
+.custom-modal-header {
+    background-color: #f8d7da;
+    border-bottom: 2px solid #dc3545;
+}
+
+.modal-title-custom {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.modal-body-custom {
+    padding: 20px;
+    text-align: center;
+}
+
+.modal-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-message {
+    font-size: 1.1rem;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.confirm-btn, .cancel-btn {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+}
+
+.confirm-btn {
+    background-color: #dc3545;
+    border: none;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    border: none;
+}

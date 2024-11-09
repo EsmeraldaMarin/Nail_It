@@ -1,0 +1,10 @@
+* {
+    font-family: "Afacad Flux", sans-serif;
+}
+body {
+    overflow-y: scroll !important;
+}
+
+button:disabled{
+    background-color: rgb(194, 193, 193) !important;
+}

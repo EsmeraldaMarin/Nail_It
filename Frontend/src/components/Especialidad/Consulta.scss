@@ -1,0 +1,31 @@
+@import "../../variables.scss";
+.Reservas {
+    .ss {
+        @media screen and (max-width: 920px) {
+            flex-direction: column;
+        }
+        .btn.active {
+            background-color: $naranjaFuerte; /* Color de fondo */
+            border: 2px solid transparent; /* Borde transparente */
+            border-radius: 10px; /* Bordes redondeados */
+            color: #fff; /* Color del texto */
+            font-size: 16px; /* Aumenta el tamaño de la fuente, ajusta según sea necesario */
+            cursor: pointer;
+            i {
+                margin-left: 20px;
+                font-size: 1.2em;
+            }
+        }
+    }
+    .table-ctn {
+        box-shadow: 0 0 5px #888;
+        margin-top: 20px;
+    }
+    .cc {
+        max-height: 250px;
+        overflow-y: scroll;
+        scrollbar-color: $primary white;
+        scrollbar-width: thin;
+
+    }
+}

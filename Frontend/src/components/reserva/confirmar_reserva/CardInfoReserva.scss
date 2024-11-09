@@ -1,0 +1,34 @@
+.container {
+    @media (min-width: 920px) {
+        max-width: 50vw !important;
+        margin: 0 auto;
+    }
+    .info-ctn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #bbb;
+        border-radius: 20px;
+        padding: 30px 20px;
+
+        .monto-ctn {
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 10px;
+            line-height: 1em;
+
+            .monto {
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+            .input-file {
+                span {
+                    display: block;
+                }
+            }
+        }
+        p {
+            margin: 0;
+        }
+    }
+}
