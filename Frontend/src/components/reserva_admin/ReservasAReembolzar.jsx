@@ -1,4 +1,5 @@
-
+import { Modal } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react';
 
 const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha }) => {
 
@@ -7,10 +8,27 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
         reserva => reserva.estado === "por_reembolsar" && reserva.id_profesional === userId
 
     );
+    
 
     console.log("Reservas por reembolso: ", reservasReembolso);
+    const [selectedReserva, setSelectedReserva] = useState(null)
+    const [showModal, setShowModal] = useState(false);
 
+    const openModal = (reserva) => {
+        setSelectedReserva(reserva);
+        setShowModal(true);
+    };
+    const closeModal = () => {
+        setSelectedReserva(null);
+        setShowModal(false);
+    };
 
+    const confirmCancellation = () => {
+        if (selectedReserva) {
+            handleReembolzoReserva(selectedReserva.id, selectedReserva);
+            closeModal();
+        }
+    };
 
     return (
         <div>
@@ -29,6 +47,7 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
                                 <th scope="col">Importe abonado</th>
                                 <th scope="col">Comprobante</th>
                                 <th scope="col">CBU o Alias</th>
+                                <th scope="col">Titular de la cuenta</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -46,15 +65,14 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
                                         Ver Comprobante
                                     </a></td>
                                     <td><strong>{reserva.Cliente.cbu}</strong></td>
+                                    <td><strong>{reserva.Cliente.titular_cuenta}</strong></td>
                                     <td>
                                         {
                                             <div>
-                                                <button className="btn btn-danger" onClick={() => {
-                                                        if (window.confirm("Esta confimando la cancelacion de la reserva, asegurese de haber devuelto la seña")) {
-                                                            handleReembolzoReserva(reserva.id, reserva);
-                                                        }}}>
+                                                <button className="btn btn-danger" onClick={() => openModal(reserva)}>
                                                     cancelar Reserva
                                                 </button>
+                                                
 
                                             </div>
                                         }
@@ -68,6 +86,27 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
                     </table>
                 </div>
             </div>
+            {/* Modal for confirming reservation cancellation */}
+            <Modal show={showModal} onHide={closeModal} centered>
+                <Modal.Header closeButton className="custom-modal-header">
+                    <Modal.Title className="modal-title-custom">Cancelar reserva</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-custom">
+                    <div className="modal-content-wrapper">
+                        <p className="modal-message">
+                            Está confirmando la cancelación de la reserva. Asegúrese de haber devuelto la seña.
+                        </p>
+                        <div className="modal-buttons">
+                            <button className="btn btn-danger confirm-btn" onClick={confirmCancellation}>
+                                Confirmar cancelación
+                            </button>
+                            <button className="btn btn-secondary cancel-btn" onClick={closeModal}>
+                                Conservar reserva
+                            </button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 

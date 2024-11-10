@@ -14,9 +14,11 @@ const Historial_turnos = () => {
     const cbuUser = ""
     const navigate = useNavigate();
     const [cbu, setCbu] = useState("");
+    const [cuenta, setcuenta] = useState("");
     const [showCBUModal, setShowCBUModal] = useState(false);
+    const [isValidCBUOrAlias, setIsValidCBUOrAlias] = useState(true)
 
-    const handleCancelacion = async (id, reservaData, estado, cbu = null) => {
+    const handleCancelacion = async (id, reservaData, estado, cbu = null, cuenta = null) => {
         try {
             const result = await axios.put(`/reserva/${id}`, {
                 ...reservaData,
@@ -30,7 +32,8 @@ const Historial_turnos = () => {
                     numero: user.data.numero,
                     email: user.data.email,
                     verificado: user.data.verificado,
-                    cbu: cbu // Agrega el CBU al cliente
+                    cbu: cbu, // Agrega el CBU al cliente
+                    titular_cuenta: cuenta 
                 });
             }
 
@@ -66,20 +69,38 @@ const Historial_turnos = () => {
             setShowCBUModal(true); // Muestra el nuevo modal si faltan más de 48 horas
         }
     };
-
-    const handleCBUChange = (event) => {
-        setCbu(event.target.value); // Actualiza el estado cbuUser con el valor ingresado
+    const validateCBUOrAlias = (value) => {
+        
+        if (/^\d{22}$/.test(value)) {
+            return true;
+        }
+        
+        
+        if (/^[a-zA-Z0-9]{6,20}$/.test(value) && !/^\d+$/.test(value)) {
+            return true;
+        }
+        
+        return false;
     }
+
+    
+    const handleCBUChange = (event) => {
+        const input = event.target.value;
+        setCbu(input);
+        setIsValidCBUOrAlias(validateCBUOrAlias(input))
+    }
+    const handleCuentaChange = (event) => {
+        setcuenta(event.target.value);
+    };
+
     const handleCBUModalConfirm = async () => {
-        // Verifica el CBU y envía la solicitud de cancelación
-
-
-        try {
-            await handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "por_reembolsar", cbu);
-            setShowCBUModal(false);
-
-        } catch (error) {
-            console.error('Error al cancelar con devolución de seña:', error);
+        if (isValidCBUOrAlias) {
+            try {
+                await handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "por_reembolsar", cbu, cuenta);
+                setShowCBUModal(false);
+            } catch (error) {
+                console.error('Error al cancelar con devolución de seña:', error);
+            }
         }
     };
     const handleModalConfirm = () => {
@@ -94,10 +115,15 @@ const Historial_turnos = () => {
                 const response = await axios.get(`/reserva/user/${userId}`);
                 setReservas(response.data);
                 const clientResponse = await axios.get(`/cliente/${userId}`);
-                if (clientResponse.data && clientResponse.data.cbu) {
+                if (clientResponse.data && clientResponse.data.cbu ) {
+                    
                     setCbu(clientResponse.data.cbu)
-                    cbuUser = clientResponse.data.cbu
-                }
+                    
+                    setcuenta(clientResponse.data.titular_cuenta)
+                  
+                   
+                    cbuUser = clientResponse.data.cbu}
+                
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
             }
@@ -228,7 +254,7 @@ const Historial_turnos = () => {
                             Debido a que faltan más de 48 horas para su turno, su seña será devuelta.
                         </p>
                         <div className="form-group mt-3">
-                            <label htmlFor="cbu">Ingrese su CBU para el reembolso:</label>
+                            <label htmlFor="cbu">Ingrese su CBU o Alias para el reembolso:</label>
                             <input
                                 type="text"
                                 id="cbu"
@@ -237,9 +263,25 @@ const Historial_turnos = () => {
                                 onChange={handleCBUChange}
 
                             />
+                        {!isValidCBUOrAlias && (
+                            <small className="text-danger">
+                                El CBU debe tener 22 dígitos, o el alias debe tener de 6 a 20 caracteres alfanuméricos y puntos.
+                            </small>
+                        )}
+                        </div>
+                        <div className="form-group mt-3">
+                            <label htmlFor="cbu">Ingrese el nombre del titular de la cuenta:</label>
+                            <input
+                                type="text"
+                                id="cuenta"
+                                className="form-control"
+                                value={cuenta}
+                                onChange={handleCuentaChange}
+
+                            />
                         </div>
                         <div className="modal-buttons mt-3">
-                            <button className="btn btn-danger confirm-btn" onClick={handleCBUModalConfirm}>Confirmar cancelación</button>
+                            <button className="btn btn-danger confirm-btn" onClick={handleCBUModalConfirm} disabled={!isValidCBUOrAlias}>Confirmar cancelación</button>
                             <button className="btn btn-secondary cancel-btn" onClick={() => setShowCBUModal(false)}>Conservar mi reserva</button>
                         </div>
                     </div>
