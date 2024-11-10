@@ -10,6 +10,7 @@ export const Admins = sequelize.define("Admins", {
     numero: {type:DataTypes.INTEGER},
     email: { type: DataTypes.STRING, /* unique: true */},
     password: {type: DataTypes.STRING},
+    mustChangePassword: {type: DataTypes.BOOLEAN},
     verificado: {type: DataTypes.BOOLEAN}
 }, {
     tableName: 'Admins',

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { Link } from "react-router-dom";
 import axios from '../../axiosConfig/axiosConfig';
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
@@ -12,6 +13,7 @@ const Login = () => {
         password: '',
         isAdmin: false
     });
+    const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate()
 
@@ -40,18 +42,28 @@ const Login = () => {
                 email: formData.email,
                 password: formData.password,
             });
-            // Almacena el token en localStorage
-            localStorage.setItem('token', response.data.token);
             localStorage.setItem('userId', response.data.usuario.id);
             localStorage.setItem('userEmail', response.data.usuario.email);
             localStorage.setItem('userName', response.data.usuario.nombre);
             localStorage.setItem('auth', "true");
-
-            // Redirigir o hacer algo después del inicio de sesión
-            if (formData.isAdmin) {
-                navigate("/inicio_admin")
+            if (response.data.mustChangePassword) {
+                // Muestra el modal 
+                setShowModal(true);
+                setFormData({
+                    ...formData,
+                    userId: response.data.usuario.id
+                });
             } else {
-                navigate("/inicio")
+                // Almacena el token en localStorage 
+                localStorage.setItem('token', response.data.token);
+
+                // Redirigir o hacer algo después del inicio de sesión 
+                if (formData.isAdmin) {
+                    navigate("/inicio_admin");
+
+                } else {
+                    navigate("/inicio");
+                }
             }
         } catch (error) {
             setErrorMessage('Usuario o contraseña incorrecta');
@@ -86,7 +98,7 @@ const Login = () => {
                 <div className="form-group col-md-6 form-check">
                     <label className="form-check-label" htmlFor="gridCheck1">Soy admin</label>
                     <input
-                    className="form-check-input"
+                        className="form-check-input"
                         type="checkbox"
                         checked={formData.isAdmin}
                         name="isAdmin"
@@ -106,6 +118,7 @@ const Login = () => {
                     <Link to="/registro" className="btn btn-secondary">Registrarme</Link>
                 </div>
             </form>
+            <ChangePasswordModal show={showModal} onClose={() => setShowModal(false)} userId={formData.userId} />
         </div>
     );
 };
