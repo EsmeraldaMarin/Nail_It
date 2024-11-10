@@ -10,7 +10,7 @@
     .table-ctn {
         border-radius: 20px;
         overflow-y: hidden;
-        > div{
+        > div {
             scrollbar-color: rgb(183, 183, 183) white;
             scrollbar-width: thin;
         }
@@ -26,6 +26,46 @@
         &.reservas-pendientes {
             border-left: 5px solid $primary; /* Lateral gris para destacar reservas generales */
             border-right: 5px solid $primary; /* Lateral gris para destacar reservas generales */
+            button {
+                &.btn-confirmacion {
+                    color: #28a745;
+                    background-color: #fff;
+                    border-radius: 50px;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 22px;
+                    &:hover {
+                        color: #fff;
+                        background-color: #28a745;
+                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                        cursor: pointer;
+                    }
+                }
+                &.btn-cancelacion {
+                    color: #f00;
+                    background-color: #fff;
+                    border-radius: 50px;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 22px;
+                    &:hover {
+                        color: #fff;
+                        background-color: #f00;
+                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                        cursor: pointer;
+                    }
+                }
+
+                border: 0;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                transition: all 0.2s ease;
+
+                &:hover {
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                    color: #28a745;
+                    cursor: pointer;
+                }
+            }
         }
     }
     .table {
@@ -67,42 +107,6 @@
             input[type="checkbox"] {
                 height: 25px;
                 width: 25px;
-            }
-
-            button {
-                &.btn-confirmacion{
-                    color: #28a745;
-                    &:hover {
-                        color: #fff;
-                        background-color: #28a745;;
-                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-                        cursor: pointer;
-                    }
-                }
-                &.btn-cancelacion{
-                    color: #f00;
-                    &:hover {
-                        color: #fff;
-                        background-color: #f00 ;
-                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-                        cursor: pointer;
-                    }
-                }
-                background-color: #fff;
-                border-radius: 50px;
-                border: 0;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-                width: 40px;
-                height: 40px;
-                transition: all 0.2s ease;
-                color: #007bff;
-                font-size: 22px;
-
-                &:hover {
-                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-                    color: #28a745;
-                    cursor: pointer;
-                }
             }
         }
     }

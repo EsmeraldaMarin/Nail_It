@@ -13,7 +13,7 @@ const AgendaReservas = () => {
     useEffect(() => {
         axios.get('http://localhost:5050/reserva') // Cambia la URL según tu backend
             .then(response => {
-                let eventos = response.data.filter(res => res.id_profesional == userId);
+                let eventos = response.data.filter(res => res.id_profesional == userId && res.estado == "confirmada");
                 eventos = eventos.map(reserva => {
                     const start = `${reserva.fecha.split('T')[0]}T${reserva.horaInicio}`;
                     const [hour, minute] = reserva.horaInicio.split(':');

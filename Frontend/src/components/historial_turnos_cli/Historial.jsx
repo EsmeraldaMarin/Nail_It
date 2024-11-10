@@ -33,7 +33,7 @@ const Historial_turnos = () => {
                     email: user.data.email,
                     verificado: user.data.verificado,
                     cbu: cbu, // Agrega el CBU al cliente
-                    titular_cuenta: cuenta 
+                    titular_cuenta: cuenta
                 });
             }
 
@@ -70,20 +70,20 @@ const Historial_turnos = () => {
         }
     };
     const validateCBUOrAlias = (value) => {
-        
+
         if (/^\d{22}$/.test(value)) {
             return true;
         }
-        
-        
+
+
         if (/^[a-zA-Z0-9]{6,20}$/.test(value) && !/^\d+$/.test(value)) {
             return true;
         }
-        
+
         return false;
     }
 
-    
+
     const handleCBUChange = (event) => {
         const input = event.target.value;
         setCbu(input);
@@ -115,15 +115,16 @@ const Historial_turnos = () => {
                 const response = await axios.get(`/reserva/user/${userId}`);
                 setReservas(response.data);
                 const clientResponse = await axios.get(`/cliente/${userId}`);
-                if (clientResponse.data && clientResponse.data.cbu ) {
-                    
+                if (clientResponse.data && clientResponse.data.cbu) {
+
                     setCbu(clientResponse.data.cbu)
-                    
+
                     setcuenta(clientResponse.data.titular_cuenta)
-                  
-                   
-                    cbuUser = clientResponse.data.cbu}
-                
+
+
+                    cbuUser = clientResponse.data.cbu
+                }
+
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
             }
@@ -230,12 +231,15 @@ const Historial_turnos = () => {
             </div>
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton className="custom-modal-header">
+                    <i className="bi bi-exclamation-circle text-danger fs-1 me-3"></i>
                     <Modal.Title className="modal-title-custom">Cancelar reserva</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="modal-body-custom">
                     <div className="modal-content-wrapper">
                         <p className="modal-message">
-                            Debido a que faltan menos de 48 horas para su turno, su seña no será devuelta.
+                            Debido a que faltan menos de 48 horas para su turno, 
+                            <br />
+                            <strong>su seña NO será devuelta</strong>.
                         </p>
                         <div className="modal-buttons">
                             <button className="btn btn-danger confirm-btn" onClick={handleModalConfirm}>Confirmar cancelación</button>
@@ -263,11 +267,11 @@ const Historial_turnos = () => {
                                 onChange={handleCBUChange}
 
                             />
-                        {!isValidCBUOrAlias && (
-                            <small className="text-danger">
-                                El CBU debe tener 22 dígitos, o el alias debe tener de 6 a 20 caracteres alfanuméricos y puntos.
-                            </small>
-                        )}
+                            {!isValidCBUOrAlias && (
+                                <small className="text-danger">
+                                    El CBU debe tener 22 dígitos, o el alias debe tener de 6 a 20 caracteres alfanuméricos y puntos.
+                                </small>
+                            )}
                         </div>
                         <div className="form-group mt-3">
                             <label htmlFor="cbu">Ingrese el nombre del titular de la cuenta:</label>
