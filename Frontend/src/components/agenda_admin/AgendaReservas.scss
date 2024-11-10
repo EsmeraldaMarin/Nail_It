@@ -1,0 +1,28 @@
+div.agenda-section {
+    padding: 0px 50px;
+    .agenda-ctn {
+        margin-top: 20px;
+    }
+    button.close {
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
+    }
+    /* AgendaReservas.scss */
+
+    /* Fondo oscuro (overlay) */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad */
+        z-index: 1040; /* Asegúrate de que el overlay quede detrás del modal */
+    }
+
+    /* Para que el modal aparezca encima de la capa oscura */
+    .modal-dialog {
+        z-index: 1050; /* Modal debe aparecer por encima de la superposición */
+    }
+}

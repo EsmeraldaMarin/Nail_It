@@ -65,7 +65,7 @@ const ReservasConfirmadas = () => {
             <h3>Gestor de turnos</h3>
 
             {/* Reservas del estilista */}
-            <h4 className="py-3">Mis turnos de hoy</h4>
+            <h4 className="pt-3">Mis turnos de hoy</h4>
             <div className="table-ctn mis-reservas table-responsive">
                 <table className="table ">
                     <thead className="table-primary">
@@ -90,7 +90,7 @@ const ReservasConfirmadas = () => {
             </div>
 
             {/* Reservas generales */}
-            <h4 className="py-3">Turnos generales de hoy</h4>
+            <h4 className="pt-5">Todos los turnos de hoy</h4>
             <div className="table-ctn reservas-gral table-responsive">
                 <table className="table">
                     <thead className="table-dark">
