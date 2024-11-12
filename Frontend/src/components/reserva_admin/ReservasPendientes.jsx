@@ -9,6 +9,7 @@ import VisualizadorComprobante from "./VisualizadorComprobante"
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
     const [botonConfirmacion, setBotonConfirmacion] = useState(null);
+    const [estilosBtn, setEstilosBtn] = useState("confirm");
     const userId = localStorage.getItem('userId');
 
     const formatearFecha = (fecha) => {
@@ -30,7 +31,12 @@ const ReservasPendientes = () => {
     }, []);
 
     const handleClickConfirmar = (id) => {
-        setBotonConfirmacion(id)
+        setBotonConfirmacion(id);
+        setEstilosBtn("confirm");
+    }
+    const handleClickCancelar = (id) => {
+        setBotonConfirmacion(id);
+        setEstilosBtn("cancel");
     }
 
     const handleConfirmarReserva = async (id) => {
@@ -104,13 +110,13 @@ const ReservasPendientes = () => {
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                     <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
-                                    <td><strong>{reserva.montoSenia}</strong></td>
+                                    <td><strong>${reserva.montoSenia}</strong></td>
                                     <td><VisualizadorComprobante comprobanteURL={"https://imgv2-1-f.scribdassets.com/img/document/628368179/original/d929c33054/1729712028?v=1"} /></td>
                                     <td>
                                         {botonConfirmacion === reserva.id ? (
                                             <div>
-                                                <button className="btn btn-success" onClick={() => handleConfirmarReserva(reserva.id)}>
-                                                    Confirmar
+                                                <button className={estilosBtn=="confirm"? "btn btn-success": "btn btn-danger"} onClick={() => handleConfirmarReserva(reserva.id)}>
+                                                    {estilosBtn=="confirm"? "Confirmar": "Cancelar"}
                                                 </button>
                                                 <button className="btn btn-light ms-2" onClick={() => setBotonConfirmacion(null)}>
                                                     <i className="bi bi-x-lg"></i>
@@ -121,7 +127,7 @@ const ReservasPendientes = () => {
                                                 <button className="btn-confirmacion me-2" onClick={() => handleClickConfirmar(reserva.id)}>
                                                     <i className="bi bi-check"></i>
                                                 </button>
-                                                <button className="btn-cancelacion" onClick={() => handleClickConfirmar(reserva.id)}>
+                                                <button className="btn-cancelacion" onClick={() => handleClickCancelar(reserva.id)}>
                                                     <i className="bi bi-x"></i>
                                                 </button>
                                             </>

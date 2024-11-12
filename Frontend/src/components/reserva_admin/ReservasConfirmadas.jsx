@@ -44,7 +44,7 @@ const ReservasConfirmadas = () => {
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
-                <td className="text-capitalize">{reserva.Servicio.nombre}</td>
+                <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>{reserva.Servicio.nombre}</td>
                 <td className="text-capitalize">{reserva.Cliente.nombre}</td>
                 <td>{reserva.Cliente.numero}</td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
@@ -78,7 +78,7 @@ const ReservasConfirmadas = () => {
                             <th scope="col">Precio servicio</th>
                             <th scope="col">Importe abonado</th>
                             <th scope="col">Importe a cobrar</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,7 +95,7 @@ const ReservasConfirmadas = () => {
                 <table className="table">
                     <thead className="table-dark">
                         <tr>
-                            <th scope="col">Estilista</th>
+                            <th scope="col">Operadora</th>
                             <th scope="col">Servicio</th>
                             <th scope="col">Cliente</th>
                             <th scope="col">Teléfono</th>

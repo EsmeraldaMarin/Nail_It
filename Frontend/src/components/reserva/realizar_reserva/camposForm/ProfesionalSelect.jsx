@@ -31,16 +31,18 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
   }
   return (
     <div className="mb-3 col">
-      <label>Profesional</label>
+      <label>Operadora</label>
 
       {profesionales.length == 0 && fecha ?
-        <div>
-          <span>No hay estilistas para esa fecha</span>
+        <div className='mt-2'>
+          <span className='text-danger'>
+            <i className="bi bi-exclamation-diamond me-2"></i>
+            No hay operadoras para esa fecha</span>
 
         </div>
         :
         <select disabled={fecha ? false : true} value={profesional} onChange={(e) => handleHange(e)} className="form-select">
-          <option value="">Seleccione un estilista</option>
+          <option value="">Seleccione una operadora</option>
           {profesionales?.map((pro, index) => (
             <option key={index} value={pro.id}>
               {pro.nombre}
