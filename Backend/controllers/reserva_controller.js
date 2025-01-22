@@ -3,12 +3,13 @@ import { Clientes } from "../db/cliente_tabla.js";
 import { Reservas } from "../db/reserva_tabla.js";
 import { Servicios } from "../db/servicio_tabla.js";
 import { Especialidades } from "../db/especialidad_tabla.js";
+import enviarNotificacion from "../whatsapp.js";
 
 export class GestorReservas {
     async obtener_reservas(fecha, id_profesional) {
         let condicion = [];
-        fecha && condicion.push({fecha: `${fecha}`})
-        id_profesional && condicion.push({id_profesional: `${id_profesional}`})
+        fecha && condicion.push({ fecha: `${fecha}` })
+        id_profesional && condicion.push({ id_profesional: `${id_profesional}` })
 
         try {
             return await Reservas.findAll({
@@ -35,14 +36,51 @@ export class GestorReservas {
             });
 
         } catch (error) {
-            console.error('Error en crear_reserva:', error);
+            console.error('Error en obtener_reservas:', error);
             throw error; // Lanzar el error para manejarlo en la ruta
         }
     }
-
+    /*
+        async crear_reserva(req_body) {
+            try {
+                return await Reservas.create(req_body);
+                
+            } catch (error) {
+                console.error('Error en crear_reserva:', error);
+                throw error; // Lanzar el error para manejarlo en la ruta
+            }
+        }
+    */
+    // Función para crear una reserva y enviar la notificación
     async crear_reserva(req_body) {
         try {
-            return await Reservas.create(req_body);
+            // Crear la reserva en la base de datos
+            const reserva = await Reservas.create(req_body);
+
+            // Obtener los datos de la estilista (simulado, ajústalo a tu lógica)
+            const estilista = await Admins.findByPk(req_body.id_profesional); 
+            const cliente = await Clientes.findByPk(req_body.id_cliente); 
+            const servicio = await Servicios.findByPk(req_body.id_servicio); 
+
+            if (!estilista) {
+                throw new Error('Estilista no encontrada.');
+            }
+
+            // Construir el mensaje para la estilista
+            const mensaje = `
+                Hola ${estilista.nombre}, tienes una nueva reserva pendiente de confirmación.
+                Detalles:
+                - Cliente: ${cliente.nombre}
+                - Fecha: ${req_body.fecha}
+                - Hora: ${req_body.horaInicio}
+                - Servicio: ${servicio.nombre}
+
+                Por favor, revisa tu panel para confirmar.`;
+
+            // Enviar la notificación de WhatsApp
+            await enviarNotificacion(estilista.numero, mensaje);
+
+            return reserva; // Devuelve la reserva creada
         } catch (error) {
             console.error('Error en crear_reserva:', error);
             throw error; // Lanzar el error para manejarlo en la ruta
@@ -121,7 +159,7 @@ export class GestorReservas {
         });
     }
     async confirmar_reserva(id_reserva) {
-        console.log(id_reserva)
+        
         return await Reservas.update({ estado: 'confirmada' }, {
             where: { id: id_reserva }
         });

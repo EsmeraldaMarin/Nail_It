@@ -1,7 +1,7 @@
 import { Modal } from 'react-bootstrap'
 import React, { useState, useEffect } from 'react';
 
-const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha }) => {
+const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha }) => {
 
     const userId = localStorage.getItem('userId');
     const reservasReembolso = reservas.filter(
@@ -9,8 +9,6 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
 
     );
     
-
-    console.log("Reservas por reembolso: ", reservasReembolso);
     const [selectedReserva, setSelectedReserva] = useState(null)
     const [showModal, setShowModal] = useState(false);
 
@@ -25,14 +23,14 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
 
     const confirmCancellation = () => {
         if (selectedReserva) {
-            handleReembolzoReserva(selectedReserva.id, selectedReserva);
+            handleReembolsoReserva(selectedReserva.id, selectedReserva);
             closeModal();
         }
     };
 
     return (
         <div>
-            <h4 className="py-3">Reservas pendientes de reembolzar</h4>
+            <h4 className="py-3">Reservas pendientes de reembolsar</h4>
 
             <div className="table-ctn pb-2 reservas-pendientes" >
                 <div className="table-responsive">
@@ -43,7 +41,7 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
-                                <th scope="col">Importe a reembolzar</th>
+                                <th scope="col">Importe a reembolsar</th>
                                 <th scope="col">Comprobante</th>
                                 <th scope="col">CBU o Alias</th>
                                 <th scope="col">Titular de la cuenta</th>
@@ -111,4 +109,4 @@ const ReservasAReembolzar = ({ reservas, handleReembolzoReserva, formatearFecha 
 }
 
 
-export default ReservasAReembolzar
+export default ReservasAReembolsar

@@ -3,14 +3,22 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
-import ReservasAReembolzar from "./ReservasAReembolzar";
+import ReservasAReembolsar from "./ReservasAReembolsar";
 import VisualizadorComprobante from "./VisualizadorComprobante"
+import ModalEnviarMensaje from "./ModalEnviarMensaje";
 
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
     const [botonConfirmacion, setBotonConfirmacion] = useState(null);
     const [estilosBtn, setEstilosBtn] = useState("confirm");
     const userId = localStorage.getItem('userId');
+
+    // Necesario para enviar por wpp confirmacion a cliente---------------
+    const [telefonoCliente, setTelefonoCliente] = useState("")
+    const [mensajeACliente, setMensajeACliente] = useState("")
+    const [reservaSeleccionada, setReservaSeleccionada] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    //-------------------------------------------------
 
     const formatearFecha = (fecha) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
@@ -21,7 +29,6 @@ const ReservasPendientes = () => {
         const fetchReservas = async () => {
             try {
                 const response = await axios.get('/reserva');
-
                 setReservas(response.data);
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
@@ -44,24 +51,43 @@ const ReservasPendientes = () => {
             const response = await axios.post(`/reserva/confirmar/${id}`, {
                 estado: "confirmada"
             });;
+            setMensajeACliente(`
+                Hola, ${response.data.Cliente.nombre}!
+                Tu reserva a una sesión de ${response.data.Servicio.nombre} ha sido confirmada exitosamente
+                Te esperamos en nuestras instalaciones el ${formatearFecha(response.data.fecha)} a las ${response.data.horaInicio}.
+                
+                ¡Muchas gracias! 
+                - Oh My Nails
+                `
+            )
+            setTelefonoCliente(response.data.Cliente.numero);
+            setReservaSeleccionada(response.data)
             setReservas((prevReservas) =>
                 prevReservas.map((reserva) =>
                     reserva.id === id ? { ...reserva, estado: "confirmada" } : reserva
                 )
             );
+            setShowModal(true);
         } catch (error) {
             console.error('Error al confirmar la reserva', error);
         }
         setBotonConfirmacion(null);
     };
+    // Función para enviar el mensaje (por ejemplo, abrir WhatsApp)
+    const handleEnviarMensaje = () => {
+        const mensajeEncoded = encodeURIComponent(mensajeACliente);
+        const url = `https://wa.me/${telefonoCliente}?text=${mensajeEncoded}`;
 
+        window.open(url, '_blank'); // Abrir WhatsApp en una nueva pestaña
+        setShowModal(false); // Cerrar el modal después de enviar
+    };
 
     // Filtrar reservas por estilista
     const reservasEstilista = reservas.filter(
         reserva => reserva.estado === "pendiente" && reserva.id_profesional === userId
     );
-    //reembolzo 
-    const handleReembolzoReserva = async (id, reservaData) => {
+    //reembolso 
+    const handleReembolsoReserva = async (id, reservaData) => {
 
         const result = await axios.put(`/reserva/${id}`, {
             horaInicio: reservaData.horaInicio,
@@ -115,8 +141,8 @@ const ReservasPendientes = () => {
                                     <td>
                                         {botonConfirmacion === reserva.id ? (
                                             <div>
-                                                <button className={estilosBtn=="confirm"? "btn btn-success": "btn btn-danger"} onClick={() => handleConfirmarReserva(reserva.id)}>
-                                                    {estilosBtn=="confirm"? "Confirmar": "Cancelar"}
+                                                <button className={estilosBtn == "confirm" ? "btn btn-success" : "btn btn-danger"} onClick={() => handleConfirmarReserva(reserva.id)}>
+                                                    {estilosBtn == "confirm" ? "Confirmar" : "Cancelar"}
                                                 </button>
                                                 <button className="btn btn-light ms-2" onClick={() => setBotonConfirmacion(null)}>
                                                     <i className="bi bi-x-lg"></i>
@@ -142,8 +168,15 @@ const ReservasPendientes = () => {
                     </table>
                 </div>
             </div>
-            <ReservasAReembolzar reservas={reservas} handleReembolzoReserva={handleReembolzoReserva} formatearFecha={formatearFecha}></ReservasAReembolzar>
-        </div>
+            <ModalEnviarMensaje
+                showModal={showModal}
+                handleClose={() => setShowModal(false)}
+                mensaje={mensajeACliente}
+                telefono={telefonoCliente}
+                onEnviar={handleEnviarMensaje}
+            />
+            <ReservasAReembolsar reservas={reservas} handleReembolsoReserva={handleReembolsoReserva} formatearFecha={formatearFecha}></ReservasAReembolsar>
+        </div >
 
 
 

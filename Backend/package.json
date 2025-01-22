@@ -24,6 +24,7 @@
     "nodemailer": "^6.9.15",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",
-    "supertest": "^7.0.0"
+    "supertest": "^7.0.0",
+    "twilio": "^5.4.2"
   }
 }

@@ -1,6 +1,7 @@
 import pkg from 'express';
 const { Router } = pkg;
 import { gestorReservas } from "../index.js";
+import { Reservas } from '../db/reserva_tabla.js';
 
 export const routerReservas = Router();
 
@@ -51,9 +52,8 @@ routerReservas.get("/user/:id", async (req, res) => {
 routerReservas.post("/confirmar/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(req.params)
-        const reservaActualizada = await gestorReservas.confirmar_reserva(id);
-        console.log(reservaActualizada)
+        await gestorReservas.confirmar_reserva(id);
+        const reservaActualizada = await gestorReservas.obtener_reserva_por_id(id);
         res.status(201).json(reservaActualizada);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -62,7 +62,6 @@ routerReservas.post("/confirmar/:id", async (req, res) => {
 
 routerReservas.post("/", async (req, res) => {
     try {
-        console.log(req.body)
         if (!req.body.horaInicio || typeof req.body.horaInicio !== 'string' || req.body.horaInicio.trim() === '') {
             return res.status(400).json({ message: "horaInicio de especialidad es requerido" });
         }
@@ -104,7 +103,6 @@ routerReservas.put("/:id", async (req, res) => {
     try {
         const reservaId = req.params.id;
 
-        console.log(req.body)
         if (!req.body.horaInicio || typeof req.body.horaInicio !== 'string' || req.body.horaInicio.trim() === '') {
             return res.status(400).json({ message: "horaInicio de especialidad es requerido" });
         }

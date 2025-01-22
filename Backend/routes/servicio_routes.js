@@ -37,7 +37,6 @@ routerServicios.get("/:id", async (req, res) => {
 routerServicios.post("/", async (req, res) => {
     try {
         // Validación
-        console.log(req.body)
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
             return res.status(400).json({ message: "Nombre de servicio es requerido" });
         }

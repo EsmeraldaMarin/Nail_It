@@ -59,7 +59,6 @@ routerAdmins.post("/registro", async (req, res) => {
         )
 
         const mail = await enviarMailVerificacionAdmin(req.body.email, tokenVerificacion);
-        console.log(mail);
         if (mail.accepted === 0) {
             return res.status(500).send({ status: "error", message: "Error enviando mail de verificación" })
         }
@@ -146,8 +145,6 @@ routerAdmins.put("/:id", async (req, res) => {
 
         const adminExistente = await gestorAdmins.obtener_admin(id);
 
-        console.log(id + " : " + adminExistente);
-
         if (!adminExistente) {
             return res.status(401).send("Administrador no encontrado");
         }
@@ -184,7 +181,6 @@ routerAdmins.delete("/:id", async (req, res) => {
 
     try {
         const resultado = await gestorAdmins.eliminar_admin(adminId);
-        console.log(resultado)
 
         if (resultado) {
             res.status(200).json({ message: "Administrador eliminado con éxito" });

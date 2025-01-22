@@ -73,8 +73,6 @@ routerClientes.put("/cliente/:id", async (req, res) => {
 
         const clienteExistente = await gestorClientes.obtener_cliente(clienteId);
 
-        console.log(clienteId + " : " + clienteExistente);
-
         if (!clienteExistente) {
             return res.status(404).send("Cliente no encontrado");
         }
@@ -88,7 +86,6 @@ routerClientes.put("/cliente/:id", async (req, res) => {
 
         const updateCliente = await gestorClientes.actualizar_cliente(req.body, clienteId);
 
-        console.log(updateCliente);
         res.status(202).json("Cliente modificado.");
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -148,7 +145,6 @@ routerClientes.post("/registro", async (req, res) => {
         )
 
         const mail = await enviarMailVerificacion(req.body.email, tokenVerificacion);
-        console.log(mail);
         if (mail.accepted === 0) {
             return res.status(500).send({ status: "error", message: "Error enviando mail de verificación" })
         }
@@ -175,7 +171,6 @@ routerClientes.post("/login", async (req, res) => {
     try {
         // Obtener el usuario por email
         const usuario = await gestorClientes.obtener_cliente_por_email(req.body.email);
-        console.log(usuario)
         // Verificar si el usuario existe
         // if (!usuario || !usuario.verificado) {
         //     return res.status(400).json({ message: "Email no registrado o no verificado." });

@@ -25,7 +25,6 @@ routerEstados.get("/:id", async (req, res) => {
 routerEstados.post("/", async (req, res) => {
     try {
         // Validación
-        console.log(req.body)
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
             return res.status(400).json({ message: "Nombre de estado es requerido" });
         }
@@ -61,7 +60,6 @@ routerEstados.put("/:id", async (req, res) => {
 
         const updateEstado = await gestorEstados.actualizar_estado(req.body, id);
         
-        console.log(updateEstado);
         res.status(202).json("Estado modificado.");
     }
     catch (error) {

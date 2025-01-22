@@ -12,7 +12,6 @@ routerAdminHorarioEspecialidad.get("/", async (req, res) => {
 
         // Filtrar horarios en base a los parámetros de día y especialidad
         let datos = await gestorAdminHorarioEspecialidad.obtener_todos();
-        console.log(datos)
         if (dia && especialidad){
             datos = datos.filter(horario => horario.dia_semana == dia && horario.id_especialidad == especialidadInt)
         }

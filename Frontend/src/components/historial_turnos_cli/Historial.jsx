@@ -221,7 +221,7 @@ const Historial_turnos = () => {
             <div className='container-fluid Reservas'>
                 <h4>Mis Reservas</h4>
                 {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <p>No tienes reservas próximas.</p>}
-                <h4>Mis Reservas anteriores</h4>
+                {/* <h4>Mis Reservas anteriores</h4> */}
                 {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <p>No tienes reservas pasadas.</p>}
             </div>
             <div>
