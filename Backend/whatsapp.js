@@ -1,8 +1,11 @@
 import twilio from 'twilio';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Configuración de Twilio
-const accountSid = '';
-const authToken = '';
+const accountSid = process.env.ACCSID;
+const authToken = process.env.AUTHTOKEN;
 const client = twilio(accountSid, authToken);
 
 // Función para notificar a la estilista
