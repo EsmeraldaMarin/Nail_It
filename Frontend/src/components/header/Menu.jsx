@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Logout from '../login/Logout';
 
 const Menu = () => {
@@ -23,7 +23,7 @@ const Menu = () => {
     return (
         <nav className="navbar navbar-expand-lg fixed-top">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">Reservas en Oh My Nails</a>
+                <Link className="navbar-brand" to="/inicio/">Oh My Nails</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

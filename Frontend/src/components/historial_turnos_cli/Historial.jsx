@@ -11,7 +11,7 @@ const Historial_turnos = () => {
     const [showModal, setShowModal] = useState(false);
     const [reservaParaCancelar, setReservaParaCancelar] = useState(null);
     const userId = localStorage.getItem('userId');
-    const cbuUser = ""
+    let cbuUser = ""
     const navigate = useNavigate();
     const [cbu, setCbu] = useState("");
     const [cuenta, setcuenta] = useState("");
@@ -70,16 +70,12 @@ const Historial_turnos = () => {
         }
     };
     const validateCBUOrAlias = (value) => {
-
         if (/^\d{22}$/.test(value)) {
             return true;
         }
-
-
         if (/^[a-zA-Z0-9]{6,20}$/.test(value) && !/^\d+$/.test(value)) {
             return true;
         }
-
         return false;
     }
 
@@ -136,30 +132,31 @@ const Historial_turnos = () => {
         switch (estado) {
             case 'cancelada':
                 return {
-                    card: 'card border-danger mb-3',
-                    header: 'card-header bg-transparent border-danger',
-                    footer: 'card-footer bg-transparent border-danger',
+                    card: 'cardd card-danger',
+                    header: 'card-header',
+                    footer: 'card-footer',
                 };
             case 'pendiente':
                 return {
-                    card: 'card border-warning mb-3',
-                    header: 'card-header bg-transparent border-warning',
-                    footer: 'card-footer bg-transparent border-warning',
+                    card: 'cardd card-warning',
+                    header: 'card-header',
+                    footer: 'card-footer',
                 };
             case 'confirmada':
                 return {
-                    card: 'card border-success mb-3',
-                    header: 'card-header bg-transparent border-success',
-                    footer: 'card-footer bg-transparent border-success',
+                    card: 'cardd card-success',
+                    header: 'card-header',
+                    footer: 'card-footer',
                 };
             default:
                 return {
-                    card: 'card border-secondary mb-3',
-                    header: 'card-header bg-transparent border-secondary',
-                    footer: 'card-footer bg-transparent border-secondary',
+                    card: 'cardd card-secondary',
+                    header: 'card-header',
+                    footer: 'card-footer',
                 };
         }
     };
+
 
     const renderFilasReservas = (reservas) => {
         return (
@@ -169,7 +166,7 @@ const Historial_turnos = () => {
 
                     return (
                         <div className="col-sm-12 col-md-6 col-lg-4" key={index}>
-                            <div className={clases.card} style={{ maxWidth: '18rem' }}>
+                            <div className={clases.card}>
                                 <div className={clases.header}>
                                     Turno {reserva.Servicio.Especialidad.nombre}
                                     {
@@ -182,10 +179,8 @@ const Historial_turnos = () => {
                                 <div className="card-body text-success">
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item"><strong>Estilista:</strong> {reserva.Admin.nombre}</li>
-                                        <li className="list-group-item"><strong>Fecha:</strong> {formatearFecha(reserva.fecha)}</li>
-                                        <li className="list-group-item"><strong>Hora de Inicio:</strong> {reserva.horaInicio}</li>
-                                        <li className="list-group-item"><strong>Importe de la seña:</strong> {reserva.montoSenia}</li>
-                                        <li className="list-group-item"><strong>Importe Total:</strong> ${reserva.montoTotal}</li>
+                                        <li className="list-group-item"><strong>Fecha:</strong> <span className="text-capitalize">{formatearFecha(reserva.fecha)}</span> - <strong>Hora de Inicio:</strong> {reserva.horaInicio}hs</li>
+                                        <li className="list-group-item"><strong>Importe de la seña:</strong> ${reserva.montoSenia} - <strong>Importe Total:</strong> ${reserva.montoTotal}</li>
                                         <li className="list-group-item"><strong>Servicio:</strong> {reserva.Servicio.nombre}</li>
                                         <li className="list-group-item"><strong>Especialidad del Servicio:</strong> {reserva.Servicio.Especialidad.nombre}</li>
                                     </ul>
@@ -218,16 +213,16 @@ const Historial_turnos = () => {
 
     return (
         <div className='body-ctn'>
+            <div>
+                <button className='btn misTurnos-btn' onClick={handleRedirect}>
+                    <i className='bi bi-arrow-left pe-2'></i> Volver
+                </button>
+            </div>
             <div className='container-fluid Reservas'>
                 <h4>Mis Reservas</h4>
                 {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <p>No tienes reservas próximas.</p>}
                 {/* <h4>Mis Reservas anteriores</h4> */}
                 {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <p>No tienes reservas pasadas.</p>}
-            </div>
-            <div>
-                <button className='btn misTurnos-btn' onClick={handleRedirect}>
-                    <i className='bi bi-arrow-left pe-2'></i> Volver
-                </button>
             </div>
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton className="custom-modal-header">
@@ -237,7 +232,7 @@ const Historial_turnos = () => {
                 <Modal.Body className="modal-body-custom">
                     <div className="modal-content-wrapper">
                         <p className="modal-message">
-                            Debido a que faltan menos de 48 horas para su turno, 
+                            Debido a que faltan menos de 48 horas para su turno,
                             <br />
                             <strong>su seña NO será devuelta</strong>.
                         </p>

@@ -29,7 +29,12 @@
         display: flex;
         justify-content: center;
         @media screen and (min-width: 800px) {
+            font-size: 1.3em;
             width: 500px;
+            button,
+            a {
+                font-size: 1.1em;
+            }
         }
         hr {
             width: 20%;
@@ -44,14 +49,14 @@
                 margin-bottom: 10px;
                 text-align: center;
                 &.btn-primary {
-                    background-color: #f2884c;
+                    background-color: #f85b00;
                     border: 0;
                 }
                 &.btn-secondary {
                     margin-top: 20px;
                     background-color: #fff;
-                    border: 1px solid #f2884c;
-                    color: #f2884c;
+                    border: 1px solid #f85b00;
+                    color: #f85b00;
                     font-weight: 600;
                 }
             }
@@ -81,7 +86,7 @@
                 height: 100%;
                 border-radius: 100%;
                 border: 10px solid transparent;
-                border-top-color: #f2884c;
+                border-top-color: #f85b00;
             }
 
             #loader-1:before {

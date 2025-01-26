@@ -2,27 +2,160 @@
 /* Para asegurarte de que el contenedor ocupe todo el ancho */
 .inicio {
   padding: 0;
-  .reservar {
-    width: 100%;
+  .layout_inicio {
+    position: relative;
+    height: calc(80vh - 60px);
+    box-shadow: 5px 0 3px #222;
     display: flex;
-    justify-content: center;
-    .btn-reservar {
-      position: relative;
-      width: 90%;
-      height: 50px;
-      background-color: $naranjaFuerte;
-      color: white;
-      transition: background-color 0.3s ease;
-      &:hover{
-        background-color: $primary;
+    justify-content: space-between;
+    @media (min-width: 920px) {
+      height: calc(65vh - 60px);
+    }
+    .separador_color {
+      height: 100%;
+      width: 80vw;
+      background-color: #fdd9c3;
+      padding: 3em;
+      @media (min-width: 920px) {
+        width: 40vw;
+        position: absolute;
+        right: 0;
+      }
+      .reservar {
+        display: none;
+      }
+      h1 {
+        display: none;
+        @media (min-width: 920px) {
+          font-size: 5em;
+          display: inline-block;
+        }
+      }
+      .reservar {
+        @media (min-width: 920px) {
+          display: inline-block;
+          position: static;
+          margin-top: 50px;
+          animation: none;
+          .btn-reservar {
+            width: 450px;
+            height: 60px;
+            font-size: 1.7em;
+            text-align: left;
+          }
+          &::after {
+            content: ">";
+            margin-left: -50px;
+            position: relative;
+            z-index: 2;
+            font-size: 2em;
+            color: #fff;
+            top: 8px;
+          }
+        }
+      }
+      p {
+        @media (min-width: 920px) {
+          font-size: 1.5em;
+          margin: 0;
+          margin-right: 30px;
+        }
+      }
+    }
+    .titulo {
+      width: 20vw;
+      h1 {
+        color: $naranjaFuerte;
+        font-size: 5em;
         font-weight: bold;
+        transform: rotate(90deg);
+        text-wrap: nowrap;
+        margin-left: 0px;
+        margin-bottom: 0px;
+        padding-top: 0px;
+        padding-left: 15px;
       }
       @media (min-width: 920px) {
-        width: 300px;
+        display: none;
       }
-      i {
+    }
+    img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80vw;
+      object-fit: cover;
+      height: 300px;
+      box-shadow: 0 0 3px #bbb;
+      @media (min-width: 920px) {
+        width: 60vw;
+        height: calc(65vh - 60px);
+        top: 0;
+        left: 0;
+        object-position: center 70%;
+      }
+    }
+  }
+  .reservar {
+    position: absolute;
+    top: 50vh;
+    right: 10vw;
+    display: flex;
+    justify-content: center;
+    animation: boton_reserva 1.3s ease;
+    animation-iteration-count: infinite;
+    @media (min-width: 920px) {
+      display: none;
+    }
+    .btn-reservar {
+      width: 230px;
+      height: 40px;
+      border-radius: 0px;
+      padding: 0px 25px;
+      font-weight: 500;
+      font-size: 1.2em;
+      color: #333;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+      outline: none;
+      border: none;
+      color: #000;
+      @media (min-width: 920px) {
+        width: 300px;
+        font-size: 1.3em;
+        color: #fff;
+        background-color: $naranjaFuerte;
+        box-shadow: inherit;
+      }
+      &:hover {
+        color: #000;
+        &:after {
+          left: auto;
+          right: 0;
+          width: 100%;
+        }
+      }
+      &:active {
+        top: 2px;
+      }
+      &:after {
         position: absolute;
-        right: 40px;
+        content: "";
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        direction: rtl;
+        z-index: -1;
+        box-shadow:
+          -7px -7px 20px 0px #fff9,
+          -4px -4px 5px 0px #fff9,
+          7px 7px 20px 0px #0002,
+          4px 4px 5px 0px #0001;
+        transition: all 0.3s ease;
       }
     }
   }
@@ -42,4 +175,16 @@
 .map-container {
   width: 100%;
   max-width: 600px; /* Or adjust max-width to ensure both have the same width */
+}
+
+@keyframes boton_reserva {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

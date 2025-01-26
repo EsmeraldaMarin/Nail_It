@@ -33,7 +33,7 @@
         height: 60px;
         display: flex;
         align-items: center;
-        background-color: #f2884c;
+        background-color: #f85b00;
         box-shadow: 0px 2px 2px #bbb;
         position: sticky;
         top: 0;
@@ -51,7 +51,7 @@
             left: 230px;
             width: 35px;
             height: 35px;
-            background-color: #f2884c;
+            background-color: #f85b00;
             border-radius: 100px;
             display: flex;
             justify-content: center;
@@ -238,7 +238,7 @@
                             text-decoration: none;
                             white-space: nowrap;
                             &.active {
-                                background-color: #f2884c;
+                                background-color: #f85b00;
                                 border-radius: 10px;
                                 color: #fff;
                                 font-weight: bold;
