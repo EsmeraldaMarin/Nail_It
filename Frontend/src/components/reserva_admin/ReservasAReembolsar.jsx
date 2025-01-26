@@ -72,7 +72,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         {
                                             <div>
                                                 <button className="btn btn-danger" onClick={() => openModal(reserva)}>
-                                                    Cancelar Reserva
+                                                    Reembolsado
                                                 </button>
 
                                             </div>
@@ -95,7 +95,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                 <Modal.Body className="modal-body-custom">
                     <div className="modal-content-wrapper">
                         <p className="modal-message">
-                            Está confirmando la cancelación de la reserva. Asegúrese de haber devuelto la seña.
+                            Está confirmando la cancelación de la reserva. Asegúrese de haber reembolsado la seña.
                         </p>
                         <div className="modal-buttons">
                             <button className="btn btn-danger confirm-btn" onClick={confirmCancellation}>

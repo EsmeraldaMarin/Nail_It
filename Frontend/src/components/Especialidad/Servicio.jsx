@@ -86,7 +86,6 @@ const Servicio = () => {
 
 
     const actualizado = async (id, data) => {
-        console.log(data)
         const result = await axios.put(`/servicio/${id}`, {
             nombre: data.nombre,
             precio: parseFloat(data.precio), // Convertir a número

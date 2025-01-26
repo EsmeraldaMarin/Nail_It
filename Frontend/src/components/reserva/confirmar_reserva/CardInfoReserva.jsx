@@ -1,7 +1,7 @@
 import React from 'react';
 import './CardInfoReserva.scss';
 
-const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrarReserva }) => {
+const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReservaData, registrarReserva }) => {
     const { profesional_data, fecha, servicio_data, tipoServicio, horario, precio, monto } = reservaData;
     // Traer de BD
     const alias = "hola.como.estas";
@@ -15,8 +15,20 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
             comprobante: selectedFile,
         });
     };
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setReservaData({
+            ...reservaData,
+            userId: {
+                ...reservaData.userId,
+                [name]: value 
+            }
+        });
+    }
     const handleConfirm = () => {
+        if (esDeEstilista){
+            registrarReserva();
+        }
         if (reservaData.comprobante) {
             registrarReserva();
         }
@@ -81,15 +93,54 @@ const CardInfoReserva = ({ setPasoActual, reservaData, setReservaData, registrar
                         </div>
                     </div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="formFile" className="form-label">Adjunte su comprobante</label>
-                    <input className="form-control" type="file" id="formFile" onChange={handleFileChange} />
-                </div>
-
+                {!esDeEstilista &&
+                    <div className="mb-3">
+                        <label htmlFor="formFile" className="form-label">Adjunte su comprobante</label>
+                        <input className="form-control" type="file" id="formFile" onChange={handleFileChange} />
+                    </div>
+                }
+                {
+                    esDeEstilista &&
+                    <div>
+                        <div className="form-group col-md-6">
+                            <label className="form-label">Nombre</label>
+                            <input
+                                type="text"
+                                name="nombre_cliente"
+                                className="form-control"
+                                value={reservaData.userId.nombre_cliente}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label className="form-label">Apellido</label>
+                            <input
+                                type="text"
+                                name="apellido_cliente"
+                                className="form-control"
+                                value={reservaData.userId.apellido_cliente}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label className="form-label" >Número de teléfono</label>
+                            <input
+                                type="tel"
+                                name="telefono_cliente"
+                                className="form-control"
+                                value={reservaData.userId.telefono_cliente}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    </div>
+                }
                 <button
                     onClick={handleConfirm}
                     className="btn btn-primary w-100 mt-4"
-                    disabled={!reservaData.comprobante}
+                    disabled={!reservaData.comprobante && !esDeEstilista}
                 >
                     Listo <i className="bi bi-check"></i>
                 </button>

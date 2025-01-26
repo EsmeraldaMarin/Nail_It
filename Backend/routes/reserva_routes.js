@@ -49,38 +49,67 @@ routerReservas.get("/user/:id", async (req, res) => {
     }
 });
 
-routerReservas.post("/confirmar/:id", async (req, res) => {
-    try {
-        const id = req.params.id;
-        await gestorReservas.confirmar_reserva(id);
-        const reservaActualizada = await gestorReservas.obtener_reserva_por_id(id);
-        res.status(201).json(reservaActualizada);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    };
-});
-
 routerReservas.post("/", async (req, res) => {
     try {
-        if (!req.body.horaInicio || typeof req.body.horaInicio !== 'string' || req.body.horaInicio.trim() === '') {
-            return res.status(400).json({ message: "horaInicio de especialidad es requerido" });
+        const {
+            horaInicio,
+            fecha,
+            comprobante,
+            montoSenia,
+            montoTotal,
+            id_cliente,
+            id_servicio,
+            id_profesional,
+            estado
+        } = req.body;
+
+        // Validaciones generales
+        if (!horaInicio || typeof horaInicio !== 'string' || horaInicio.trim() === '') {
+            return res.status(400).json({ message: "horaInicio de reserva es requerido" });
         }
-        if (!req.body.comprobante || typeof req.body.comprobante !== 'string' || req.body.comprobante.trim() === '') {
-            return res.status(400).json({ message: "comprobante de especialidad es requerido" });
+        if (!fecha || typeof fecha !== 'string' || fecha.trim() === '') {
+            return res.status(400).json({ message: "fecha de reserva es requerida" });
         }
-        if (!req.body.estado || typeof req.body.estado !== 'string' || req.body.estado.trim() === '') {
-            return res.status(400).json({ message: "estado de especialidad es requerido" });
+        if (!id_servicio || typeof id_servicio !== 'string' || id_servicio.trim() === '') {
+            return res.status(400).json({ message: "id_servicio de reserva es requerido" });
         }
-        if (!req.body.id_servicio || typeof req.body.id_servicio !== 'string' || req.body.id_servicio.trim() === '') {
-            return res.status(400).json({ message: "id_servicio de especialidad es requerido" });
+        if (!id_profesional || typeof id_profesional !== 'string' || id_profesional.trim() === '') {
+            return res.status(400).json({ message: "id_profesional de reserva es requerido" });
         }
 
-        const nuevaReserva = await gestorReservas.crear_reserva(req.body);
+        // Validación específica para cliente registrado o manual
+        let reservaData = {
+            horaInicio,
+            fecha,
+            comprobante: comprobante || null,
+            montoSenia,
+            montoTotal,
+            id_servicio,
+            id_profesional,
+            estado: estado || 'pendiente'
+        };
+
+        if (typeof id_cliente === 'number') {
+            // Cliente registrado
+            reservaData.id_cliente = id_cliente;
+        } else if (typeof id_cliente === 'object' && id_cliente.nombre_cliente && id_cliente.apellido_cliente && id_cliente.telefono_cliente) {
+            // Cliente manual (datos proporcionados por la estilista)
+            reservaData.nombre_cliente = id_cliente.nombre_cliente;
+            reservaData.apellido_cliente = id_cliente.apellido_cliente;
+            reservaData.telefono_cliente = id_cliente.telefono_cliente;
+        } else {
+            return res.status(400).json({ message: "Debes proporcionar un cliente registrado o los datos de un cliente manual válidos." });
+        }
+
+        // Crear la reserva
+        const nuevaReserva = await gestorReservas.crear_reserva(reservaData);
+        console.log(nuevaReserva)
         res.status(201).json(nuevaReserva);
     } catch (error) {
         res.status(400).json({ error: error.message });
-    };
+    }
 });
+
 
 routerReservas.delete("/:id", async (req, res) => {
     try {
@@ -121,12 +150,12 @@ routerReservas.put("/:id", async (req, res) => {
         }
 
         const Modificado = await gestorReservas.actualizar_reserva(req.body, reservaId);
-        res.status(200).json({message: "Reserva modificado!"});
-        
+        res.status(200).json({ message: "Reserva modificado!" });
+
 
     } catch (error) {
         res.status(400).json({ error: error.message });
-    
+
     }
 
 })

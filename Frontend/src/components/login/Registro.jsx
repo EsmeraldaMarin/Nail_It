@@ -108,17 +108,20 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                     />
                 </div>
                 <div className="form-group col-md-6">
-                    <label className="form-label">Email</label>
+                    <label className="form-label" htmlFor="username" >Email</label>
                     <input
+                        id="username"
                         type="email"
                         name="email"
                         className="form-control"
                         value={formData.email}
                         onChange={handleChange}
+                        autoComplete="username"
+                        required
                     />
                 </div>
                 <div className="form-group col-md-6">
-                    <label className="form-label">Número de teléfono</label>
+                    <label className="form-label" >Número de teléfono</label>
                     <input
                         type="tel"
                         name="numero"
@@ -128,23 +131,29 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                     />
                 </div>
                 <div className="form-group col-md-6">
-                    <label className="form-label">Contraseña</label>
+                    <label className="form-label" htmlFor="password" >Contraseña</label>
                     <input
+                        id="password"
                         type="password"
                         name="password"
                         className="form-control"
                         value={formData.password}
                         onChange={handleChange}
+                        autoComplete="new-password"
+                        required
                     />
                 </div>
                 <div className="form-group col-md-6">
-                    <label className="form-label">Repetir Contraseña</label>
+                    <label className="form-label" htmlFor="password" >Repetir Contraseña</label>
                     <input
+                        id="password"
                         type="password"
                         name="confirmPassword"
                         className="form-control"
                         value={formData.confirmPassword}
                         onChange={handleChange}
+                        autoComplete="new-password"
+                        required
                     />
                 </div>
 

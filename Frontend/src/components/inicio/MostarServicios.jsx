@@ -12,7 +12,6 @@ const MostrarServicios = () => {
         const fetchServicios = async () => {
             try {
                 const response = await axios.get('/servicio');
-                console.log(response.data)
                 setServicios(response.data);
             } catch (error) {
                 console.error('Error al obtener los servicios', error);

@@ -3,6 +3,7 @@ import ReservaContext from '../reserva/reservaContext';
 import './ModalReservaDeEstilista.scss'
 
 const ModalReservaDeEstilista = ({ display, setDisplay }) => {
+    
     const handleClick = () => {
         setDisplay("none")
     }
@@ -10,7 +11,7 @@ const ModalReservaDeEstilista = ({ display, setDisplay }) => {
     return (
         <div style={{ display: { display } }} className='modalReservaEstilista' >
             <button className='btn cerrarModal bi bi-x' onClick={handleClick}></button>
-            <ReservaContext></ReservaContext>
+            <ReservaContext esDeEstilista={true} ></ReservaContext>
         </div>
     );
 };

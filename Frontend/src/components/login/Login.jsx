@@ -76,22 +76,27 @@ const Login = () => {
             <div className="header">Nail It</div>
             <form onSubmit={handleSubmit} className="row g-3">
                 <div className="form-group col-md-6">
-                    <label className="form-label">Email:</label>
+                    <label className="form-label" htmlFor="username" >Email:</label>
                     <input
+                        id="username"
                         type="email"
                         name="email"
                         value={formData.email}
                         className="form-control"
                         onChange={handleChange}
+                        autoComplete="username"
+                        required
                     />
                 </div>
                 <div className="form-group col-md-6">
-                    <label htmlFor="inputPassword5" className="form-label">Contraseña:</label>
+                    <label htmlFor="password" className="form-label">Contraseña:</label>
                     <input
-                        type="password" id="inputPassword5" className="form-control" aria-describedby="passwordHelpBlock"
+                        type="password" id="password" className="form-control" aria-describedby="passwordHelpBlock"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
+                        autoComplete="current-password"
+                        required
                     />
 
                 </div>

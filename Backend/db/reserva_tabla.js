@@ -15,7 +15,7 @@ export const Reservas = sequelize.define('Reservas', {
         type: DataTypes.TIME,
         allowNull: false
     },
-    fecha:{
+    fecha: {
         type: DataTypes.DATE,
         allowNull: false
     },
@@ -37,7 +37,19 @@ export const Reservas = sequelize.define('Reservas', {
             model: Clientes,
             key: 'id'
         },
-        allowNull: false
+        allowNull: true // sera null cuando la estilista sea quien realiza la reserva y pone los datos del cliente manualmente
+    },
+    nombre_cliente: {
+        type: DataTypes.STRING,
+        allowNull: true // Solo se usa si el cliente no está registrado
+    },
+    apellido_cliente: {
+        type: DataTypes.STRING,
+        allowNull: true // Solo se usa si el cliente no está registrado
+    },
+    telefono_cliente: {
+        type: DataTypes.STRING,
+        allowNull: true // Solo se usa si el cliente no está registrado
     },
     id_servicio: {
         type: DataTypes.STRING,
