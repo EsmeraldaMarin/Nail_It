@@ -4,7 +4,7 @@ import CardInfoReserva from './confirmar_reserva/CardInfoReserva';
 import CardOpExitosa from './mensaje_exitoso/CardOpExitosa'
 import axios from '../../axiosConfig/axiosConfig';
 import ErrorEnRealizarReserva from '../errors/ErrorEnRealizarReserva'
-function ReservaContext() {
+function ReservaContext({ esDeEstilista = false, datosCliente = {} }) {
     const [pasoActual, setPasoActual] = useState(1); // Estado para manejar el paso actual
 
     const [reservaData, setReservaData] = useState({
@@ -47,7 +47,7 @@ function ReservaContext() {
         <div className='p-3'>
             {pasoActual === 1 && <ReservaCard setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} />}
             {pasoActual === 2 && <CardInfoReserva setPasoActual={setPasoActual} reservaData={reservaData} setReservaData={setReservaData} registrarReserva={registrarReserva} />}
-            {pasoActual === 3 && <CardOpExitosa setPasoActual={setPasoActual}/>}
+            {pasoActual === 3 && <CardOpExitosa setPasoActual={setPasoActual} />}
             {pasoActual === 4 && <ErrorEnRealizarReserva />}
         </div>
     );

@@ -105,7 +105,12 @@ const ReservasPendientes = () => {
             setReservas(response.data);
         }
     }
-
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+        }).format(price);
+    };
 
     return (
         <div className='container-fluid Reservas'>
@@ -123,7 +128,7 @@ const ReservasPendientes = () => {
                                 <th scope="col">Hora Turno</th>
                                 <th scope="col">Servicio</th>
                                 <th scope="col">Importe abonado</th>
-                                <th scope="col">Comprobante</th>
+                                {/*<th scope="col">Comprobante</th>*/}
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -131,13 +136,13 @@ const ReservasPendientes = () => {
                             {reservasEstilista.map((reserva, index) =>
 
                                 <tr key={index}>
-                                    <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
+                                    <td className="text-capitalize text-wrap">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
                                     <td>{reserva.Cliente.numero}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                     <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
-                                    <td><strong>${reserva.montoSenia}</strong></td>
-                                    <td><VisualizadorComprobante comprobanteURL={"https://imgv2-1-f.scribdassets.com/img/document/628368179/original/d929c33054/1729712028?v=1"} /></td>
+                                    <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
+                                    {/*<td><VisualizadorComprobante comprobanteURL={"https://imgv2-1-f.scribdassets.com/img/document/628368179/original/d929c33054/1729712028?v=1"} /></td> */}
                                     <td>
                                         {botonConfirmacion === reserva.id ? (
                                             <div>

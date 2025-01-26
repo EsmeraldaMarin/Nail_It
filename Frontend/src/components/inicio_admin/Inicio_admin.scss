@@ -48,7 +48,7 @@
         .btn-toggle-menu {
             position: fixed;
             top: 80px;
-            left: 230px;
+            left: 270px;
             width: 35px;
             height: 35px;
             background-color: #f85b00;
@@ -120,7 +120,7 @@
         nav.sideBar {
             background-color: white;
             height: calc(100vh - 60px);
-            width: 250px;
+            width: 350px;
             position: sticky;
             top: 60px;
             transition: width 0.2s ease;
@@ -216,11 +216,7 @@
                     padding: 0 !important;
 
                     @media screen and (max-width: 920px) {
-                        display: grid;
-                        grid-template-columns: repeat(2, 1fr);
-                        grid-template-rows: repeat(4, 1fr);
-                        grid-column-gap: 10px;
-                        grid-row-gap: 0px;
+                        
                     }
 
                     li {
@@ -237,6 +233,10 @@
                             color: #777;
                             text-decoration: none;
                             white-space: nowrap;
+                            font-size: 1.3em;
+                            @media screen and (max-width: 920px) {
+                                font-size: 1em;
+                            }
                             &.active {
                                 background-color: #f85b00;
                                 border-radius: 10px;

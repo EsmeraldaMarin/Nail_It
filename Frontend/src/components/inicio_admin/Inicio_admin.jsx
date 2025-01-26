@@ -20,7 +20,6 @@ const Inicio_admin = () => {
                     <p className='soporte'></p>
                     <button className='btn-toggle-menu' id='btn-toggle-menu' onClick={handleClick}><span>Menú</span> <i className='bi bi-chevron-down' ></i></button>
                     <p className="text-end fs-5 p-0 m-0"><b>Bienvenida, {userName}!</b></p>
-
                 </header>
                 <div className='body-content'>
                     <SideBar></SideBar>

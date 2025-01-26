@@ -4,11 +4,17 @@ import axios from '../../axiosConfig/axiosConfig';
 import './Consulta.scss'
 
 export default function ConsultaServicios({ servicios, onNewClick, onActualizar }) {
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+        }).format(price);
+    };
     const tbody = servicios.map((servicio) => (
         <tr key={servicio.id}>
             <td>{servicio.nombre}</td>
-            <td>{servicio.precio}</td>
-            <td>{servicio.duracion}</td>
+            <td>{formatPrice(servicio.precio)}</td>
+            <td>{servicio.duracion} minutos</td>
             <td>{servicio.Especialidad.nombre}</td>
             <td>
                 <button className="btn btn-sm btn-secondary" onClick={() => { onActualizar(servicio) }}>

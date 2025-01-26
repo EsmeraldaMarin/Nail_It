@@ -72,7 +72,12 @@ export default function Consulta() {
       await serviciosServices.remove(id);
     loadData();
   };
-
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+    }).format(price);
+  };
   return (
     <div className="bg-gral">
       <EnSesion />
@@ -97,7 +102,7 @@ export default function Consulta() {
               {rows.length > 0 ? (rows.map((servicio) => (
                 <tr key={servicio.ID}>
                   <td>{servicio.Nombre}</td>
-                  <td>{servicio.Precio}</td>
+                  <td>{formatPrice(servicio.Precio)}</td>
                   <td>{servicio.Descripcion}</td>
                   <td>
                     <button className="btn btn-primary mx-1" onClick={() => navigate(`/servicios/actualizar/${servicio.ID}/${planId}`)}><FontAwesomeIcon icon={faPen} /></button>

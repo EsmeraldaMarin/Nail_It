@@ -3,6 +3,7 @@ import { format, isSameDay } from 'date-fns';
 import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
+import ReservaDeEstilista from "./ReservaDeEstilista";
 const ReservasConfirmadas = () => {
     const [reservas, setReservas] = useState([]);
     const userId = localStorage.getItem('userId');
@@ -49,9 +50,9 @@ const ReservasConfirmadas = () => {
                 <td>{reserva.Cliente.numero}</td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
-                <td>${reserva.montoTotal}</td>
-                <td>${reserva.montoSenia}</td>
-                <td className="fs-5"><strong>${reserva.montoTotal - reserva.montoSenia}</strong></td>
+                <td>{formatPrice(reserva.montoTotal)}</td>
+                <td>{formatPrice(reserva.montoSenia)}</td>
+                <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - reserva.montoSenia)}</strong></td>
                 <td>
                     <button type="button" className="me-1 btn btn-primary">Llegó</button>
                     <button type="button" className="me-1 btn btn-danger">No llegó</button>
@@ -60,8 +61,15 @@ const ReservasConfirmadas = () => {
             </tr>
         ));
     };
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+        }).format(price);
+    };
     return (
         <div className='container-fluid Reservas'>
+            <ReservaDeEstilista></ReservaDeEstilista>
             <h3>Gestor de turnos</h3>
 
             {/* Reservas del estilista */}

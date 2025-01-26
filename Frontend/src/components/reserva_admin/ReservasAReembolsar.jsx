@@ -8,7 +8,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
         reserva => reserva.estado === "por_reembolsar" && reserva.id_profesional === userId
 
     );
-    
+
     const [selectedReserva, setSelectedReserva] = useState(null)
     const [showModal, setShowModal] = useState(false);
 
@@ -27,6 +27,12 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
             closeModal();
         }
     };
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+        }).format(price);
+    };
 
     return (
         <div>
@@ -41,10 +47,10 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
-                                <th scope="col">Importe a reembolsar</th>
-                                <th scope="col">Comprobante</th>
+                                {/*<th scope="col">Comprobante</th> */}
                                 <th scope="col">CBU o Alias</th>
                                 <th scope="col">Titular de la cuenta</th>
+                                <th scope="col" >Importe a reembolsar</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -56,12 +62,12 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                     <td>{reserva.Cliente.numero}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
-                                    <td><strong>${reserva.montoSenia}</strong></td>
-                                    <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
+                                    {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
                                         Ver Comprobante
-                                    </a></td>
+                                        </a></td> */}
                                     <td><strong>{reserva.Cliente.cbu}</strong></td>
                                     <td><strong>{reserva.Cliente.titular_cuenta}</strong></td>
+                                    <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
                                     <td>
                                         {
                                             <div>

@@ -4,8 +4,6 @@ function EstilistaCard({ estilista, onClick }) {
             <h2>{estilista.nombre} {estilista.apellido}</h2>
             <p>{estilista.email}</p>
             <p>{estilista.numero}</p>
-            {/* <p>Horarios: { }</p> */}
-            <p>Horarios: { }</p>
         </button>
     );
 }
