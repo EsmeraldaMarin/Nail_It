@@ -42,13 +42,27 @@ const ReservasConfirmadas = () => {
             reserva.estado === "confirmada" &&
             isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
     )
-    
+
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
-                <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>{reserva.Servicio.nombre}</td>
-                <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente}</td>
-                <td>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</td>
+                <td className="text-capitalize text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
+                <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>
+                    {reserva.Cliente
+                        ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
+                        : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`}
+                </td>
+                <td>
+                    <a
+                        href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{color:"#000", textDecoration:"none"}}
+                    >
+                        <i className="bi bi-whatsapp" style={{color:"green"}}> </i>
+                        {reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}
+                    </a>
+                </td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
                 <td>{formatPrice(reserva.montoTotal)}</td>
@@ -118,8 +132,8 @@ const ReservasConfirmadas = () => {
                             ? reservasConfirmadas.map((reserva, index) => (
                                 <tr key={index}>
                                     <th className="text-uppercase" style={{ backgroundColor: "#eee" }}>{reserva.Admin.nombre}</th>
-                                    <td>{reserva.Servicio.nombre}</td>
-                                    <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente}</td>
+                                    <td style={{ width: "20rem" }}>{reserva.Servicio.nombre}</td>
+                                    <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre + " " + reserva.Cliente.apellido : reserva.nombre_cliente + " " + reserva.nombre_cliente}</td>
                                     <td>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>

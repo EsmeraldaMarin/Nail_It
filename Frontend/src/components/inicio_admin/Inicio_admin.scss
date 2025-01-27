@@ -38,6 +38,14 @@
         top: 0;
         z-index: 100;
 
+        p.soporte {
+            margin: 0;
+            img {
+                margin: 0;
+                width: 45px;
+                height: 45px;
+            }
+        }
         @media screen and (max-width: 920px) {
             p.soporte {
                 display: none;
@@ -167,6 +175,10 @@
                             }
                         }
                     }
+                    h2{
+                        bottom: 100px;
+                        transform : translateX(-60px) rotate(-90deg);
+                    }
                 }
             }
             @media screen and (max-width: 920px) {
@@ -266,6 +278,15 @@
                                 }
                             }
                         }
+                    }
+                }
+                h2 {
+                    position: absolute;
+                    bottom: 20px;
+                    color: #bbb;
+                    text-wrap: nowrap;
+                    @media screen and (max-width: 500px) {
+                        display: none;
                     }
                 }
             }

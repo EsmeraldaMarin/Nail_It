@@ -23,6 +23,7 @@ const SideBar = () => {
                         <li className='nav-item logout'><Logout /></li>
                     </ul>
                 </div>
+                <h2>Oh My Nails</h2>
             </div>
 
         </nav>

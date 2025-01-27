@@ -184,6 +184,14 @@ export class GestorReservas {
         });
     }
 
+    //esta accion se realiza cuando una estilista cancela una reserva
+    async por_reembolsar_reserva(id_reserva) {
+
+        return await Reservas.update({ estado: 'por_reembolsar' }, {
+            where: { id: id_reserva }
+        });
+    }
+
     async eliminar_reserva(id) {
         return await Reservas.destroy({
             where: { id: id }

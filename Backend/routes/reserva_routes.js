@@ -59,6 +59,19 @@ routerReservas.post("/confirmar/:id", async (req, res) => {
     };
 });
 
+//esta cancelacion se usa solo en la cancelacion desde estilista
+//en la cancelacion desde cliente se usa la ruta put
+routerReservas.post("/por_reembolsar/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        await gestorReservas.por_reembolsar_reserva(id);
+        const reservaActualizada = await gestorReservas.obtener_reserva_por_id(id);
+        res.status(201).json(reservaActualizada);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    };
+});
+
 routerReservas.post("/", async (req, res) => {
     try {
         const {

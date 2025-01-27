@@ -43,7 +43,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                     <table className="table">
                         <thead className="table-light">
                             <tr>
-                                <th scope="col">Nombre</th>
+                                <th scope="col">Nombre Cliente</th>
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
@@ -59,7 +59,15 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                 reserva.Cliente ?
                                     <tr key={index}>
                                         <td className="text-capitalize">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
-                                        <td>{reserva.Cliente.numero}</td>
+                                        <td><a
+                                            href={`https://wa.me/${reserva.Cliente.numero}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{ color: "#000", textDecoration: "none" }}
+                                        >
+                                            <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
+                                            {reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}
+                                        </a></td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
                                         {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
@@ -82,7 +90,16 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                     </tr> :
                                     <tr key={index}>
                                         <td className="text-capitalize">{reserva.nombre_cliente} {reserva.apellido_cliente}</td>
-                                        <td>{reserva.telefono_cliente}</td>
+                                        <td><a
+                                            href={`https://wa.me/${reserva.telefono_cliente}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{ color: "#000", textDecoration: "none" }}
+                                        >
+                                            <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
+                                            {reserva.telefono_cliente}
+                                        </a>
+                                        </td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
                                         {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
