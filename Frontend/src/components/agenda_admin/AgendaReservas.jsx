@@ -7,45 +7,58 @@ import './AgendaReservas.scss';
 
 const AgendaReservas = () => {
     const [reservas, setReservas] = useState([]);
-    const [modalReserva, setModalReserva] = useState(null);  // Para manejar la reserva seleccionada
+    const [modalReserva, setModalReserva] = useState(null);
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
-        axios.get('http://localhost:5050/reserva') // Cambia la URL según tu backend
-            .then(response => {
-                let eventos = response.data.filter(res => res.id_profesional == userId && res.estado == "confirmada");
-                eventos = eventos.map(reserva => {
-                    const start = `${reserva.fecha.split('T')[0]}T${reserva.horaInicio}`;
-                    const [hour, minute] = reserva.horaInicio.split(':');
-                    const end = new Date(reserva.fecha);
-                    end.setHours(parseInt(hour) + 1); // Ajusta a una hora más
-                    end.setMinutes(parseInt(minute));
+        axios
+            .get('http://localhost:5050/reserva') // Cambia la URL según tu backend
+            .then((response) => {
+                const eventos = response.data
+                    .filter((res) => res.id_profesional == userId && res.estado === "confirmada")
+                    .map((reserva) => {
+                        const fechaBase = new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)); // Fecha base
+                        const [hour, minute] = reserva.horaInicio.split(':');
+                        const start = new Date(fechaBase)
+                        start.setHours(parseInt(hour, 10));
+                        start.setMinutes(parseInt(minute, 10));
 
-                    return {
-                        title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente?.nombre || reserva.nombre_cliente}`,
-                        start: start,
-                        end: end.toISOString(),
-                        extendedProps: {
-                            comprobante: reserva.comprobante,
-                            montoSenia: reserva.montoSenia,
-                            montoTotal: reserva.montoTotal,
-                            estado: reserva.estado,
-                            cliente: reserva.Cliente? reserva.Cliente.nombre + " " + reserva.Cliente.apellido: reserva.nombre_cliente + " " + reserva.apellido_cliente ,
-                            servicio: reserva.Servicio.nombre,
-                            especialidad: reserva.Servicio.Especialidad.nombre
-                        }
-                    };
-                });
+                        const end = new Date(start)
+                        end.setMinutes(start.getMinutes() + reserva.Servicio.duracion);
+
+                        return {
+                            title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente
+                                }`,
+                            start: start.toISOString(), // Formato ISO
+                            end: end.toISOString(),
+                            extendedProps: {
+                                comprobante: reserva.comprobante,
+                                montoSenia: reserva.montoSenia,
+                                montoTotal: reserva.montoTotal,
+                                duracion: reserva.Servicio.duracion,
+                                horaInicio: reserva.horaInicio,
+                                horaFin: end.getHours() + ":" + end.getMinutes(), 
+                                estado: reserva.estado,
+                                cliente: reserva.Cliente
+                                    ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
+                                    : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`,
+                                numero: reserva.Cliente
+                                    ? `${reserva.Cliente.numero}`
+                                    : `${reserva.telefono_cliente}`,
+                                servicio: reserva.Servicio.nombre,
+                                especialidad: reserva.Servicio.Especialidad.nombre,
+                            },
+                        };
+                    });
                 setReservas(eventos);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Error al cargar reservas:", error);
             });
-    }, []);
+    }, [userId]);
 
-    // Maneja el clic en un evento del calendario
     const handleEventClick = (info) => {
-        setModalReserva(info.event.extendedProps); // Guarda la información en el estado
+        setModalReserva(info.event.extendedProps);
     };
 
     return (
@@ -59,35 +72,69 @@ const AgendaReservas = () => {
                     headerToolbar={{
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
                     }}
-                    eventClick={handleEventClick} // Evento al hacer click en un evento
+                    eventClick={handleEventClick}
                 />
             </div>
 
-            {/* Fondo oscuro cuando se abre el modal */}
             {modalReserva && <div className="overlay" />}
 
-            {/* Modal de detalle de la reserva */}
             {modalReserva && (
-                <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog" style={{ marginTop: "150px" }} role="document">
+                <div
+                    className="modal fade show"
+                    style={{ display: 'block' }}
+                    tabIndex="-1"
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                >
+                    <div className="modal-dialog" style={{ marginTop: '150px' }} role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Detalles de la Reserva</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setModalReserva(null)}>
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Detalles de la Reserva
+                                </h5>
+                                <button
+                                    type="button"
+                                    className="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                    onClick={() => setModalReserva(null)}
+                                >
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div className="modal-body">
                                 <h5>Cliente: {modalReserva.cliente}</h5>
-                                <p><strong>Servicio:</strong> {modalReserva.servicio}</p>
-                                <p><strong>Especialidad:</strong>{modalReserva.especialidad}</p>
-                                <p><strong>Importe seña:</strong> ${modalReserva.montoSenia}</p>
-                                <p><strong>Importe Total:</strong> ${modalReserva.montoTotal}</p>
+                                <p>
+                                    <strong>Hora Inicio:</strong> {modalReserva.horaInicio}
+                                    <strong> - Hora Fin:</strong> {modalReserva.horaFin} 
+                                </p>
+                                <p>
+                                    <strong>Servicio:</strong> {modalReserva.servicio}
+                                </p>
+                                <p>
+                                    <strong>Especialidad:</strong> {modalReserva.especialidad}
+                                </p>
+                                <p>
+                                    <strong>Importe seña:</strong> ${modalReserva.montoSenia}
+                                </p>
+                                <p>
+                                    <strong>Importe Total:</strong> ${modalReserva.montoTotal}
+                                </p>
+                                <p>
+                                    <strong>Teléfono:</strong> {modalReserva.numero}
+                                </p>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={() => setModalReserva(null)}>Cerrar</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={() => setModalReserva(null)}
+                                >
+                                    Cerrar
+                                </button>
                             </div>
                         </div>
                     </div>
