@@ -19,44 +19,6 @@
             }
         }
     }
-    // .search-ctn {
-    //     display: flex;
-    //     margin-bottom: 20px;
-    //     align-items: center;
-    //     @media screen and (max-width: 920px) {
-    //         display: flex;
-    //         flex-direction: column;
-    //         align-items: start;
-    //     }
-    //     > button {
-    //         // margin-left: 50px;
-    //         background-color: $naranjaFuerte;
-    //         color: white;
-    //         @media screen and (max-width: 920px) {
-    //             margin: 0;
-    //             margin-top: 20px;
-    //         }
-    //         i {
-    //             margin-left: 20px;
-    //             font-size: 1.2em;
-    //         }
-    //     }
-    //     .search-bar {
-    //         @media screen and (max-width: 920px) {
-    //             width: 100%;
-    //         }
-    //         .search-input {
-    //             width: 500px;
-    //             padding: 10px;
-    //             font-size: 16px;
-    //             border-radius: 20px;
-    //             @media screen and (max-width: 920px) {
-    //                 margin-top: 10px;
-    //                 width: 100%;
-    //             }
-    //         }
-    //     }
-    // }
     .card-container {
         display: flex;
         padding: 10px 0;
@@ -74,6 +36,8 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             text-wrap: nowrap;
+            font-size: 1.3em;
+            overflow-x: hidden;
             @media screen and (max-width: 500px) {
                 min-width: 100%;
             }
@@ -99,6 +63,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        font-size: 1.3em;
         @media screen and (max-width: 920px) {
             width: 90vw;
         }
@@ -113,6 +78,10 @@
                         border: 0px;
                         padding: 10px;
                         width: 100%;
+                        
+                        input,label, button{
+                            font-size: 0.8em;
+                        }
                         .isAdmin-formGroup {
                             display: none;
                         }

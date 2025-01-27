@@ -46,7 +46,7 @@ const ReservasConfirmadas = () => {
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
-                <td className="text-capitalize text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
+                <td className="text-capitalize text-wrap" style={{ width: "11rem" }}>{reserva.Servicio.nombre}</td>
                 <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>
                     {reserva.Cliente
                         ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`

@@ -95,6 +95,7 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                         className="form-control"
                         value={formData.nombre}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="form-group col-md-6">
@@ -105,6 +106,7 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                         className="form-control"
                         value={formData.apellido}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="form-group col-md-6">
@@ -128,6 +130,7 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                         className="form-control"
                         value={formData.numero}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="form-group col-md-6">

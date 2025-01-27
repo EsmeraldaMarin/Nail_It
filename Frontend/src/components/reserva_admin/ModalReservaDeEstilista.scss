@@ -1,28 +1,39 @@
-.modalReservaEstilista{
-    background-color: rgba(0, 0, 0, 0.478);
-    position: absolute;
+.modalReservaEstilista {
+    background-color: rgba(0, 0, 0, 0.69);
+    position: fixed;
+    overflow-y: auto;
     top: 0;
     right: 0;
     z-index: 100;
     width: 100%;
     height: 100%;
-    .cerrarModal{
+    .cerrarModal {
         background-color: #fff;
-        padding: 3px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
         position: absolute;
         font-size: 2em;
         border-radius: 100px;
         top: 30px;
         left: calc(75vw);
-        &:hover{
+        &:hover {
             background-color: #a0a0a0;
         }
+        @media (max-width: 920px) {
+            font-size: 1.5em !important;
+            left: calc(85vw);
+            width: 40px;
+            height: 40px;
+        }
     }
-    .reserva-card{
+    .reserva-card {
         background-color: #fff;
         margin-top: 70px;
     }
-    .ctn-exito{
+    .ctn-exito {
         background-color: #fff;
         margin-top: 70px;
     }

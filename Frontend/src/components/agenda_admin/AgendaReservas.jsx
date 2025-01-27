@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import esLocale from '@fullcalendar/core/locales/es';
+
 import axios from 'axios';
 import './AgendaReservas.scss';
 
@@ -63,11 +65,11 @@ const AgendaReservas = () => {
 
     return (
         <div className="agenda-section">
-            <h3>Mi agenda de reservas</h3>
+            {/*<h3>Mi agenda de reservas</h3>*/}
             <div className="agenda-ctn">
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin]}
-                    initialView="timeGridWeek"
+                    initialView="dayGridMonth"
                     events={reservas}
                     headerToolbar={{
                         left: 'prev,next today',
@@ -75,6 +77,8 @@ const AgendaReservas = () => {
                         right: 'dayGridMonth,timeGridWeek,timeGridDay',
                     }}
                     eventClick={handleEventClick}
+                    locale={esLocale}
+                    height={650}
                 />
             </div>
 
@@ -92,7 +96,7 @@ const AgendaReservas = () => {
                     <div className="modal-dialog" style={{ marginTop: '150px' }} role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">
+                                <h5 className="modal-title fs-3" id="exampleModalLabel">
                                     Detalles de la Reserva
                                 </h5>
                                 <button
@@ -105,8 +109,9 @@ const AgendaReservas = () => {
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div className="modal-body">
-                                <h5>Cliente: {modalReserva.cliente}</h5>
+                            <div className="modal-body fs-5">
+                                <h5 className='mb-3 fs-4'><strong>Cliente:</strong> {modalReserva.cliente}</h5>
+                                <hr />
                                 <p>
                                     <strong>Hora Inicio:</strong> {modalReserva.horaInicio}
                                     <strong> - Hora Fin:</strong> {modalReserva.horaFin} 

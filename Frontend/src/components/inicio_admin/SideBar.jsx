@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import "./Inicio_admin.scss";
 import Logout from '../login/Logout';
 
@@ -23,7 +23,7 @@ const SideBar = () => {
                         <li className='nav-item logout'><Logout /></li>
                     </ul>
                 </div>
-                <h2>Oh My Nails</h2>
+                <Link to={'/inicio_admin'} className='brandName'>Oh My Nails</Link>
             </div>
 
         </nav>

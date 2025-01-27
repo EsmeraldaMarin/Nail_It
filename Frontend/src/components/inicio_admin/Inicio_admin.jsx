@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import SideBar from './SideBar';
 import "./Inicio_admin.scss";
 import { Outlet } from 'react-router-dom';
@@ -17,9 +17,9 @@ const Inicio_admin = () => {
         <>
             <div className='inicio_admin d-flex flex-column'>
                 <header className='d-flex justify-content-between px-3'>
-                    <p className='soporte'>
+                    <Link to={'/inicio_admin'} className='soporte'>
                         <img src="/img/logo_nailit.png" alt="Logo Oh My Nails" />
-                    </p>
+                    </Link>
                     <button className='btn-toggle-menu' id='btn-toggle-menu' onClick={handleClick}><span>Menú</span> <i className='bi bi-chevron-down' ></i></button>
                     <p className="text-end fs-5 p-0 m-0"><b>Bienvenida, {userName}!</b></p>
                 </header>

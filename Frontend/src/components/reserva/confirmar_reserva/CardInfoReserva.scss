@@ -10,7 +10,13 @@
         border: 1px solid #bbb;
         border-radius: 20px;
         padding: 30px 20px;
-
+        @media (min-width: 920px) {
+            font-size: 1.3em;
+            input,
+            button {
+                font-size: 1em;
+            }
+        }
         .monto-ctn {
             padding: 10px;
             background-color: #eee;

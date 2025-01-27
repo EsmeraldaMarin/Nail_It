@@ -1,7 +1,7 @@
 @import "../../variables.scss";
 .ctn-horarios {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f8f8f8;
@@ -16,29 +16,35 @@
     }
 
     .form-horario-atencion {
+        select,
+        label,
+        input,
+        button,
+        p {
+            font-size: 1.2em;
+        }
         .heads {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             margin-bottom: 20px;
-
             button {
                 flex: 1;
                 margin: 5px;
                 padding: 10px;
-                font-size: 14px;
                 border: none;
                 border-radius: 5px;
                 background-color: #bbb;
                 color: white;
                 cursor: pointer;
+                font-size: 1.2em;
 
                 &.active,
                 &:active,
                 &:focus {
                     background-color: #f85b00;
                 }
-                &:focus{
+                &:focus {
                     outline: auto;
                 }
                 &:hover {
@@ -81,23 +87,28 @@
 
                 label {
                     display: block;
-                    font-size: 14px;
+                    font-size: 1.3em;
                     margin-bottom: 5px;
                     color: #333;
                 }
 
                 .form-control,
                 .form-select {
-                    width: 100%;
                     padding: 10px;
                     border: 1px solid #ccc;
                     border-radius: 5px;
-                    font-size: 14px;
+                    font-size: 1.3em;
                     outline: none;
                     transition: border-color 0.3s ease;
                     width: 150px;
                     &:focus {
                         border-color: #f85b00;
+                    }
+                }
+                select {
+                    font-size: 1.3em;
+                    &#especialidad{
+                        width: 200px;
                     }
                 }
 

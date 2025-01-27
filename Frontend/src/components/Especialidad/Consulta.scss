@@ -1,5 +1,13 @@
 @import "../../variables.scss";
+.accordion{
+    table.table{
+        button{
+            font-size: 1em;
+        }
+    }
+}
 .Reservas {
+    
     .ss {
         @media screen and (max-width: 920px) {
             flex-direction: column;
@@ -9,7 +17,6 @@
             border: 2px solid transparent; /* Borde transparente */
             border-radius: 10px; /* Bordes redondeados */
             color: #fff; /* Color del texto */
-            font-size: 16px; /* Aumenta el tamaño de la fuente, ajusta según sea necesario */
             cursor: pointer;
             i {
                 margin-left: 20px;

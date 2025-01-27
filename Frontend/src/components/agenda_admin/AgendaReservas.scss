@@ -1,5 +1,25 @@
 div.agenda-section {
     padding: 0px 50px;
+    @media screen and (max-width: 992px) {
+        padding: 0;
+
+        .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr {
+            display: flex;
+            flex-direction: column-reverse;
+            font-size: 12px;
+            > div {
+                margin-bottom: 10px;
+            }
+        }
+    }
+    .modal-header, .modal-body {
+        @media screen and (max-width: 992px) {
+            font-size: 1em !important;
+            h5{
+                font-size: 1em !important;
+            }
+        }
+    }
     .agenda-ctn {
         margin-top: 20px;
     }
@@ -8,8 +28,9 @@ div.agenda-section {
         height: 30px;
         border-radius: 50px;
     }
-    /* AgendaReservas.scss */
-
+    .fc-toolbar-title {
+        text-transform: uppercase;
+    }
     /* Fondo oscuro (overlay) */
     .overlay {
         position: fixed;

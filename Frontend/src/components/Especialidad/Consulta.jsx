@@ -28,7 +28,7 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar 
         <div className='container-fluid Reservas'>
             <div className="d-flex justify-content-between align-items-center ss">
                 <h3>Gestor de Servicios</h3>
-                <button type="button" className="btn active" onClick={onNewClick}>
+                <button type="button" className="btn active fs-5" onClick={onNewClick}>
                     Registrar servicio<i className="bi bi-plus-circle"></i>
                 </button>
             </div>
@@ -37,7 +37,7 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar 
             <div className="table-ctn mis-reservas p-2">
                 <div className="  cc" style={{ overflowX: "auto" }}>
                     <table className="table">
-                        <thead>
+                        <thead style={{position:"sticky", top:"0", boxShadow:"0 0 5px 0 #bbb"}}>
                             <tr>
                                 <th scope="col">Servicio</th>
                                 <th scope="col">Precio</th>

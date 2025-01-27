@@ -39,7 +39,7 @@ function App() {
                 <Route path="/inicio_admin/*" element={<RutaProtegida><InicioAdmin /></RutaProtegida>}>
                     <Route index element={<ReservasConfirmadas />} />
                     <Route path="reservas_pendientes" element={<ReservasPendientes />} />
-                    <Route path="horarios" element={<><Horarios /><Vacaciones/></>} />
+                    <Route path="horarios" element={<div className="d-flex flex-wrap"><Horarios /><Vacaciones/></div>} />
                     <Route path="horarios" element={<Horarios />} />
                     <Route path="servicios" element={<Servicio />} />
                     <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
