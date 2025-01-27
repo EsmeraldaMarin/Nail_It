@@ -4,8 +4,8 @@ import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import ReservasAReembolsar from "./ReservasAReembolsar";
-import VisualizadorComprobante from "./VisualizadorComprobante"
-import ModalEnviarMensaje from "./ModalEnviarMensaje";
+import VisualizadorComprobante from "./subComponentes/VisualizadorComprobante"
+import ModalEnviarMensaje from "./subComponentes/ModalEnviarMensaje";
 
 const ReservasPendientes = () => {
     const [reservas, setReservas] = useState([]);
@@ -80,7 +80,7 @@ const ReservasPendientes = () => {
                 setReservaSeleccionada(response.data)
                 setReservas((prevReservas) =>
                     prevReservas.map((reserva) =>
-                        reserva.id === id ? { ...reserva, estado: "confirmada" } : reserva
+                        reserva.id === id ? { ...reserva, estado: "por_reembolsar" } : reserva
                     )
                 );
                 setShowModal(true);

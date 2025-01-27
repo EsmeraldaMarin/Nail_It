@@ -1,11 +1,13 @@
-import "./Reservas.scss";
-import { format, isSameDay } from 'date-fns';
-import { es } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import ReservaDeEstilista from "./ReservaDeEstilista";
+import "./Reservas.scss";
+import { format, isSameDay } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 const ReservasConfirmadas = () => {
     const [reservas, setReservas] = useState([]);
+    const [modal, setModal] = useState({ show: false, action: null, id: null });
     const userId = localStorage.getItem('userId');
 
     const formatearFecha = (fecha) => {
@@ -25,23 +27,38 @@ const ReservasConfirmadas = () => {
         fetchReservas();
     }, []);
 
-    // Obtener la fecha de hoy
     const hoy = new Date();
-
-    // Filtrar reservas por estilista y fecha de hoy
     const reservasEstilista = reservas.filter(
         reserva =>
             reserva.estado === "confirmada" &&
             reserva.id_profesional === userId &&
-            isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
-    )
-
-    // Filtrar reservas generales confirmadas y fecha de hoy
+            isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
+    );
     const reservasConfirmadas = reservas.filter(
         reserva =>
             reserva.estado === "confirmada" &&
-            isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
-    )
+            isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
+    );
+
+    const handleAction = async () => {
+        const { action, id } = modal;
+        try {
+            const response = await axios.post(`/reserva/finalizar/${id}`, {
+                estado: action === "llegada" ? "realizada" : "no_realizada"
+            });
+            setReservas((prevReservas) =>
+                prevReservas.map((reserva) =>
+                    reserva.id === id
+                        ? { ...reserva, estado: action === "llegada" ? "realizada" : "no_realizada" }
+                        : reserva
+                )
+            );
+        } catch (error) {
+            console.error(`Error al actualizar la reserva: ${error}`);
+        } finally {
+            setModal({ show: false, action: null, id: null });
+        }
+    };
 
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
@@ -57,9 +74,9 @@ const ReservasConfirmadas = () => {
                         href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{color:"#000", textDecoration:"none"}}
+                        style={{ color: "#000", textDecoration: "none" }}
                     >
-                        <i className="bi bi-whatsapp" style={{color:"green"}}> </i>
+                        <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
                         {reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}
                     </a>
                 </td>
@@ -69,25 +86,37 @@ const ReservasConfirmadas = () => {
                 <td>{formatPrice(reserva.montoSenia)}</td>
                 <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - reserva.montoSenia)}</strong></td>
                 <td>
-                    <button type="button" className="me-1 btn btn-primary">Llegó</button>
-                    <button type="button" className="me-1 btn btn-danger">No llegó</button>
-                    <button type="button" className="btn btn-success">Cobrado</button>
+                    <button
+                        type="button"
+                        className="me-1 btn btn-primary"
+                        onClick={() => setModal({ show: true, action: "llegada", id: reserva.id })}
+                    >
+                        Llegó
+                    </button>
+                    <button
+                        type="button"
+                        className="me-1 btn btn-danger"
+                        onClick={() => setModal({ show: true, action: "no_llegada", id: reserva.id })}
+                    >
+                        No llegó
+                    </button>
                 </td>
             </tr>
         ));
     };
+
     const formatPrice = (price) => {
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
         }).format(price);
     };
+
     return (
         <div className='container-fluid Reservas'>
             <div className="d-flex justify-content-between">
                 <h3>Gestor de turnos</h3>
                 <ReservaDeEstilista></ReservaDeEstilista>
-
             </div>
             <h4 className="pt-3">Mis turnos de hoy</h4>
             <div className="table-ctn mis-reservas table-responsive">
@@ -112,7 +141,6 @@ const ReservasConfirmadas = () => {
                     </tbody>
                 </table>
             </div>
-
             {/* Reservas generales */}
             <h4 className="pt-5">Todos los turnos de hoy</h4>
             <div className="table-ctn reservas-gral table-responsive">
@@ -143,9 +171,29 @@ const ReservasConfirmadas = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal de confirmación */}
+            {modal.show && (
+                <div className="modal show d-block" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+                    <div className="modal-dialog" style={{ marginTop: "25vh" }}>
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title fs-4">Confirmación</h5>
+                                <button type="button" className="btn-close" onClick={() => setModal({ show: false, action: null, id: null })}></button>
+                            </div>
+                            <div className="modal-body fs-4">
+                                <p>¿Estás seguro de que quieres marcar esta acción como <strong className={modal.action === "llegada" ? "text-success" : "text-danger"}>"{modal.action === "llegada" ? "Llegó" : "No llegó"}"</strong>?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setModal({ show: false, action: null, id: null })}>Cancelar</button>
+                                <button type="button" className="btn btn-primary" onClick={handleAction}>Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
-
 
 export default ReservasConfirmadas;

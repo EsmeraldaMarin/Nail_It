@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ModalReservaDeEstilista from './ModalReservaDeEstilista';
+import ModalReservaDeEstilista from './subComponentes/ModalReservaDeEstilista';
 
 const ReservaDeEstilista = () => {
     const [displayModal, setDisplayModal] = useState("none")

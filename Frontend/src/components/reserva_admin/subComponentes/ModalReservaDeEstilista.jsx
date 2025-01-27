@@ -1,5 +1,5 @@
 import React from 'react';
-import ReservaContext from '../reserva/reservaContext';
+import ReservaContext from '../../reserva/reservaContext';
 import './ModalReservaDeEstilista.scss'
 
 const ModalReservaDeEstilista = ({ display, setDisplay }) => {

@@ -184,6 +184,14 @@ export class GestorReservas {
         });
     }
 
+    async finalizar_reserva(id_reserva, nuevo_estado) {
+        // El nuevo_estado puede tener los valores "realizada" o "no_realizada"
+        // Su valor esta determinado por la llegada o no llegada del cliente al turno
+        return await Reservas.update({ estado: nuevo_estado }, {
+            where: { id: id_reserva }
+        });
+    }
+
     //esta accion se realiza cuando una estilista cancela una reserva
     async por_reembolsar_reserva(id_reserva) {
 
