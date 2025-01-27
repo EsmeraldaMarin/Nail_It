@@ -48,6 +48,16 @@ routerReservas.get("/user/:id", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+routerReservas.post("/confirmar/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        await gestorReservas.confirmar_reserva(id);
+        const reservaActualizada = await gestorReservas.obtener_reserva_por_id(id);
+        res.status(201).json(reservaActualizada);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    };
+});
 
 routerReservas.post("/", async (req, res) => {
     try {

@@ -1,7 +1,6 @@
 @import "../../variables.scss";
 
 @keyframes swing {
-
     0%,
     30%,
     50%,
@@ -48,7 +47,7 @@
         .btn-toggle-menu {
             position: fixed;
             top: 80px;
-            left: 270px;
+            left: 280px;
             width: 35px;
             height: 35px;
             background-color: #f85b00;
@@ -112,29 +111,32 @@
     .body-content {
         display: flex;
         width: 100%;
+        height: calc(100vh - 60px);
 
         @media screen and (max-width: 920px) {
             flex-direction: column;
+            height: inherit;
         }
 
         nav.sideBar {
             background-color: white;
             height: calc(100vh - 60px);
-            width: 350px;
+            width: 300px;
             position: sticky;
-            top: 60px;
+            top: 0px;
             transition: width 0.2s ease;
-
             &.show {
                 width: 70px;
                 overflow-x: hidden;
                 box-shadow: 0 0 3px #bbb;
 
-                @media screen and (max-width: 500px) {
+                @media screen and (max-width: 920px) {
                     height: 400px !important;
+                    position: fixed;
+                    top: 60px;
                 }
 
-                ~.content {
+                ~ .content {
                     width: calc(100% - 70px);
 
                     @media screen and (max-width: 920px) {
@@ -155,7 +157,6 @@
                         }
 
                         li {
-
                             a,
                             button {
                                 width: 38px;
@@ -186,7 +187,6 @@
                             padding-right: 0px;
 
                             li {
-
                                 a,
                                 button {
                                     width: 100%;
@@ -216,11 +216,9 @@
                     padding: 0 !important;
 
                     @media screen and (max-width: 920px) {
-                        
                     }
 
                     li {
-
                         a,
                         button {
                             display: inline-block;
@@ -273,7 +271,7 @@
             }
         }
         .content {
-            width: calc(100% - 250px);
+            width: calc(100% - 300px);
             min-height: 100vh;
             display: flex;
             flex-direction: column;

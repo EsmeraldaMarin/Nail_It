@@ -22,7 +22,7 @@ const AgendaReservas = () => {
                     end.setMinutes(parseInt(minute));
 
                     return {
-                        title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente.nombre}`,
+                        title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente?.nombre || reserva.nombre_cliente}`,
                         start: start,
                         end: end.toISOString(),
                         extendedProps: {
@@ -30,7 +30,7 @@ const AgendaReservas = () => {
                             montoSenia: reserva.montoSenia,
                             montoTotal: reserva.montoTotal,
                             estado: reserva.estado,
-                            cliente: reserva.Cliente.nombre + " " + reserva.Cliente.apellido,
+                            cliente: reserva.Cliente? reserva.Cliente.nombre + " " + reserva.Cliente.apellido: reserva.nombre_cliente + " " + reserva.apellido_cliente ,
                             servicio: reserva.Servicio.nombre,
                             especialidad: reserva.Servicio.Especialidad.nombre
                         }

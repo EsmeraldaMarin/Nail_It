@@ -45,4 +45,4 @@ async function actualizarColumnaIdCliente() {
     }
 }
 
-actualizarColumnaIdCliente();
+//actualizarColumnaIdCliente();

@@ -56,30 +56,52 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                         </thead>
                         <tbody>
                             {reservasReembolso.map((reserva, index) =>
-
-                                <tr key={index}>
-                                    <td className="text-capitalize">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
-                                    <td>{reserva.Cliente.numero}</td>
-                                    <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
-                                    <td>{reserva.horaInicio}</td>
-                                    {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
+                                reserva.Cliente ?
+                                    <tr key={index}>
+                                        <td className="text-capitalize">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
+                                        <td>{reserva.Cliente.numero}</td>
+                                        <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
+                                        <td>{reserva.horaInicio}</td>
+                                        {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
                                         Ver Comprobante
                                         </a></td> */}
-                                    <td><strong>{reserva.Cliente.cbu}</strong></td>
-                                    <td><strong>{reserva.Cliente.titular_cuenta}</strong></td>
-                                    <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                    <td>
-                                        {
-                                            <div>
-                                                <button className="btn btn-danger" onClick={() => openModal(reserva)}>
-                                                    Reembolsado
-                                                </button>
+                                        <td><strong>{reserva.Cliente.cbu}</strong></td>
+                                        <td><strong>{reserva.Cliente.titular_cuenta}</strong></td>
+                                        <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
+                                        <td>
+                                            {
+                                                <div>
+                                                    <button className="btn btn-danger" onClick={() => openModal(reserva)}>
+                                                        Reembolsado
+                                                    </button>
 
-                                            </div>
-                                        }
+                                                </div>
+                                            }
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr> :
+                                    <tr key={index}>
+                                        <td className="text-capitalize">{reserva.nombre_cliente} {reserva.apellido_cliente}</td>
+                                        <td>{reserva.telefono_cliente}</td>
+                                        <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
+                                        <td>{reserva.horaInicio}</td>
+                                        {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
+                                        Ver Comprobante
+                                        </a></td> */}
+                                        <td><strong> - </strong></td>
+                                        <td><strong> - </strong></td>
+                                        <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
+                                        <td>
+                                            {
+                                                <div>
+                                                    <button className="btn btn-danger" onClick={() => openModal(reserva)}>
+                                                        Reembolsado
+                                                    </button>
+
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
                             )}
 
 

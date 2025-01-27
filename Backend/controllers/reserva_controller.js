@@ -15,8 +15,8 @@ export class GestorReservas {
             return await Reservas.findAll({
                 where: condicion,
                 order: [
-                    ['fecha', 'DESC'],      // Ordenar primero por fecha de manera DESCendente
-                    ['horaInicio', 'DESC']  // Ordenar luego por hora de inicio de manera DESCendente
+                    ['fecha', 'ASC'],      // Ordenar primero por fecha de manera ASCendente
+                    ['horaInicio', 'ASC']  // Ordenar luego por hora de inicio de manera ASCendente
                 ],
                 include: [
                     {
@@ -57,24 +57,42 @@ export class GestorReservas {
             // Crear la reserva en la base de datos
             const reserva = await Reservas.create(req_body);
 
-            // Obtener los datos de la estilista (simulado, ajústalo a tu lógica)
-            const estilista = await Admins.findByPk(req_body.id_profesional); 
-            const cliente = await Clientes.findByPk(req_body.id_cliente); 
-            const servicio = await Servicios.findByPk(req_body.id_servicio); 
-
+            // Obtener los datos de la estilista
+            const estilista = await Admins.findByPk(req_body.id_profesional);
             if (!estilista) {
                 throw new Error('Estilista no encontrada.');
+            }
+
+            // Obtener los datos del cliente, reserva desde estilista
+            let clienteNombre = req_body.nombre_cliente;
+            let clienteApellido = req_body.apellido_cliente;
+            
+            // Obtener los datos del cliente, reserva desde cliente
+            if (req_body.id_cliente) {
+                const cliente = await Clientes.findByPk(req_body.id_cliente);
+                if (!cliente) {
+                    throw new Error('Cliente registrado no encontrado.');
+                }
+                clienteNombre = cliente.nombre;
+                clienteApellido = cliente.apellido;
+            }
+
+            // Obtener los datos del servicio
+            const servicio = await Servicios.findByPk(req_body.id_servicio);
+            if (!servicio) {
+                throw new Error('Servicio no encontrado.');
             }
 
             // Construir el mensaje para la estilista
             const mensaje = `
                 Hola ${estilista.nombre}, tienes una nueva reserva pendiente de confirmación.
                 Detalles:
-                - Cliente: ${cliente.nombre}
+                - Cliente: ${clienteNombre} ${clienteApellido || ''}
+                - Teléfono: ${req_body.telefono_cliente || 'No disponible'}
                 - Fecha: ${req_body.fecha}
                 - Hora: ${req_body.horaInicio}
                 - Servicio: ${servicio.nombre}
-
+    
                 Por favor, revisa tu panel para confirmar.`;
 
             // Enviar la notificación de WhatsApp
@@ -86,6 +104,7 @@ export class GestorReservas {
             throw error; // Lanzar el error para manejarlo en la ruta
         }
     }
+
 
     async obtener_reserva_por_id(id_reserva) {
         return await Reservas.findOne({
@@ -159,7 +178,7 @@ export class GestorReservas {
         });
     }
     async confirmar_reserva(id_reserva) {
-        
+
         return await Reservas.update({ estado: 'confirmada' }, {
             where: { id: id_reserva }
         });

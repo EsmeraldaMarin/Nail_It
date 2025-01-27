@@ -51,16 +51,13 @@ const ReservasPendientes = () => {
             const response = await axios.post(`/reserva/confirmar/${id}`, {
                 estado: "confirmada"
             });;
-            setMensajeACliente(`
-                Hola, ${response.data.Cliente.nombre}!
-                Tu reserva a una sesión de ${response.data.Servicio.nombre} ha sido confirmada exitosamente
-                Te esperamos en nuestras instalaciones el ${formatearFecha(response.data.fecha)} a las ${response.data.horaInicio}.
-                
-                ¡Muchas gracias! 
-                - Oh My Nails
-                `
+            setMensajeACliente(`*Hola, ${response.data.Cliente? response.data.Cliente.nombre : response.data.nombre_cliente}!*\n\n`+
+                `Tu reserva a una sesión de *${response.data.Servicio.nombre}* ha sido *confirmada* exitosamente.\n`+
+                `Te esperamos en nuestro local el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs*.\n`+
+                `¡Muchas gracias!\n\n`+
+                `- _Oh My Nails_`
             )
-            setTelefonoCliente(response.data.Cliente.numero);
+            setTelefonoCliente(response.data.Cliente? response.data.Cliente.numero : response.data.telefono_cliente);
             setReservaSeleccionada(response.data)
             setReservas((prevReservas) =>
                 prevReservas.map((reserva) =>
@@ -136,8 +133,8 @@ const ReservasPendientes = () => {
                             {reservasEstilista.map((reserva, index) =>
 
                                 <tr key={index}>
-                                    <td className="text-capitalize text-wrap">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
-                                    <td>{reserva.Cliente.numero}</td>
+                                    <td className="text-capitalize text-wrap">{reserva.Cliente? reserva.Cliente.nombre : reserva.nombre_cliente} {reserva.Cliente? reserva.Cliente.apellido : reserva.apellido_cliente}</td>
+                                    <td>{reserva.Cliente? reserva.Cliente.numero : reserva.telefono_cliente}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                     <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>

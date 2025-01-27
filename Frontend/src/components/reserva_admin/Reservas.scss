@@ -6,6 +6,12 @@
         font-weight: 600;
         color: #333;
     }
+    button {
+        @media screen and (max-width: 920px) {
+            font-size: 0.8em !important;
+            text-wrap: nowrap;
+        }
+    }
 
     .table-ctn {
         border-radius: 20px;
@@ -85,6 +91,9 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
             font-size: 1.3em;
+            @media screen and (max-width: 920px) {
+                font-size: 1em;
+            }
         }
 
         th {
@@ -110,7 +119,6 @@
             }
         }
     }
-
     /* Mensajes de "No hay reservas" */
     .no-reservas {
         text-align: center;

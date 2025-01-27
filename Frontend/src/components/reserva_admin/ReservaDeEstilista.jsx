@@ -8,8 +8,8 @@ const ReservaDeEstilista = () => {
     }
     return (
         <div>
-            <button onClick={handleClick} className='btn fw-bold fs-4 position-absolute top-0  end-0 '
-                style={{ backgroundColor: "#f85b00", color: "#fff", margin: "100px 30px 0 0" }}>
+            <button onClick={handleClick} className='btn fw-bold fs-4'
+                style={{ backgroundColor: "#f85b00", color: "#fff"}}>
                 <i className="bi bi-plus" style={{ color: "#fff" }}></i>
                 Realizar una Reserva
             </button>

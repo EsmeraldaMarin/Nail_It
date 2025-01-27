@@ -34,20 +34,21 @@ const ReservasConfirmadas = () => {
             reserva.estado === "confirmada" &&
             reserva.id_profesional === userId &&
             isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
-    );
+    )
 
     // Filtrar reservas generales confirmadas y fecha de hoy
     const reservasConfirmadas = reservas.filter(
         reserva =>
             reserva.estado === "confirmada" &&
             isSameDay(new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)), hoy) // Comparar la fecha con el día de hoy
-    );
+    )
+    
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
                 <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>{reserva.Servicio.nombre}</td>
-                <td className="text-capitalize">{reserva.Cliente.nombre}</td>
-                <td>{reserva.Cliente.numero}</td>
+                <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente}</td>
+                <td>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
                 <td>{formatPrice(reserva.montoTotal)}</td>
@@ -69,10 +70,11 @@ const ReservasConfirmadas = () => {
     };
     return (
         <div className='container-fluid Reservas'>
-            <ReservaDeEstilista></ReservaDeEstilista>
-            <h3>Gestor de turnos</h3>
+            <div className="d-flex justify-content-between">
+                <h3>Gestor de turnos</h3>
+                <ReservaDeEstilista></ReservaDeEstilista>
 
-            {/* Reservas del estilista */}
+            </div>
             <h4 className="pt-3">Mis turnos de hoy</h4>
             <div className="table-ctn mis-reservas table-responsive">
                 <table className="table ">
@@ -115,10 +117,10 @@ const ReservasConfirmadas = () => {
                         {reservasConfirmadas.length > 0
                             ? reservasConfirmadas.map((reserva, index) => (
                                 <tr key={index}>
-                                    <th className="text-uppercase">{reserva.Admin.nombre}</th>
+                                    <th className="text-uppercase" style={{ backgroundColor: "#eee" }}>{reserva.Admin.nombre}</th>
                                     <td>{reserva.Servicio.nombre}</td>
-                                    <td className="text-capitalize">{reserva.Cliente.nombre}</td>
-                                    <td>{reserva.Cliente.numero}</td>
+                                    <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente}</td>
+                                    <td>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>
                                 </tr>
