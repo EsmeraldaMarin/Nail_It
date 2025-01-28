@@ -18,8 +18,8 @@ const SideBar = () => {
                         <li className="nav-item"><NavLink to="/inicio_admin/administracion_general" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people"></i>Administración General</NavLink></li>
                         {/* <li className="nav-item"><NavLink to="/inicio_admin/servicios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-bookmarks"></i>Servicios</NavLink></li> */}
                         <li className="nav-item"><NavLink to="/inicio_admin/horarios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi bi-calendar4-range"></i>Horarios de Atención</NavLink></li>
-                        <li className="nav-item"><NavLink to="/inicio_admin/configuracion" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-gear"></i>Configuración</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/estadisticas" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-clipboard2"></i>Reportes</NavLink></li>
+                        <li className="nav-item"><NavLink to="/inicio_admin/configuracion" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-gear"></i>Configuración</NavLink></li>
                         <li className='nav-item logout'><Logout /></li>
                     </ul>
                 </div>

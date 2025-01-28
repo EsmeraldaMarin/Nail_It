@@ -22,6 +22,7 @@ import ReservaContext from "./components/reserva/reservaContext";
 import constructionImage from './img/construction.svg'
 import Vacaciones from "./components/horarios_estilista/Vacaciones";
 import AgendaReservas from "./components/agenda_admin/AgendaReservas";
+import ConfiguracionAdmin from "./components/configuracion_admin/ConfiguracionAdmin";
 
 function App() {
     return (
@@ -43,7 +44,7 @@ function App() {
                     <Route path="horarios" element={<Horarios />} />
                     <Route path="servicios" element={<Servicio />} />
                     <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
-                    <Route path="configuracion" element={<div className="d-flex flex-column justify-content-center align-items-center"><strong className="fs-3">En desarrollo...</strong><img className="h-25 mt-5 w-25" src={constructionImage} /></div>}></Route>
+                    <Route path="configuracion" element={<ConfiguracionAdmin/>}></Route>
                     <Route path="estadisticas" element={<div className="d-flex flex-column justify-content-center align-items-center"><strong className="fs-3">En desarrollo...</strong><img className="h-25 mt-5 w-25" src={constructionImage} /></div>}></Route>
                     <Route path="agenda" element={<AgendaReservas/>}></Route>
                 </Route>

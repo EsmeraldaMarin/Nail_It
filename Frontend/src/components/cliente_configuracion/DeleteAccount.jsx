@@ -6,7 +6,7 @@ const DeleteAccount = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete('http://localhost:5050/clientes');
+      await axios.delete('http://localhost:5050/clientes/{id}');
       setMessage('Account deleted successfully');
     } catch (error) {
       setMessage('Error deleting account');

@@ -27,6 +27,7 @@ routerVariablesGlobales.get('/:id', async (req, res) => {
 });
 
 routerVariablesGlobales.put('/:id', async (req, res) => {
+    console.log(req.body, req.params.id)
     const [actualizados] = await gestorVariablesglobales.actualizarVariablePorId(req.body, req.params.id);
     if (actualizados === 0) {
         return res.status(404).json({ message: 'Variable no encontrada.' });
