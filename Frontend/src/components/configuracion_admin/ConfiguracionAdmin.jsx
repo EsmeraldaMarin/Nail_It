@@ -10,6 +10,7 @@ const ConfiguracionAdmin = () => {
         titular_cuenta: "",
         horario_apertura: "",
         horario_cierre: "",
+        cuil: ""
     });
 
     const [editableField, setEditableField] = useState("");
@@ -36,8 +37,12 @@ const ConfiguracionAdmin = () => {
 
     const handleModifyClick = (field) => {
         setEditableField(field === editableField ? "" : field);
+
+        //en este punto, editable field tiene siemrpe el valor anterior y no el que se seteo arriba
         if (field !== editableField) {
+            //esto permite poner en una variable temporal el valor del campo por si el usuario cancela
             setTempValue(formData[field]);
+            //esto permite definir cual es el campo que se esta editando.
             setCurrentField(field);
         }
     };
@@ -48,11 +53,9 @@ const ConfiguracionAdmin = () => {
 
     const handleConfirmSave = async () => {
         try {
-            console.log({ [currentField]: tempValue })
-            //  AQUI ANDA MAL
 
-            await axios.put(`/variablesGlobales/1`, { [currentField]: tempValue });
-            setFormData((prev) => ({ ...prev, [currentField]: tempValue }));
+            const response = await axios.put(`/variablesGlobales/1`, { [currentField]: formData[currentField] });
+            setFormData((prev) => ({ ...prev, [currentField]: formData[currentField] }));
             setEditableField(""); // Bloquear edición después de guardar
             setShowModal(false); // Cerrar el modal
         } catch (error) {
@@ -61,6 +64,9 @@ const ConfiguracionAdmin = () => {
     };
 
     const handleCancelSave = () => {
+        //pone el valor anterior otra vez
+        setFormData((prev) => ({ ...prev, [currentField]: tempValue }));
+        setEditableField(""); // Bloquear edición después de cancelar
         setShowModal(false);
     };
 
@@ -74,9 +80,9 @@ const ConfiguracionAdmin = () => {
                 </p>
                 <form className="">
                     <p className="my-3 fw-bold fs-5">Datos de cuenta bancaria</p>
-                    {["titular_cuenta", "alias", "cbu", "cvu"].map((field, index) => (
-                        <div className="row mb-3" key={index}>
-                            <div className="col">
+                    <div className="d-flex flex-wrap mb-3 justify-content-between" >
+                        {["titular_cuenta", "cuil", "cbu", "cvu","alias"].map((field, index) => (
+                            <div style={{minWidth:"49%"}} key={index}>
                                 <label>{field.charAt(0).toUpperCase() + field.slice(1).replace("_", " ")}</label>
                                 <div className="d-flex">
                                     <input
@@ -98,12 +104,12 @@ const ConfiguracionAdmin = () => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                     <p className="mt-4 mb-3 fw-bold fs-5">Horarios de atención del local</p>
-                    <div className="d-flex flex-wrap mb-3">
+                    <div className="d-flex flex-wrap mb-3 justify-content-between">
                         {["horario_apertura", "horario_cierre"].map((field, index) => (
-                            <div className="me-5" key={index}>
+                            <div style={{minWidth:"49%"}}  key={index}>
                                 <label>{field.charAt(0).toUpperCase() + field.slice(1).replace("_", " ")}</label>
                                 <div className="d-flex">
                                     <input

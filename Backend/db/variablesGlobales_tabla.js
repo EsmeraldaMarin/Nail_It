@@ -5,10 +5,11 @@ export const VariablesGlobales = sequelize.define('variablesGlobales', {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     horario_apertura: { type: DataTypes.STRING },
     horario_cierre: { type: DataTypes.STRING },
-    cbu: {type:DataTypes.INTEGER},
-    cvu: { type: DataTypes.INTEGER, /* unique: true */ },
+    cbu: {type:DataTypes.STRING},
+    cvu: { type: DataTypes.STRING, /* unique: true */ },
     alias: {type: DataTypes.STRING},
-    titular_cuenta: {type: DataTypes.STRING}
+    titular_cuenta: {type: DataTypes.STRING},
+    cuil: {type: DataTypes.STRING}
 }, {
     tableName: 'variablesGlobales',
     timestamps: false
@@ -25,10 +26,11 @@ const inicializarVariables = async () => {
             await VariablesGlobales.create({
                 horario_apertura: '08:00',
                 horario_cierre: '18:00',
-                cbu: null,
-                cvu: null,
+                cbu: '',
+                cvu: '',
                 alias: 'ohmynails.mp',
-                titular_cuenta: true
+                titular_cuenta: 'true',
+                cuil:''
             });
             console.log("Registro inicial creado.");
         } else {
