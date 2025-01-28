@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import './Login.scss';
 import { Link } from "react-router-dom";
 import axios from '../../axiosConfig/axiosConfig';
@@ -14,8 +14,17 @@ const Login = () => {
         isAdmin: false
     });
     const [showModal, setShowModal] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [parametrosDeBusqueda] = useSearchParams()
+
+    useEffect(() => {
+        if (parametrosDeBusqueda.get("registro") == "true") setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+
+    }, [])
 
     const navigate = useNavigate()
+
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -74,6 +83,13 @@ const Login = () => {
     return (
         <div className="login-container" id="login-container">
             <div className="header">Nail It</div>
+            {showAlert &&
+                <div className="alert alert-success d-flex align-items-center" style={{ position: "absolute", top: "70px", right: "30px" }} role="alert">
+                    <i className="bi bi-check fs-2 me-3"></i>
+                    ¡Usuario registrado exitosamente!
+                </div>
+            }
+
             <form onSubmit={handleSubmit} className="row g-3">
                 <div className="form-group col-md-6">
                     <label className="form-label" htmlFor="username" >Email:</label>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Registro.scss';
 import axios from '../../axiosConfig/axiosConfig';
-const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect = "/login", handleSubmitAdmin = () => { } }) => {
+const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect = "/login?registro=true", handleSubmitAdmin = () => { } }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate(); // Hook para redirigir
     const [errorMessage, setErrorMessage] = useState("");

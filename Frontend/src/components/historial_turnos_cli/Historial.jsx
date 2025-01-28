@@ -8,6 +8,7 @@ import { Modal } from 'react-bootstrap'
 
 const Historial_turnos = () => {
     const [reservas, setReservas] = useState([]);
+    const [reservasFiltradas, setReservasFiltradas] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [reservaParaCancelar, setReservaParaCancelar] = useState(null);
     const userId = localStorage.getItem('userId');
@@ -18,6 +19,30 @@ const Historial_turnos = () => {
     const [showCBUModal, setShowCBUModal] = useState(false);
     const [isValidCBUOrAlias, setIsValidCBUOrAlias] = useState(true)
 
+    // Use effect------------------------------------------------------------------------------------------
+    useEffect(() => {
+        fetchReservas();
+    }, []);
+    const fetchReservas = async () => {
+        try {
+            const response = await axios.get(`/reserva/user/${userId}`);
+            //estas reservas son las originales traidas de la BD
+            setReservas(response.data);
+            //este arreglo de reservas va a ir modificandose segun los filtros
+            setReservasFiltradas(response.data);
+            const clientResponse = await axios.get(`/cliente/${userId}`);
+            if (clientResponse.data && clientResponse.data.cbu) {
+                setCbu(clientResponse.data.cbu)
+                setcuenta(clientResponse.data.titular_cuenta)
+                cbuUser = clientResponse.data.cbu
+            }
+
+        } catch (error) {
+            console.error('Error al obtener las reservas', error);
+        }
+    };
+
+    // handles---------------------------------------------------------------------------------------------
     const handleCancelacion = async (id, reservaData, estado, cbu = null, cuenta = null) => {
         try {
             const result = await axios.put(`/reserva/${id}`, {
@@ -48,19 +73,6 @@ const Historial_turnos = () => {
             console.error('Error al actualizar la reserva:', error);
         }
     };
-
-    const formatearFecha = (fecha) => {
-        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
-        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
-    };
-
-    const calcularDiferenciaHoras = (fechaReserva) => {
-        const fechaActual = new Date();
-        const diferenciaMilisegundos = new Date(fechaReserva) - fechaActual;
-        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60);
-        return diferenciaHoras;
-    };
-
     const onActualizar = async (id, reservaData) => {
         setReservaParaCancelar({ id, reservaData });
         if (calcularDiferenciaHoras(reservaData.fecha) < 48) {
@@ -69,17 +81,6 @@ const Historial_turnos = () => {
             setShowCBUModal(true); // Muestra el nuevo modal si faltan más de 48 horas
         }
     };
-    const validateCBUOrAlias = (value) => {
-        if (/^\d{22}$/.test(value)) {
-            return true;
-        }
-        if (/^[a-zA-Z0-9]{6,20}$/.test(value) && !/^\d+$/.test(value)) {
-            return true;
-        }
-        return false;
-    }
-
-
     const handleCBUChange = (event) => {
         const input = event.target.value;
         setCbu(input);
@@ -88,7 +89,6 @@ const Historial_turnos = () => {
     const handleCuentaChange = (event) => {
         setcuenta(event.target.value);
     };
-
     const handleCBUModalConfirm = async () => {
         if (isValidCBUOrAlias) {
             try {
@@ -104,30 +104,38 @@ const Historial_turnos = () => {
             handleCancelacion(reservaParaCancelar.id, reservaParaCancelar.reservaData, "cancelada");
         }
     };
+    const handleRedirect = () => {
+        navigate('/inicio');
+    };
+    const handleFilterChange = (e) => {
+        if (e.target.value == "todas") {
+            setReservasFiltradas(reservas)
+            return
+        }
+        const reservasFiltradas = reservas.filter(reserva => reserva.estado === e.target.value);
+        setReservasFiltradas(reservasFiltradas)
+    }
 
-    useEffect(() => {
-        const fetchReservas = async () => {
-            try {
-                const response = await axios.get(`/reserva/user/${userId}`);
-                setReservas(response.data);
-                const clientResponse = await axios.get(`/cliente/${userId}`);
-                if (clientResponse.data && clientResponse.data.cbu) {
-
-                    setCbu(clientResponse.data.cbu)
-
-                    setcuenta(clientResponse.data.titular_cuenta)
-
-
-                    cbuUser = clientResponse.data.cbu
-                }
-
-            } catch (error) {
-                console.error('Error al obtener las reservas', error);
-            }
-        };
-        fetchReservas();
-    }, []);
-
+    // formato y funciones de soporte----------------------------------------------------------------------
+    const formatearFecha = (fecha) => {
+        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
+    };
+    const calcularDiferenciaHoras = (fechaReserva) => {
+        const fechaActual = new Date();
+        const diferenciaMilisegundos = new Date(fechaReserva) - fechaActual;
+        const diferenciaHoras = diferenciaMilisegundos / (1000 * 60 * 60);
+        return diferenciaHoras;
+    };
+    const validateCBUOrAlias = (value) => {
+        if (/^\d{22}$/.test(value)) {
+            return true;
+        }
+        if (/^[a-zA-Z0-9]{6,20}$/.test(value) && !/^\d+$/.test(value)) {
+            return true;
+        }
+        return false;
+    }
     const obtenerClasesCard = (estado) => {
         switch (estado) {
             case 'cancelada':
@@ -156,8 +164,15 @@ const Historial_turnos = () => {
                 };
         }
     };
+    const dividirReservas = (reservas) => {
+        const fechaActual = new Date();
+        const reservasPasadas = reservas.filter(reserva => new Date(reserva.fecha) < fechaActual);
+        const reservasFuturas = reservas.filter(reserva => new Date(reserva.fecha) >= fechaActual).reverse();
+        return { reservasPasadas, reservasFuturas };
+    };
+    const { reservasPasadas, reservasFuturas } = dividirReservas(reservasFiltradas);
 
-
+    // renders --------------------------------------------------------------------------------------------
     const renderFilasReservas = (reservas) => {
         return (
             <div className="row">
@@ -188,7 +203,8 @@ const Historial_turnos = () => {
                                 <div className={clases.footer + " text-uppercase"}>
                                     {reserva.estado === 'pendiente' ? 'Pendiente de confirmar seña' :
                                         reserva.estado === 'por_reembolsar' ? 'pendiente de reembolso' :
-                                            reserva.estado}
+                                            reserva.estado === 'no_realizada' ? 'No realizada por ausencia' :
+                                                reserva.estado}
                                 </div>
                             </div>
                         </div>
@@ -198,30 +214,30 @@ const Historial_turnos = () => {
         );
     };
 
-    const handleRedirect = () => {
-        navigate('/inicio');
-    };
-
-    const dividirReservas = (reservas) => {
-        const fechaActual = new Date();
-        const reservasPasadas = reservas.filter(reserva => new Date(reserva.fecha) < fechaActual);
-        const reservasFuturas = reservas.filter(reserva => new Date(reserva.fecha) >= fechaActual).reverse();
-        return { reservasPasadas, reservasFuturas };
-    };
-
-    const { reservasPasadas, reservasFuturas } = dividirReservas(reservas);
-
     return (
         <div className='body-ctn'>
-            <div>
-                <button className='btn misTurnos-btn' onClick={handleRedirect}>
-                    <i className='bi bi-arrow-left pe-2'></i> Volver
-                </button>
+            <div className='d-flex justify-content-between mb-3 align-items-center'>
+                <div>
+                    <button className='btn misTurnos-btn m-0' onClick={handleRedirect}>
+                        <i className='bi bi-arrow-left pe-2'></i> Volver
+                    </button>
+                </div>
+                <div>
+                    <select className="form-select" name="estado" id="filtro_estado" onChange={handleFilterChange}>
+                        <option value="todas">Todas</option>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="pendiente">Pendiente de Confirmación</option>
+                        <option value="por_reembolsar">Pendiente de Reembolso</option>
+                        <option value="realizada">Realizada</option>
+                        <option value="no_realizada">No Realizada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </div>
             </div>
             <div className='container-fluid Reservas'>
                 <h4>Mis Reservas</h4>
                 {reservasFuturas.length > 0 ? renderFilasReservas(reservasFuturas) : <p>No tienes reservas próximas.</p>}
-                {/* <h4>Mis Reservas anteriores</h4> */}
+                <h4>Mis Reservas pasadas</h4>
                 {reservasPasadas.length > 0 ? renderFilasReservas(reservasPasadas) : <p>No tienes reservas pasadas.</p>}
             </div>
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
