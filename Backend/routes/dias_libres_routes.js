@@ -37,19 +37,21 @@ routerDiasLibres.get("/:id", async (req, res) => {
 // **Registrar un nuevo día libre (ALTA)**
 routerDiasLibres.post("/", async (req, res) => {
     try {
-        // Validaciones previas
-        const { id_admin, fecha_Desde, fecha_Hasta } = req.body;
+        const { id_admin, fecha_desde, fecha_hasta } = req.body;
 
-        // Verificar si las fechas están completas
-        if (!id_admin || !fecha_Desde || !fecha_Hasta) {
+        if (!id_admin || !fecha_desde || !fecha_hasta) {
             return res.status(400).json({ message: "Todos los campos son requeridos (id_admin, fecha_Desde, fecha_Hasta)." });
         }
 
-        // Crear el nuevo día libre
+        // Aquí puedes imprimir los datos que recibes
+        console.log('Datos recibidos:', req.body);
+
         const nuevoDiaLibre = await gestorDiasLibres.crear_dia_libre(req.body);
         res.status(201).json(nuevoDiaLibre);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // Imprime el error completo para más detalles
+        console.error('Error al crear día libre:', error);
+        res.status(500).json({ error: "No se pudo crear el día libre.", detalles: error.message });
     }
 });
 
