@@ -26,6 +26,8 @@ import { AdminHorarioEspecialidad } from "./db/adminHorarioEspecialidad_tabla.js
 import { GestorAdminHorarioEspecialidad } from "./controllers/adminHorarioEspecialidad_controller.js";
 import { routerAdminHorarioEspecialidad } from "./routes/adminHorarioEspecialidad_routes.js";
 import { uploadRouter } from "./routes/upload_routes.js";
+import { GestorDiasLibres } from "./controllers/dias_libres_controller.js";
+import routerDiasLibres from "./routes/dias_libres_routes.js";
 
 const PORT = 5050;
 
@@ -45,6 +47,7 @@ export const gestorReservas = new GestorReservas();
 export const gestorEstados = new GestorEstados();
 export const gestorVariablesglobales = new GestorVariables();
 export const gestorAdminHorarioEspecialidad = new GestorAdminHorarioEspecialidad();
+export const gestorDiasLibres = new GestorDiasLibres();
 
 Especialidades.hasMany(Servicios, { foreignKey: 'id_especialidad' });
 Servicios.belongsTo(Especialidades, { foreignKey: 'id_especialidad', as: 'Especialidad' }); // Define el alias aquí
@@ -74,6 +77,7 @@ app.use("/estado", routerEstados);
 app.use("/horario", routerAdminHorarioEspecialidad);
 app.use("/variablesGlobales", routerVariablesGlobales);
 app.use("/api", uploadRouter);
+app.use("/diasLibres", routerDiasLibres);
 
 app.listen(PORT, () =>
     console.log(`Servidor corriendo en http://localhost:${PORT}`));
