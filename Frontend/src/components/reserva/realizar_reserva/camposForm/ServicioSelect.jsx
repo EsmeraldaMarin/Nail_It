@@ -7,7 +7,7 @@ const ServicioSelect = ({ tipoServicio, servicio, setServicio, servicios }) => {
             <label>Seleccione el servicio</label>
             <select
                 value={servicio == null ? "" : servicio}
-                onChange={(e) => setServicio(e.target.value)}
+                onChange={(e) => {setServicio(e.target.value)}}
                 className="form-select"
                 disabled={tipoServicio === "" || tipoServicio === null}
             >

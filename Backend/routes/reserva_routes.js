@@ -121,8 +121,7 @@ routerReservas.post("/", async (req, res) => {
             id_profesional,
             estado: estado || 'pendiente'
         };
-
-        if (typeof id_cliente === 'number') {
+        if (typeof id_cliente === 'number' || typeof id_cliente === 'string') {
             // Cliente registrado
             reservaData.id_cliente = id_cliente;
         } else if (typeof id_cliente === 'object' && id_cliente.nombre_cliente && id_cliente.apellido_cliente && id_cliente.telefono_cliente) {

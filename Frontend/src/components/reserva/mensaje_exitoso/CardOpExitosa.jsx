@@ -6,14 +6,15 @@ const CardOpExitosa = ({ setPasoActual, esDeEstilista }) => {
 
     return (
         <div className='container-fluid'>
-            <h5>Próximos pasos</h5>
-
             <div className="ctn-exito">
                 <i className='bi bi-check-circle'></i>
                 <p>¡Tu reserva ya está registrada!</p>
-                {!esDeEstilista && <span>Recibirás un mail de confirmacion cuando la estilista compruebe el pago</span>}
+                {!esDeEstilista && <span>Recibirás un mensaje por Whatsapp de confirmación cuando la operadora compruebe el pago</span>}
                 {!esDeEstilista && <span>Podés ver la información de tus reservas en “Mis Reservas”</span>}
-                {!esDeEstilista && <Link to="/inicio/mis_reservas" className="btn" onClick={() => setPasoActual(1)}>Ir a Mis Reservas</Link>}
+                {!esDeEstilista && <Link to="/inicio/mis_reservas" className="btn" onClick={() => {
+                    setPasoActual(1)
+                    window.scrollTo(0, 0);
+                }}>Ir a Mis Reservas</Link>}
             </div>
         </div>
     );

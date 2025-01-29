@@ -44,7 +44,7 @@ const FechaSelect = ({ servicio, fecha, setFecha, fechaInput, setFechaInput }) =
     };
 
     return (
-        <div className="mb-3 col">
+        <div className="mb-3 col" style={{ minWidth: "200px" }}>
             <label>Fecha</label>
             <input
                 disabled={!servicio} // Si no hay servicio seleccionado, deshabilitar el input
