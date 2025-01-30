@@ -38,5 +38,15 @@ export class GestorAdmins {
                 { email: email }
         })
     }
+
+    
+    async change_password(id, new_password) {
+        return await Admins.update({
+            password: new_password,
+        }, {
+            where: {id: id}
+        });
+    }
+
 }
 

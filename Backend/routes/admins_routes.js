@@ -193,3 +193,80 @@ routerAdmins.delete("/:id", async (req, res) => {
     }
 });
 
+routerAdmins.post("/:id/change_password", async(req, res) => {
+    try {
+        const old_password = req.body.password;
+        const password_confirmation = req.body.password_confirmation;
+        let new_password = req.body.new_password;
+
+        // TODO: Pass token header instead of req object
+        // TODO: Move to generic place.
+        // TODO: Create enum/const for status codes
+        // Move: Logic to services and call it from the controller
+        const get_jwt_data = (req) => {
+            let authorization_header = req.headers.authorization ?? "";
+            authorization_header = authorization_header.split(' ');
+
+            if(!authorization_header || authorization_header.length < 2) {
+                return undefined;
+            }
+
+            const token = authorization_header[1] ?? ""; // Header Authorization: Beaber {jwt}
+
+            try {
+                return jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
+                    if(error) {
+                        console.error(error);
+                        return undefined;
+                    }
+
+                    return payload;
+                });
+            }
+            catch(error) {
+                console.error(error);
+                return undefined;
+            }
+        };
+
+        const jwt_payload = get_jwt_data(req);
+
+        if(!jwt_payload) {
+            return res.status(403).json({message: "Invalid authorization token"});
+        }
+
+        const admin = await gestorAdmins.obtener_admin(jwt_payload?.usuario?.id);
+
+        if(!admin) {
+            return res.status(404).json({message: "Resource not found"});
+        }
+
+        if(!new_password) {
+            return res.status(400).json({message: "Missing new passowrd"});
+        }
+
+        if(!old_password || old_password != password_confirmation) {
+            return res.status(400).json({ message: "Invalid password_confirmation." });
+        }
+
+        const password_match = await bcrypt.compare(old_password, admin.password);
+
+        if (!password_match) {
+            return res.status(403).json({ message: "Invalid password." });
+        }
+
+        new_password = await bcrypt.hash(new_password, 10);
+
+        if(new_password == admin.password) {
+            return res.status(400).json({ message: "New password cannot be the same as current password" });
+        }
+
+        await gestorAdmins.change_password(admin.id, new_password);
+
+        res.status(200).json({message: "OK"});
+    }
+    catch(error) {
+        console.error(error);
+        res.status(500).json({message: "Internal server error"});
+    }
+});
