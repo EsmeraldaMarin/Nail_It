@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import ProfesionalSelect from './camposForm/ProfesionalSelect';
 import FechaSelect from './camposForm/FechaSelect';
 import ServicioSelect from './camposForm/ServicioSelect';
@@ -8,6 +7,7 @@ import HorarioSelect from './camposForm/HorarioSelect';
 import InfoServicio from './camposForm/InfoServicio';
 import "./Reserva.scss"
 import axios from '../../../axiosConfig/axiosConfig';
+
 
 const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const { profesional, fecha, servicio, tipoServicio, horario } = reservaData;
@@ -30,7 +30,6 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     };
     fetchTiposServicio();
   }, []);
-
 
   //Esto se hace asi porque cuando se cambia la especialidad, no impacta hasta que se vuelve a renderizar el componente
   useEffect(() => {
@@ -92,6 +91,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     });
     setFechaInput("")
   };
+
   const handleServicioChange = async (nuevoServicio) => {
     const servicio_data = await axios.get(`/servicio/${nuevoServicio}`)
     setReservaData({
@@ -100,7 +100,11 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       servicio_data: servicio_data.data,
       precio: servicio_data.data.precio,
       duracion: servicio_data.data.duracion,
+      fecha: '',
       horario: '', // Resetea el horario cuando cambia el servicio
+      profesional: '',
+      profesional_data: null, //Resetea el profesional cuando cambia la 
+
     });
     setFechaInput("")
   };
@@ -114,7 +118,6 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     const indiceDia = fechaSeleccionada.getDay();
 
     const horarios_filtrados = await axios.get(`/horario?dia=${diasSemana[indiceDia]}&especialidad=${reservaData.tipoServicio}`);
-
     setReservaData({
       ...reservaData,
       fecha: nuevaFecha,
@@ -142,6 +145,8 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     // Lógica de confirmación de reserva aquí (opcional)
     // Luego de confirmar, redirige a otra vista
     setPasoActual(2);
+    window.scrollTo(0, 0);
+
   };
 
   return (
@@ -161,7 +166,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
       <HorarioSelect horarios={reservaData.horariosXprofesional} horariosOcupados={horariosOcupados} servicio_data={reservaData.servicio_data} profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
 
-      <button onClick={handleConfirm} className="btn btn-primary mt-3 btn-continuar" disabled={horario ? false : true}>
+      <button onClick={handleConfirm} className="btn mt-3 btn-continuar" disabled={horario ? false : true}>
         Continuar
       </button>
 

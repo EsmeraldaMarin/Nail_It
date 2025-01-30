@@ -23,14 +23,14 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
     }
   };
 
-  const handleHange = (e) => {
+  const handleChange = (e) => {
     setProfesional(e.target.value)
 
     fecha = convertToISO(fecha);
     buscarReservasEnDiayProfesionalSeleccionado(fecha, e.target.value);
   }
   return (
-    <div className="mb-3 col">
+    <div className="mb-3 col" style={{ minWidth: "200px" }}>
       <label>Operadora</label>
 
       {profesionales.length == 0 && fecha ?
@@ -41,7 +41,7 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
 
         </div>
         :
-        <select disabled={fecha ? false : true} value={profesional} onChange={(e) => handleHange(e)} className="form-select">
+        <select disabled={fecha ? false : true} value={profesional} onChange={(e) => handleChange(e)} className="form-select">
           <option value="">Seleccione una operadora</option>
           {profesionales?.map((pro, index) => (
             <option key={index} value={pro.id}>

@@ -23,11 +23,14 @@ import constructionImage from './img/construction.svg'
 import Vacaciones from "./components/horarios_estilista/Vacaciones";
 import AgendaReservas from "./components/agenda_admin/AgendaReservas";
 import ConfiguracionAdmin from "./components/configuracion_admin/ConfiguracionAdmin";
+import ScrollToTop from "./ScrollToTop";
 
 function App() {
     return (
         <div className="App">
+            <ScrollToTop></ScrollToTop>
             <Routes>
+
                 {/* Ruta para el cliente con rutas anidadas */}
                 <Route path="/inicio/*" element={<RutaProtegida><ClienteLayout /></RutaProtegida>}>
                     <Route path="" element={<Inicio />} />
@@ -40,13 +43,13 @@ function App() {
                 <Route path="/inicio_admin/*" element={<RutaProtegida><InicioAdmin /></RutaProtegida>}>
                     <Route index element={<ReservasConfirmadas />} />
                     <Route path="reservas_pendientes" element={<ReservasPendientes />} />
-                    <Route path="horarios" element={<div className="d-flex flex-wrap"><Horarios /><Vacaciones/></div>} />
+                    <Route path="horarios" element={<div className="d-flex flex-wrap"><Horarios /><Vacaciones /></div>} />
                     <Route path="horarios" element={<Horarios />} />
                     <Route path="servicios" element={<Servicio />} />
                     <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
-                    <Route path="configuracion" element={<ConfiguracionAdmin/>}></Route>
+                    <Route path="configuracion" element={<ConfiguracionAdmin />}></Route>
                     <Route path="estadisticas" element={<div></div>}></Route>
-                    <Route path="agenda" element={<AgendaReservas/>}></Route>
+                    <Route path="agenda" element={<AgendaReservas />}></Route>
                 </Route>
 
                 {/* Rutas básicas */}

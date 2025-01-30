@@ -16,8 +16,13 @@
         height: 60px !important;
         background-color: inherit;
         height: fit-content;
+        box-shadow: 0 0 5px 0 #bbb;
         .offcanvas {
             max-width: 80%;
+        }
+        .navbar-brand{
+            font-weight: bolder;
+            color: #f85b00;
         }
         .menu {
             ul {

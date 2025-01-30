@@ -67,33 +67,40 @@
 
         button {
             background-color: white;
-            border: 1px solid orange;
-            color: orange;
+            border: 1px solid #f85b00;
+            color: #f85b00;
             white-space: nowrap;
             margin: 0px 5px;
             padding: 16px 8px;
             min-width: 100px;
             border-radius: 30px;
+             
             &:focus,
-            &:active, 
+            &:active,
+            &:hover {
+                background-color: #ffae7e;
+                color: white;
+                font-weight: bold;
+            }
             &.active {
-                background-color: orange;
+                background-color: #f85b00;
                 color: white;
                 font-weight: bold;
             }
             &:disabled {
                 border: 1px solid gray;
                 color: gray;
+                background-color: grey;
             }
         }
     }
 }
-
 //BOTON CONTINUAR
-.btn-continuar {
-    background-color: orange;
+.btn-continuar, .reserva-card .btn-continuar {
+    background-color: #f85b00;
     color: white;
     font-weight: bold;
     border: 0;
     width: 100%;
 }
+
