@@ -20,6 +20,7 @@ const SideBar = () => {
                         <li className="nav-item"><NavLink to="/inicio_admin/horarios" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi bi-calendar4-range"></i>Horarios de Atención</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/reportes" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-clipboard2"></i>Reportes</NavLink></li>
                         <li className="nav-item"><NavLink to="/inicio_admin/configuracion" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-gear"></i>Configuración</NavLink></li>
+                        <li className="nav-item space-between"><NavLink to="/inicio_admin/perfil" className={({ isActive }) => (isActive ? 'active' : '')}><i className="bi bi-people-fill"></i>Perfil</NavLink></li>
                         <li className='nav-item logout'><Logout /></li>
                     </ul>
                 </div>

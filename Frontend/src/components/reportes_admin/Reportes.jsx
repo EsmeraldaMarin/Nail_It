@@ -4,7 +4,7 @@ import CardReporteReserva from "./Cards/CardReporteReserva";
 import './Reportes.scss'
 import CardReporteReservasPendientes from "./Cards/CardReservasPendientes";
 import CardsVariasCtn from "./Cards/CardsVariasCtn";
-import * as XLSX from "xlsx";
+
 
 const Reportes = () => {
     const [especialidades, setEspecialidades] = useState([])

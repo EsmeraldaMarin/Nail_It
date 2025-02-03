@@ -18,7 +18,14 @@ const ReservasConfirmadas = () => {
     useEffect(() => {
         const fetchReservas = async () => {
             try {
-                const response = await axios.get('/reserva');
+                                // Este GET esta devolviendo todas las reservas existentes cuando solo estas usando las de hoy en el front
+                // Agregar filtro de fecha para prevenir una respuesta muy grande y demoras en la carga.
+                const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                const localISODate = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+                // const currentDate = "2025-02-02";
+                const currentDate = (localISODate).split('T')[0];
+
+                const response = await axios.get('/reserva?fecha=' + currentDate);
                 setReservas(response.data);
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
@@ -28,17 +35,21 @@ const ReservasConfirmadas = () => {
     }, []);
 
     const hoy = new Date();
+   
+    // Se agrega columna en la tabla para poder mostrar el estado
+    // Se desactiva el filtro de isSameDay ya que el back va devolver esa informacion ya filtrada
     const reservasEstilista = reservas.filter(
         reserva =>
-            reserva.estado === "confirmada" &&
-            reserva.id_profesional === userId &&
-            isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
+            // reserva.estado === "confirmada" &&
+            reserva.id_profesional === userId // &&
+            // isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
     );
-    const reservasConfirmadas = reservas.filter(
-        reserva =>
-            reserva.estado === "confirmada" &&
-            isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
-    );
+
+    //const reservasConfirmadas = reservas.filter(
+    //    reserva =>
+    //        reserva.estado === "confirmada" &&
+    //        isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
+    //);
 
     const handleAction = async () => {
         const { action, id } = modal;
@@ -58,6 +69,34 @@ const ReservasConfirmadas = () => {
         } finally {
             setModal({ show: false, action: null, id: null });
         }
+    };
+    const getBadgeClassByStatus = (status) => {
+        let badgeClass = "badge rounded-pill ";
+
+        if(status == "realizada") {
+            badgeClass += "bg-success";
+        }
+        else if(status == "cancelada") {
+            badgeClass += "bg-danger";
+        }
+        else if(status == "no_realizada") {
+            badgeClass += "bg-warning";
+        }
+        else {
+            badgeClass += "bg-primary";
+        }
+
+        return badgeClass;
+    }
+
+    const reservaEstadoName = {
+        realizada: "Realizada",
+        cancelada: "Cancelada",
+        no_realizada: "No realizada",
+        pendiente: "Pendiente",
+        por_reembolzar: "Por reembolzar",
+        confirmada: "Confirmada",
+        // TODO: agregar todos los estados posibles
     };
 
     const renderFilasReserva = (reservasFiltradas) => {
@@ -85,6 +124,11 @@ const ReservasConfirmadas = () => {
                 <td>{formatPrice(reserva.montoTotal)}</td>
                 <td>{formatPrice(reserva.montoSenia)}</td>
                 <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - reserva.montoSenia)}</strong></td>
+                <td>
+                    <span className="badge rounded-pill" className={getBadgeClassByStatus(reserva.estado)}>
+                        {reservaEstadoName[reserva.estado]}
+                    </span>
+                </td>
                 <td>
                     <button
                         type="button"
@@ -131,6 +175,7 @@ const ReservasConfirmadas = () => {
                             <th scope="col">Precio servicio</th>
                             <th scope="col">Importe abonado</th>
                             <th scope="col">Importe a cobrar</th>
+                            <th scope="col">Estado</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -156,8 +201,8 @@ const ReservasConfirmadas = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {reservasConfirmadas.length > 0
-                            ? reservasConfirmadas.map((reserva, index) => (
+                        {reservas.length > 0
+                            ? reservas.map((reserva, index) => (
                                 <tr key={index}>
                                     <th className="text-uppercase" style={{ backgroundColor: "#eee" }}>{reserva.Admin.nombre}</th>
                                     <td style={{ width: "20rem" }}>{reserva.Servicio.nombre}</td>

@@ -25,6 +25,7 @@ import AgendaReservas from "./components/agenda_admin/AgendaReservas";
 import ConfiguracionAdmin from "./components/configuracion_admin/ConfiguracionAdmin";
 import ScrollToTop from "./ScrollToTop";
 import Reportes from "./components/reportes_admin/Reportes";
+import PerfilAdmin from "./components/perfil_admin/PerfilAdmin";
 
 function App() {
     return (
@@ -51,6 +52,7 @@ function App() {
                     <Route path="configuracion" element={<ConfiguracionAdmin />}></Route>
                     <Route path="reportes" element={<Reportes></Reportes>}></Route>
                     <Route path="agenda" element={<AgendaReservas />}></Route>
+                    <Route path="perfil" element={<PerfilAdmin/>}></Route>
                 </Route>
 
                 {/* Rutas básicas */}
