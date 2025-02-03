@@ -38,7 +38,7 @@ const MostrarServicios = () => {
                         </div>
                         <div className="service-footer">
                             <Link to="/inicio/realizar_reserva" className="reserve-button">
-                                Reservar Turno
+                                Realizar Reserva
                             </Link>
                         </div>
                     </div>
