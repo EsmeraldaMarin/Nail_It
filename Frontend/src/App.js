@@ -24,6 +24,7 @@ import Vacaciones from "./components/horarios_estilista/Vacaciones";
 import AgendaReservas from "./components/agenda_admin/AgendaReservas";
 import ConfiguracionAdmin from "./components/configuracion_admin/ConfiguracionAdmin";
 import ScrollToTop from "./ScrollToTop";
+import Reportes from "./components/reportes_admin/Reportes";
 
 function App() {
     return (
@@ -48,7 +49,7 @@ function App() {
                     <Route path="servicios" element={<Servicio />} />
                     <Route path="administracion_general" element={<div className="accordion" id="accordionExample"><Servicio /> <EstilistaManager /></div>} />
                     <Route path="configuracion" element={<ConfiguracionAdmin />}></Route>
-                    <Route path="estadisticas" element={<div></div>}></Route>
+                    <Route path="reportes" element={<Reportes></Reportes>}></Route>
                     <Route path="agenda" element={<AgendaReservas />}></Route>
                 </Route>
 
