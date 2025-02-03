@@ -3,7 +3,6 @@ const { Router } = pkg
 import { gestorClientes } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { Clientes } from "../db/cliente_tabla.js";
 import { enviarMailVerificacion } from "../controllers/services/mail.services.js";
 import dotenv from "dotenv";
 

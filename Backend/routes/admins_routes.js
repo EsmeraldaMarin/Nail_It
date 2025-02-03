@@ -159,14 +159,15 @@ routerAdmins.put("/:id", async (req, res) => {
                     id: adminExistente.id,
                     nombre: adminExistente.nombre,
                     email: adminExistente.email,
-                    isAdmin: true
+                    isAdmin: true,
                 }
             };
             req.body.password = await bcrypt.hash(password, 10);
             token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+            body.mustChangePassword = false;
         }
 
-        const updateAdmin = await gestorAdmins.actualizar_admin_por_id(req.body, id);
+        await gestorAdmins.actualizar_admin_por_id(body, id);
         res.status(202).json({
             token,
             message: "Admin cambiado exitosamente"
@@ -242,25 +243,24 @@ routerAdmins.post("/:id/change_password", async(req, res) => {
         }
 
         if(!new_password) {
-            return res.status(400).json({message: "Missing new passowrd"});
+            return res.status(400).json({message: "Missing new password"});
         }
 
-        if(!old_password || old_password != password_confirmation) {
-            return res.status(400).json({ message: "Invalid password_confirmation." });
+        if(!password_confirmation || new_password != password_confirmation) {
+            return res.status(400).json({ message: "Invalid password_confirmation" });
         }
 
         const password_match = await bcrypt.compare(old_password, admin.password);
 
         if (!password_match) {
-            return res.status(403).json({ message: "Invalid password." });
+            return res.status(403).json({ message: "Invalid password" });
         }
 
-        new_password = await bcrypt.hash(new_password, 10);
-
-        if(new_password == admin.password) {
+        if(new_password == old_password) {
             return res.status(400).json({ message: "New password cannot be the same as current password" });
         }
 
+        new_password = await bcrypt.hash(new_password, 10);
         await gestorAdmins.change_password(admin.id, new_password);
 
         res.status(200).json({message: "OK"});

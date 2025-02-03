@@ -12,7 +12,6 @@ import { Especialidades } from "./db/especialidad_tabla.js";
 import { Servicios } from "./db/servicio_tabla.js";
 import { routerServicios } from "./routes/servicio_routes.js";
 import { routerVerificar } from "./security/auth.js";
-import fs from "fs";
 import { routerReservas } from "./routes/reserva_routes.js";
 import { GestorReservas } from "./controllers/reserva_controller.js";
 import { Reservas } from "./db/reserva_tabla.js";
@@ -28,6 +27,7 @@ import { routerAdminHorarioEspecialidad } from "./routes/adminHorarioEspecialida
 import { uploadRouter } from "./routes/upload_routes.js";
 import { GestorDiasLibres } from "./controllers/dias_libres_controller.js";
 import routerDiasLibres from "./routes/dias_libres_routes.js";
+import cron from "node-cron";
 
 const PORT = 5050;
 
@@ -81,3 +81,27 @@ app.use("/diasLibres", routerDiasLibres);
 
 app.listen(PORT, () =>
     console.log(`Servidor corriendo en http://localhost:${PORT}`));
+
+cron.schedule('0 0 0 * * *', async () => {
+    const previousDate = new Date();
+    previousDate.setDate(previousDate.getDate() - 1);
+    const fecha = previousDate.toISOString().split('T')[0];
+
+    await gestorReservas.cancelar_reservas_pendientes_del_dia(fecha);
+});
+
+
+// TEST
+cron.schedule('0 * * * * *', () => {
+    const previousDate = new Date();
+    previousDate.setDate(previousDate.getDate() - 1);
+    const fecha = previousDate.toISOString().split('T')[0];
+
+    // Alternative code
+    // const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    // const localISODate = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    // // const currentDate = "2024-11-08";
+    // const currentDate = (localISODate).split('T')[0];
+
+    console.log(previousDate);
+});

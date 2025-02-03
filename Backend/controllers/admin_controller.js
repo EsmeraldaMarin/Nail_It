@@ -48,5 +48,18 @@ export class GestorAdmins {
         });
     }
 
+    /**
+     *
+     * @param id Client id
+     * @param new_password New password to be set
+     * @returns {Promise<*>}
+     */
+    async change_password(id, new_password) {
+        return await Admins.update({
+            password: new_password,
+        }, {
+            where: {id: id}
+        });
+    }
 }
 

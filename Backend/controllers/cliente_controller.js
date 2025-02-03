@@ -1,4 +1,5 @@
 import { Clientes } from "../db/cliente_tabla.js";
+import bcrypt from "bcryptjs";
 
 export class GestorClientes{
     async obtener_clientes(){
@@ -39,5 +40,19 @@ export class GestorClientes{
             where: {email: mail}
         })
     }
+    /**
+     *
+     * @param id Client id
+     * @param new_password New unencrypted password to be set
+     * @returns {Promise<*>}
+     */
+    async change_password(id, new_password) {
+        new_password = await bcrypt.hash(new_password, 10);
 
+        return await Clientes.update({
+            password: new_password,
+        }, {
+            where: {id: id}
+        });
+    }
 }

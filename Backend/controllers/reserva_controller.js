@@ -4,11 +4,17 @@ import { Reservas } from "../db/reserva_tabla.js";
 import { Servicios } from "../db/servicio_tabla.js";
 import { Especialidades } from "../db/especialidad_tabla.js";
 import enviarNotificacion from "../whatsapp.js";
+import {Op} from "sequelize";
+import {sequelize} from "../db/database.js";
 
 export class GestorReservas {
     async obtener_reservas(fecha, id_profesional) {
         let condicion = [];
-        fecha && condicion.push({ fecha: `${fecha}` })
+
+        // FIX WHERE FECHA
+        fecha && condicion.push({
+            [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),
+        });
         id_profesional && condicion.push({ id_profesional: `${id_profesional}` })
 
         try {
@@ -96,7 +102,7 @@ export class GestorReservas {
                 Por favor, revisa tu panel para confirmar.`;
 
             // Enviar la notificación de WhatsApp
-            await enviarNotificacion(estilista.numero, mensaje);
+            // await enviarNotificacion(estilista.numero, mensaje);
 
             return reserva; // Devuelve la reserva creada
         } catch (error) {
@@ -204,5 +210,32 @@ export class GestorReservas {
         return await Reservas.destroy({
             where: { id: id }
         });
+    }
+    async cancelar_reservas_pendientes_del_dia(fecha) {
+        console.log("Cancelando reservas del día " + fecha);
+
+        const reservas =  await Reservas.findAll({
+            where: {
+                estado: 'pendiente',
+                [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),
+            }
+        });
+
+        reservas.forEach((reserva) => {
+            // TODO: Send email to client
+
+            console.log("Cancelando reserva " + reserva.id);
+        });
+
+        await Reservas.update({
+            estado: 'cancelada'
+        },{
+            where: {
+                estado: 'pendiente',
+                [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),
+            }
+        });
+
+        return true;
     }
 }
