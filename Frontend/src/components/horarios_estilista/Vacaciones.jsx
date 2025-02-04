@@ -118,8 +118,8 @@ export default function Vacaciones() {
                     {diasLibres.length > 0 ? (
                         diasLibres.map((dia, index) => (
                             <tr key={index}>
-                                <td>{new Date(dia.fecha_desde).toLocaleDateString("es-ES")}</td>
-                                <td>{new Date(dia.fecha_hasta).toLocaleDateString("es-ES")}</td>
+                            <td>{new Date(dia.fecha_desde).toLocaleDateString("es-ES", { timeZone: "UTC" })}</td>
+                            <td>{new Date(dia.fecha_hasta).toLocaleDateString("es-ES", { timeZone: "UTC" })}</td>
                                 <td>
                                     <button
                                         className="btn btn-danger"

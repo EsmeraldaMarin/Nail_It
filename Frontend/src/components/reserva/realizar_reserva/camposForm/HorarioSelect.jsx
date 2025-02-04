@@ -41,7 +41,7 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
                 (time + servicio_data.duracion > timeToMinutes(horarioOcupado.horaInicio) && time + servicio_data.duracion < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion)
             ))
     if (res) {
-        //console.log(time, res, timeToMinutes(res.horaInicio), timeToMinutes(res.horaInicio) + res.Servicio.duracion)
+        console.log(time, res, timeToMinutes(res.horaInicio), timeToMinutes(res.horaInicio) + res.Servicio.duracion)
         horarios_disponibles.push({ hora: minutesToTime(time), estado: "ocupado" });
         time = (timeToMinutes(res.horaInicio) + res.Servicio.duracion) - duracion
     } else {
@@ -49,7 +49,7 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
 
     }
 }
-        //console.log({ ...horarios_disponibles })
+        console.log({ ...horarios_disponibles })
     });
 
 return (
