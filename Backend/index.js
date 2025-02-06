@@ -82,6 +82,8 @@ app.use("/diasLibres", routerDiasLibres);
 app.listen(PORT, () =>
     console.log(`Servidor corriendo en http://localhost:${PORT}`));
 
+
+
 cron.schedule('0 0 0 * * *', async () => {
     const previousDate = new Date();
     previousDate.setDate(previousDate.getDate() - 1);
