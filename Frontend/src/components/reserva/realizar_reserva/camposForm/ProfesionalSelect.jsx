@@ -27,7 +27,9 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
     setProfesional(e.target.value)
 
     fecha = convertToISO(fecha);
-    buscarReservasEnDiayProfesionalSeleccionado(fecha, e.target.value);
+    const currentDate = (fecha).split('T')[0];
+
+    buscarReservasEnDiayProfesionalSeleccionado(currentDate, e.target.value);
   }
   return (
     <div className="mb-3 col" style={{ minWidth: "200px" }}>

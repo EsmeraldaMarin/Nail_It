@@ -34,7 +34,6 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
 
         // Generar horarios a partir de la hora de inicio, mientras estén dentro del rango
         for (let time = hora_inicio; time + duracion <= hora_fin; time += duracion) {
-
             const res = horariosOcupados.find(horarioOcupado =>
                 (timeToMinutes(horarioOcupado.horaInicio) <= time && time < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion))
                 ||

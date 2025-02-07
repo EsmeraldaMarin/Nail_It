@@ -104,7 +104,7 @@ function EstilistaManager() {
                     const modalElement = modalRefCrearUsuario.current;
                     const bootstrapModal = new window.bootstrap.Modal(modalElement);
                     bootstrapModal.show();
-                }}>Crear usuario<i className="bi bi-plus-circle"></i></button>
+                }}>Crear Estilista<i className="bi bi-plus-circle"></i></button>
 
             </div>
             <div className="search-ctn">
