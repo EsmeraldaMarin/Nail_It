@@ -16,7 +16,6 @@ const ReservasPendientes = () => {
     // Necesario para enviar por wpp confirmacion a cliente---------------
     const [telefonoCliente, setTelefonoCliente] = useState("")
     const [mensajeACliente, setMensajeACliente] = useState("")
-    const [reservaSeleccionada, setReservaSeleccionada] = useState(null);
     const [showModal, setShowModal] = useState(false);
     //-------------------------------------------------
 
@@ -59,7 +58,6 @@ const ReservasPendientes = () => {
                     `- _Oh My Nails_`
                 )
                 setTelefonoCliente(response.data.Cliente ? response.data.Cliente.numero : response.data.telefono_cliente);
-                setReservaSeleccionada(response.data)
                 setReservas((prevReservas) =>
                     prevReservas.map((reserva) =>
                         reserva.id === id ? { ...reserva, estado: "confirmada" } : reserva
@@ -77,7 +75,6 @@ const ReservasPendientes = () => {
                     `- _Oh My Nails_`
                 )
                 setTelefonoCliente(response.data.Cliente ? response.data.Cliente.numero : response.data.telefono_cliente);
-                setReservaSeleccionada(response.data)
                 setReservas((prevReservas) =>
                     prevReservas.map((reserva) =>
                         reserva.id === id ? { ...reserva, estado: "por_reembolsar" } : reserva

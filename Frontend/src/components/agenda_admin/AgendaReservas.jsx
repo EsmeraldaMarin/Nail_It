@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import axios from '../../axiosConfig/axiosConfig'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
-
-import axios from 'axios';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import './AgendaReservas.scss';
+import ModalEnviarMensaje from '../reserva_admin/subComponentes/ModalEnviarMensaje';
+import ListadoAgendaReservas from './ListadoAgendaReservas';
 
 const AgendaReservas = () => {
     const [reservas, setReservas] = useState([]);
+    const [reservas2, setReservas2] = useState([]);
     const [modalReserva, setModalReserva] = useState(null);
+
+    // Necesario para enviar por wpp notificacion a cliente---------------
+    const [telefonoCliente, setTelefonoCliente] = useState("")
+    const [mensajeACliente, setMensajeACliente] = useState("")
+    const [showModal, setShowModal] = useState(false);
+
     const userId = localStorage.getItem('userId');
+
+    const formatearFecha = (fecha) => {
+        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
+    };
+
 
     useEffect(() => {
         axios
@@ -34,12 +50,13 @@ const AgendaReservas = () => {
                             start: start.toISOString(), // Formato ISO
                             end: end.toISOString(),
                             extendedProps: {
+                                id: reserva.id,
                                 comprobante: reserva.comprobante,
                                 montoSenia: reserva.montoSenia,
                                 montoTotal: reserva.montoTotal,
                                 duracion: reserva.Servicio.duracion,
                                 horaInicio: reserva.horaInicio,
-                                horaFin: end.getHours() + ":" + end.getMinutes(), 
+                                horaFin: end.getHours() + ":" + end.getMinutes(),
                                 estado: reserva.estado,
                                 cliente: reserva.Cliente
                                     ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
@@ -53,6 +70,7 @@ const AgendaReservas = () => {
                         };
                     });
                 setReservas(eventos);
+                setReservas2(response.data.filter((res) => res.id_profesional == userId && res.estado === "confirmada"))
             })
             .catch((error) => {
                 console.error("Error al cargar reservas:", error);
@@ -62,6 +80,42 @@ const AgendaReservas = () => {
     const handleEventClick = (info) => {
         setModalReserva(info.event.extendedProps);
     };
+
+    const handleCancelarReserva = async (id) => {
+        const response = await axios.post(`/reserva/por_reembolsar/${id}`, {
+            estado: "por_reembolsar"
+        });;
+        setMensajeACliente(`*Hola, ${response.data.Cliente ? response.data.Cliente.nombre : response.data.nombre_cliente}!*\n\n` +
+            `Tu reserva a una sesión de *${response.data.Servicio.nombre}* el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs* ha sido CANCELADA.\n` +
+            `Tu seña será devuelta, por favor confirma tu alias o CBU y el nombre del titular de la cuenta.\n\n` +
+            `Muchas Gracias!,\n\n` +
+            `- _Oh My Nails_`
+        )
+        setTelefonoCliente(response.data.Cliente ? response.data.Cliente.numero : response.data.telefono_cliente);
+
+        // actualiza la lista de reservas.
+        const nuevaLista = await axios.get('http://localhost:5050/reserva');
+        const eventosActualizados = nuevaLista.data
+            .filter((res) => res.id_profesional == userId && res.estado === "confirmada")
+            .map((reserva) => ({
+                title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente}`,
+                start: new Date(reserva.fecha).toISOString(),
+                extendedProps: { id: reserva.id, estado: reserva.estado }
+            }));
+        setReservas(eventosActualizados);
+        setReservas2(eventosActualizados);
+        setModalReserva(null);
+        setShowModal(true);
+    }
+
+    const handleEnviarMensaje = () => {
+        const mensajeEncoded = encodeURIComponent(mensajeACliente);
+        const url = `https://wa.me/${telefonoCliente}?text=${mensajeEncoded}`;
+
+        window.open(url, '_blank'); // Abrir WhatsApp en una nueva pestaña
+        setShowModal(false); // Cerrar el modal después de enviar
+    };
+
 
     return (
         <div className="agenda-section">
@@ -114,7 +168,7 @@ const AgendaReservas = () => {
                                 <hr />
                                 <p>
                                     <strong>Hora Inicio:</strong> {modalReserva.horaInicio}
-                                    <strong> - Hora Fin:</strong> {modalReserva.horaFin} 
+                                    <strong> - Hora Fin:</strong> {modalReserva.horaFin}
                                 </p>
                                 <p>
                                     <strong>Servicio:</strong> {modalReserva.servicio}
@@ -132,7 +186,14 @@ const AgendaReservas = () => {
                                     <strong>Teléfono:</strong> {modalReserva.numero}
                                 </p>
                             </div>
-                            <div className="modal-footer">
+                            <div className="modal-footer d-flex justify-content-between">
+                                <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={() => handleCancelarReserva(modalReserva.id)}
+                                >
+                                    Cancelar Reserva
+                                </button>
                                 <button
                                     type="button"
                                     className="btn btn-secondary"
@@ -145,6 +206,16 @@ const AgendaReservas = () => {
                     </div>
                 </div>
             )}
+
+            <ListadoAgendaReservas reservas={reservas2} handleCancelarReserva={handleCancelarReserva}></ListadoAgendaReservas>
+
+            <ModalEnviarMensaje
+                showModal={showModal}
+                handleClose={() => setShowModal(false)}
+                mensaje={mensajeACliente}
+                telefono={telefonoCliente}
+                onEnviar={handleEnviarMensaje}
+            />
         </div>
     );
 };
