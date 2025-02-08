@@ -28,7 +28,19 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
         console.error('Error al obtener las tiposServicio', error);
       }
     };
+    const fetchMontoSenia = async () => {
+      try {
+        const response = await axios.get('/variablesGlobales');
+        setReservaData({
+          ...reservaData,
+          montoSenia: response.data[0].importe_seña});
+
+      } catch (error) {
+        console.error('Error al obtener el importe de senia', error);
+      }
+    }
     fetchTiposServicio();
+    fetchMontoSenia();
   }, []);
 
   //Esto se hace asi porque cuando se cambia la especialidad, no impacta hasta que se vuelve a renderizar el componente

@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CardInfoReserva.scss';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-
+import axios from '../../../axiosConfig/axiosConfig'
 
 const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReservaData, registrarReserva }) => {
     const { profesional_data, fecha, servicio_data, tipoServicio, horario, precio, monto } = reservaData;
-    // Traer de BD
-    const alias = "hola.como.estas";
-    const cbu = "0800056663332225";
-    const titularCuenta = "Maria Jose Apellido";
-    const [viaComprobante, setViaComprobante] = useState('')
 
+    const [viaComprobante, setViaComprobante] = useState('')
+    const [elegirOtroImporte, setElegirOtroImporte] = useState(false)
+    const [alias, setalias] = useState('')
+    const [cbu, setcbu] = useState('')
+    const [titular_cuenta, settitular_cuenta] = useState('')
+    const [importe_seña, setimporte_seña] = useState('')
+
+    useEffect(() => {
+        const fetchVariablesGlobales = async () => {
+            try {
+                const response = await axios.get('/variablesGlobales');
+                setalias(response.data[0].alias)
+                setimporte_seña(parseInt(response.data[0].importe_seña))
+                settitular_cuenta(response.data[0].titular_cuenta)
+                setcbu(response.data[0].cbu)
+
+            } catch (error) {
+                console.error('Error al obtener el importe de senia', error);
+            }
+        }
+        fetchVariablesGlobales()
+    }, [])
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -43,7 +60,19 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    const handleGuardarMontoSenia = () => {
+        const input = document.getElementById("montoSenia");
+        const inputValue = parseFloat(input.value);
+        if(inputValue < importe_seña || inputValue > reservaData.servicio_data.precio) {
+            input.classList.add("danger")
+            return
+        }
+        input.classList.remove("danger")
+        setReservaData({ ...reservaData, montoSenia: inputValue });
+        setElegirOtroImporte(false);
+    };
     const formatPrice = (price) => {
+        if (typeof price === "string") price = parseFloat(price)
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
@@ -52,7 +81,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
 
     return (
         <div className="container">
-            <h5 className="mb-4">Confirma los datos de tu reserva</h5>
+            <h5 className="mb-4 title">Confirma los datos de tu reserva</h5>
 
             <div className="card shadow-sm p-4 mb-4 info-ctn">
                 <div className="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
@@ -81,9 +110,34 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                     </div>
                 </div>
 
-                <div className="mb-4 text-end">
-                    <p className="fw-bold mb-1">Importe de seña a transferir</p>
-                    <p className="fs-1 fw-bold">{formatPrice(reservaData.montoSenia)}</p>
+
+                <div style={{ height: "100px" }}>
+                    {
+                        elegirOtroImporte ?
+                            <div className='text-end'>
+                                <label htmlFor="montoSenia">Ingrese el importe que desea transferir:</label>
+                                <div className="input-group mb-1 d-flex align-items-center" style={{ paddingLeft: "20%" }}>
+                                    <span className="input-group-text">$</span>
+                                    <input type="text" className="form-control fw-bold" id="montoSenia" aria-label="Amount (to the nearest dollar)" />
+                                    <button className='ok-montoSenia' onClick={handleGuardarMontoSenia}><i className="bi bi-check"></i></button>
+                                </div>
+                                <span className='text-end text-danger texto-advertencia' style={{ fontSize: "12px" }}><i className='bi bi-exclamation-circle me-2'></i>El importe ser mayor a {importe_seña} y menor a {reservaData.servicio_data.precio}</span>
+                            </div>
+                            :
+                            <div className=' text-end'>
+                                <p className="fw-bold mb-1">Importe de seña a transferir</p>
+                                <p className="fs-1 fw-bold">{formatPrice(reservaData.montoSenia)}</p>
+                            </div>
+                    }
+                </div>
+                <div className='d-flex justify-content-end'>
+                    {elegirOtroImporte ?
+                        <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width:"fit-content" }}
+                            onClick={() => setElegirOtroImporte(false)}>Señar el mínimo</p>
+                        :
+                        <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width:"fit-content" }}
+                            onClick={() => setElegirOtroImporte(true)}>Señar otro importe</p>
+                    }
                 </div>
 
                 <button
@@ -103,7 +157,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                             <p className='text-decoration-underline'>CBU para Transferencia</p>
                             <strong className="d-block mb-2 fs-5">{cbu}</strong>
                             <p className='text-decoration-underline'>Titular de Cuenta</p>
-                            <strong className="d-block fs-5">{titularCuenta}</strong>
+                            <strong className="d-block fs-5">{titular_cuenta}</strong>
 
                         </div>
                     </div>
@@ -136,7 +190,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                 }
                 {
                     esDeEstilista &&
-                    <div>
+                    <div className='my-3'>
                         <div className="form-group col-md-6">
                             <label className="form-label">Nombre</label>
                             <input

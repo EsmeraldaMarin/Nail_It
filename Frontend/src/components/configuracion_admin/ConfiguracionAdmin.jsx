@@ -10,6 +10,7 @@ const ConfiguracionAdmin = () => {
         titular_cuenta: "",
         horario_apertura: "",
         horario_cierre: "",
+        importe_seña:"",
         cuil: ""
     });
 
@@ -81,8 +82,8 @@ const ConfiguracionAdmin = () => {
                 <form className="">
                     <p className="my-3 fw-bold fs-5">Datos de cuenta bancaria</p>
                     <div className="d-flex flex-wrap mb-3 justify-content-between" >
-                        {["titular_cuenta", "cuil", "cbu", "cvu","alias"].map((field, index) => (
-                            <div style={{minWidth:"49%"}} key={index}>
+                        {["titular_cuenta", "cuil", "cbu", "cvu", "alias"].map((field, index) => (
+                            <div style={{ minWidth: "49%" }} key={index}>
                                 <label>{field.charAt(0).toUpperCase() + field.slice(1).replace("_", " ")}</label>
                                 <div className="d-flex">
                                     <input
@@ -106,10 +107,36 @@ const ConfiguracionAdmin = () => {
                             </div>
                         ))}
                     </div>
+                    <p className="mt-4 mb-3 fw-bold fs-5">Importe mínimo de seña</p>
+                    <div style={{ minWidth: "49%", maxWidth: "350px" }}>
+                        <label>Importe de seña</label>
+                        <div className="d-flex input-group">
+                            <span className="input-group-text">$</span>
+                            <input
+                                type="text"
+                                name="importe_seña"
+                                className="form-control"
+                                value={formData["importe_seña"]}
+                                onChange={handleInputChange}
+                                disabled={editableField !== "importe_seña"}
+                                aria-label="Amount (to the nearest dollar)"
+                            />
+                            <button
+                                type="button"
+                                className={`${editableField === "importe_seña" ? "btn-danger" : "btn-warning"} btn mx-3`}
+                                onClick={() =>
+                                    editableField === "importe_seña" ? handleSaveClick() : handleModifyClick("importe_seña")
+                                }
+                            >
+                                {editableField === "importe_seña" ? "Guardar" : "Modificar"}
+                            </button>
+                        </div>
+                    </div>
+
                     <p className="mt-4 mb-3 fw-bold fs-5">Horarios de atención del local</p>
                     <div className="d-flex flex-wrap mb-3 justify-content-between">
                         {["horario_apertura", "horario_cierre"].map((field, index) => (
-                            <div style={{minWidth:"49%"}}  key={index}>
+                            <div style={{ minWidth: "49%" }} key={index}>
                                 <label>{field.charAt(0).toUpperCase() + field.slice(1).replace("_", " ")}</label>
                                 <div className="d-flex">
                                     <input

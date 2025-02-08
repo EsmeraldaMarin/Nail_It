@@ -9,6 +9,7 @@ export const VariablesGlobales = sequelize.define('variablesGlobales', {
     cvu: { type: DataTypes.STRING, /* unique: true */ },
     alias: {type: DataTypes.STRING},
     titular_cuenta: {type: DataTypes.STRING},
+    importe_seña: {type: DataTypes.NUMBER},
     cuil: {type: DataTypes.STRING}
 }, {
     tableName: 'variablesGlobales',
@@ -30,6 +31,7 @@ const inicializarVariables = async () => {
                 cvu: '',
                 alias: 'ohmynails.mp',
                 titular_cuenta: 'true',
+                importe_seña:'',
                 cuil:''
             });
             console.log("Registro inicial creado.");

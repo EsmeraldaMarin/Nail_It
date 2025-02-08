@@ -4,7 +4,7 @@ async function actualizarVariablesGlobales() {
     try {
         console.log("Iniciando actualización de la tabla variablesGlobales...");
 
-        // Desactiva claves foráneas temporalmente
+        // Desactivar claves foráneas temporalmente (SQLite)
         await sequelize.query("PRAGMA foreign_keys = OFF;");
 
         // Crear una tabla temporal con los datos existentes
@@ -25,15 +25,15 @@ async function actualizarVariablesGlobales() {
                 cvu TEXT,
                 alias TEXT,
                 titular_cuenta TEXT,
-                cuil TEXT
+                cuil TEXT,
+                importe_seña DECIMAL(10,2) DEFAULT 0.00
             );
         `);
 
         // Rellenar la nueva tabla con los datos existentes desde la tabla temporal
         await sequelize.query(`
-            INSERT INTO variablesGlobales (id, horario_apertura, horario_cierre, cbu, cvu, alias, titular_cuenta)
-            SELECT id, horario_apertura, horario_cierre, cbu, cvu, alias, titular_cuenta
-            FROM variablesGlobales_temp;
+            INSERT INTO variablesGlobales (id, horario_apertura, horario_cierre, cbu, cvu, alias, titular_cuenta, cuil)
+            SELECT id, horario_apertura, horario_cierre, cbu, cvu, alias, titular_cuenta, cuil FROM variablesGlobales_temp;
         `);
 
         // Eliminar la tabla temporal

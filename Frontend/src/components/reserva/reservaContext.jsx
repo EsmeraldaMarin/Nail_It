@@ -13,7 +13,7 @@ function ReservaContext({ esDeEstilista = false }) {
         horario: '',
         profesional: '',
         precio: null,
-        montoSenia: 2000,
+        montoSenia: '',
         comprobante: null,
         userId: localStorage.getItem('userId'),
         servicio_data: null,

@@ -38,36 +38,35 @@ const HorarioSelect = ({ horarios, horariosOcupados, servicio_data, profesional,
                 (timeToMinutes(horarioOcupado.horaInicio) <= time && time < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion))
                 ||
                 (time + servicio_data.duracion > timeToMinutes(horarioOcupado.horaInicio) && time + servicio_data.duracion < (timeToMinutes(horarioOcupado.horaInicio) + horarioOcupado.Servicio.duracion)
-            ))
-    if (res) {
-        console.log(time, res, timeToMinutes(res.horaInicio), timeToMinutes(res.horaInicio) + res.Servicio.duracion)
-        horarios_disponibles.push({ hora: minutesToTime(time), estado: "ocupado" });
-        time = (timeToMinutes(res.horaInicio) + res.Servicio.duracion) - duracion
-    } else {
-        horarios_disponibles.push({ hora: minutesToTime(time), estado: "desocupado" });
+                ))
+            if (res) {
+                console.log(time, res, timeToMinutes(res.horaInicio), timeToMinutes(res.horaInicio) + res.Servicio.duracion)
+                horarios_disponibles.push({ hora: minutesToTime(time), estado: "ocupado" });
+                time = (timeToMinutes(res.horaInicio) + res.Servicio.duracion) - duracion
+            } else {
+                horarios_disponibles.push({ hora: minutesToTime(time), estado: "desocupado" });
 
-    }
-}
-        console.log({ ...horarios_disponibles })
+            }
+        }
     });
 
-return (
-    <div className="mb-3 horarios-select">
-        <label>Seleccione el horario</label>
-        <div className='btn-carrusel'>
-            <span className="line"></span>
-            {profesional ? horarios_disponibles.map((h, index) => (
-                <button disabled={h.estado == "desocupado" ? false : true} className={`btn ${horario === h.hora ? 'active' : ''}`} key={index} value={h.hora} onClick={(e) => setHorario(e.target.value)}>
-                    {h.hora}
-                </button>
-            )) : horariosDeMuestra.map((h, index) => (
-                <button disabled={profesional ? false : true} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
-                    {h}
-                </button>
-            ))}
+    return (
+        <div className="mb-3 horarios-select">
+            <label>Seleccione el horario</label>
+            <div className='btn-carrusel'>
+                <span className="line"></span>
+                {profesional ? horarios_disponibles.map((h, index) => (
+                    <button disabled={h.estado == "desocupado" ? false : true} className={`btn ${horario === h.hora ? 'active' : ''}`} key={index} value={h.hora} onClick={(e) => setHorario(e.target.value)}>
+                        {h.hora}
+                    </button>
+                )) : horariosDeMuestra.map((h, index) => (
+                    <button disabled={profesional ? false : true} className={`btn`} key={index} value={h} onClick={(e) => setHorario(e.target.value)}>
+                        {h}
+                    </button>
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
 };
 
 export default HorarioSelect;

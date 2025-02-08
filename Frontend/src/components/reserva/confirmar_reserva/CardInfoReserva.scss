@@ -16,6 +16,28 @@
             button {
                 font-size: 1em;
             }
+            .texto-advertencia {
+                font-size: 18px !important;
+                margin-bottom: 10px;
+            }
+        }
+        .ok-montoSenia {
+            width: 30px;
+            height: 30px;
+            background-color: #085300;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 50px !important;
+            margin-left: 10px !important    ;
+            outline: none;
+            border: none;
+            &:active {
+                background-color: #10a300;
+            }
+        }
+        .danger{
+            background-color: rgb(255, 201, 201);
+            border: 2px solid rgb(189, 0, 0);
         }
         .monto-ctn {
             padding: 10px;
