@@ -13,6 +13,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
     const [cbu, setcbu] = useState('')
     const [titular_cuenta, settitular_cuenta] = useState('')
     const [importe_seña, setimporte_seña] = useState('')
+    const [subiendoArchivo, setSubiendoArchivo] = useState(false)
 
     useEffect(() => {
         const fetchVariablesGlobales = async () => {
@@ -30,13 +31,49 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         fetchVariablesGlobales()
     }, [])
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
-        setReservaData({
-            ...reservaData,
-            comprobante: selectedFile,
-        });
+
+        if (!selectedFile) return;
+        
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        formData.append("upload_preset", "nailit"); // Reemplaza con tu preset
+        
+        try {
+            setSubiendoArchivo(true)
+            const fileType = selectedFile.type;
+            const allowedTypes = ["image/png", "image/jpeg", "image/gif", "application/pdf"];
+            if (!allowedTypes.includes(fileType)) {
+                alert("Tipo de archivo no soportado. Solo se permiten imágenes (PNG, JPEG, GIF) y PDFs.");
+                setSubiendoArchivo(false);
+                return;
+            }
+            const resourceType = fileType === "application/pdf" ? "raw" : "auto";
+            console.log(resourceType)
+            formData.append("resource_type", resourceType);
+            for (const [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+            const response = await fetch("https://api.cloudinary.com/v1_1/dnmfolf5m/upload", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await response.json();
+            console.log(data)
+            console.log("Archivo subido a Cloudinary:", data.secure_url);
+
+            setReservaData({
+                ...reservaData,
+                comprobante: data.secure_url, // Guardamos la URL del comprobante
+            });
+            setSubiendoArchivo(false)
+
+        } catch (error) {
+            console.error("Error al subir el archivo:", error);
+        }
     };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setReservaData({
@@ -63,7 +100,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
     const handleGuardarMontoSenia = () => {
         const input = document.getElementById("montoSenia");
         const inputValue = parseFloat(input.value);
-        if(inputValue < importe_seña || inputValue > reservaData.servicio_data.precio) {
+        if (inputValue < importe_seña || inputValue > reservaData.servicio_data.precio) {
             input.classList.add("danger")
             return
         }
@@ -132,10 +169,10 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                 </div>
                 <div className='d-flex justify-content-end'>
                     {elegirOtroImporte ?
-                        <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width:"fit-content" }}
+                        <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width: "fit-content" }}
                             onClick={() => setElegirOtroImporte(false)}>Señar el mínimo</p>
                         :
-                        <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width:"fit-content" }}
+                        <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width: "fit-content" }}
                             onClick={() => setElegirOtroImporte(true)}>Señar otro importe</p>
                     }
                 </div>
@@ -179,7 +216,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                                 Adjuntar Aquí
                             </label>
                         </div>
-                        {viaComprobante !== 'wpp' &&
+                        {viaComprobante == 'nailit' &&
                             <div className='mt-4'>
                                 <label htmlFor="formFile" className="form-label">Adjunte su comprobante</label>
                                 <input className="form-control" type="file" id="formFile" onChange={handleFileChange} />
@@ -231,8 +268,11 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                     className={`btn w-100 ${viaComprobante === 'wpp' ? 'btn-success' : 'btn-primary'}`}
                     disabled={!reservaData.comprobante && !esDeEstilista && viaComprobante !== 'wpp'}
                 >
-                    {viaComprobante === 'wpp' ? 'Ir a Whatsapp' : 'Listo'}
-                    <i className={`ms-3 bi ${viaComprobante === 'wpp' ? 'bi-whatsapp' : 'bi-check'}`}></i>
+                    {viaComprobante === 'wpp' ? 'Ir a Whatsapp' :
+                        subiendoArchivo ?
+                            <i className='bi bi-arrow-repeat'></i>
+                            : 'Listo'}
+                    {!subiendoArchivo && <i className={`ms-3 bi ${viaComprobante === 'wpp' ? 'bi-whatsapp' : 'bi-check'}`}></i>}
                 </button>
             </div>
 

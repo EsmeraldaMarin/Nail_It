@@ -15,8 +15,8 @@ function VisualizadorComprobante({ comprobanteURL }) {
     return (
         <div>
             {/* Botón para abrir el modal */}
-            <a style={{color:"#00f", cursor:"pointer"}} onClick={handleShow}>
-                Ver Comprobante
+            <a style={{ color: "#000", cursor: "pointer" }} onClick={handleShow}>
+                <i className="me-2 bi bi-eye"></i> Ver
             </a>
 
             {/* Modal para visualizar el comprobante */}
@@ -25,21 +25,21 @@ function VisualizadorComprobante({ comprobanteURL }) {
                     <Modal.Title>Comprobante de Reserva</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ height: '500px' , overflow:"auto"}}>
-                        <img 
+                    <div style={{ height: '500px', overflow: "auto" }}>
+                        {/*<img 
                             src={comprobanteURL} 
                             width="90%" 
                             height="90%" 
                             title="Comprobante PDF" 
                             style={{ border: 'none' }} 
+                        />*/}
+                        <iframe
+                            src={comprobanteURL}
+                            width="100%"
+                            height="100%"
+                            title="Comprobante PDF"
+                            style={{ border: 'none' }}
                         />
-                        {/* <iframe 
-                            src={comprobanteURL} 
-                            width="100%" 
-                            height="100%" 
-                            title="Comprobante PDF" 
-                            style={{ border: 'none' }} 
-                        /> */}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

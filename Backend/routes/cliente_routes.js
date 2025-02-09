@@ -143,11 +143,15 @@ routerClientes.post("/registro", async (req, res) => {
             { expiresIn: process.env.JWT_EXPIRATION }
         )
 
+        // -------------------NOTA: ESTO ESTA COMENTADO PORQUE ME SALE ESTE ERROR AL HACER UN REGISTRO
+        // Data command failed: 550-5.4.5 Daily user sending limit exceeded. For more information on Gmail\n550-5.4.5 sending limits go to\n550 5.4.5  https://s
+        
+        /*
         const mail = await enviarMailVerificacion(req.body.email, tokenVerificacion);
         if (mail.accepted === 0) {
             return res.status(500).send({ status: "error", message: "Error enviando mail de verificación" })
         }
-
+*/
         const nuevoUsuario = {
             nombre: req.body.nombre,
             apellido: req.body.apellido,

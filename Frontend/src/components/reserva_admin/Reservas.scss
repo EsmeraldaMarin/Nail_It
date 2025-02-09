@@ -101,6 +101,7 @@
 
         td {
             vertical-align: middle;
+            position: relative;
             &.confirmada {
                 color: #28a745;
                 font-weight: 600;
@@ -109,6 +110,22 @@
             input[type="checkbox"] {
                 height: 25px;
                 width: 25px;
+            }
+        }
+        .display-on-hover {
+            display: none;
+        }
+        .wpp-btn:hover {
+            & ~ .display-on-hover {
+                display: block;
+                position: absolute;
+                top: -40px;
+                left: 10px;
+                z-index: 10;
+                background-color: #097b19;
+                padding: 10px;
+                color: #fff;
+                clip-path: polygon(0% 0%, 100% 0%, 99% 86%, 45% 87%, 37% 100%, 30% 87%, 0% 88%);
             }
         }
     }

@@ -22,11 +22,11 @@ function ReservaContext({ esDeEstilista = false }) {
         horariosXprofesional: null,
     }); // Estado para los datos de la reserva
     const registrarReserva = async () => {
-
+        console.log(reservaData)
         try {            
             const response = await axios.post(`/reserva`, {
                 horaInicio: reservaData.horario,
-                comprobante: reservaData.comprobante?.name || 'sin comprobante',
+                comprobante: reservaData.comprobante || 'sin comprobante',
                 fecha: reservaData.fecha,
                 montoSenia: reservaData.montoSenia,
                 montoTotal: reservaData.precio,

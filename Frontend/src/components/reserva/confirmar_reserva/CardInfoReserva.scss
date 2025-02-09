@@ -1,3 +1,11 @@
+@keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 .container {
     @media (min-width: 920px) {
         max-width: 50vw !important;
@@ -20,6 +28,13 @@
                 font-size: 18px !important;
                 margin-bottom: 10px;
             }
+        }
+        .bi-arrow-repeat{
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            color: black;
+            animation: spin 1s linear infinite;
         }
         .ok-montoSenia {
             width: 30px;

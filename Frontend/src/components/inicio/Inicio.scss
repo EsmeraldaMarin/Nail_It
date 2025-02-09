@@ -8,7 +8,7 @@
     box-shadow: 5px 0 3px #222;
     display: flex;
     justify-content: space-between;
-    @media (min-width: 920px) {
+    @media (min-width: 1000px) {
       height: calc(65vh - 60px);
     }
     .separador_color {
@@ -16,7 +16,7 @@
       width: 80vw;
       background-color: #fdd9c3;
       padding: 3em;
-      @media (min-width: 920px) {
+      @media (min-width: 1000px) {
         width: 40vw;
         position: absolute;
         right: 0;
@@ -26,16 +26,16 @@
       }
       h1 {
         display: none;
-        @media (min-width: 920px) {
+        @media (min-width: 1000px) {
           font-size: 5em;
           display: inline-block;
         }
       }
       .reservar {
-        @media (min-width: 920px) {
+        @media (min-width: 1000px) {
           display: inline-block;
           position: static;
-          margin-top: 50px;
+          margin-top: 30px;
           animation: none;
           .btn-reservar {
             width: 450px;
@@ -55,7 +55,7 @@
         }
       }
       p {
-        @media (min-width: 920px) {
+        @media (min-width: 1000px) {
           font-size: 1.5em;
           margin: 0;
           margin-right: 30px;
@@ -75,7 +75,7 @@
         padding-top: 0px;
         padding-left: 15px;
       }
-      @media (min-width: 920px) {
+      @media (min-width: 1000px) {
         display: none;
       }
     }
@@ -87,7 +87,7 @@
       object-fit: cover;
       height: 300px;
       box-shadow: 0 0 3px #bbb;
-      @media (min-width: 920px) {
+      @media (min-width: 1000px) {
         width: 60vw;
         height: calc(65vh - 60px);
         top: 0;
@@ -104,7 +104,7 @@
     justify-content: center;
     animation: boton_reserva 1.3s ease;
     animation-iteration-count: infinite;
-    @media (min-width: 920px) {
+    @media (min-width: 1000px) {
       display: none;
     }
     .btn-reservar {
@@ -123,7 +123,7 @@
       outline: none;
       border: none;
       color: #000;
-      @media (min-width: 920px) {
+      @media (min-width: 1000px) {
         width: 300px;
         font-size: 1.3em;
         color: #fff;
