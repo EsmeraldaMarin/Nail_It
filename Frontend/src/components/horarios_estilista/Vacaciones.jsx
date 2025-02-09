@@ -8,10 +8,12 @@ export default function Vacaciones() {
     const [mensaje, setMensaje] = useState("");
     const [diasLibres, setDiasLibres] = useState([]);
 
+    const idAdmin = localStorage.getItem('userId');
+
     useEffect(() => {
         const fetchDiasLibres = async () => {
             try {
-                const response = await axios.get("/diasLibres");  // Asegúrate de que la ruta sea correcta
+                const response = await axios.get(`/diasLibres?id_admin=${idAdmin}`);  // Asegúrate de que la ruta sea correcta
                 if (response.status === 200) {
                     setDiasLibres(response.data);  // Actualiza el estado con los días libres obtenidos
                 }
@@ -22,7 +24,7 @@ export default function Vacaciones() {
         };
 
         fetchDiasLibres();
-    }, []); 
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,8 +34,6 @@ export default function Vacaciones() {
             return;
         }
 
-        // Obtener el id_admin desde el localStorage
-        const idAdmin = localStorage.getItem('userId');
 
         if (!idAdmin) {
             setMensaje("No estás autenticado.");
@@ -49,11 +49,11 @@ export default function Vacaciones() {
 
             // Realizar la solicitud POST al backend para guardar los días libres
             const response = await axios.post("/diasLibres", datos);
-            
+
             if (response.status === 201) {
-                console.log(datos);
+                //console.log(datos);
                 setMensaje("Días libres guardados correctamente.");
-                const fetchData = await axios.get("/diasLibres");
+                const fetchData = await axios.get(`/diasLibres?id_admin=${idAdmin}`);
                 setDiasLibres(fetchData.data);
             } else {
                 setMensaje("Hubo un error al guardar los días libres.");
@@ -118,8 +118,8 @@ export default function Vacaciones() {
                     {diasLibres.length > 0 ? (
                         diasLibres.map((dia, index) => (
                             <tr key={index}>
-                            <td>{new Date(dia.fecha_desde).toLocaleDateString("es-ES", { timeZone: "UTC" })}</td>
-                            <td>{new Date(dia.fecha_hasta).toLocaleDateString("es-ES", { timeZone: "UTC" })}</td>
+                                <td>{new Date(dia.fecha_desde).toLocaleDateString("es-ES", { timeZone: "UTC" })}</td>
+                                <td>{new Date(dia.fecha_hasta).toLocaleDateString("es-ES", { timeZone: "UTC" })}</td>
                                 <td>
                                     <button
                                         className="btn btn-danger"

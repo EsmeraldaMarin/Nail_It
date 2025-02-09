@@ -2,10 +2,16 @@ import { Dias_libres } from "../db/dias_libres.js";
 
 export class GestorDiasLibres {
     // Obtener todos los días libres
-    async obtener_dias_libres() {
+    async obtener_dias_libres(id_admin) {
+
+        let condicion = [];
+        id_admin && condicion.push({ id_admin: `${id_admin}` })
+
         try {
-            return await Dias_libres.findAll();
-        } catch(err) {
+            return await Dias_libres.findAll({
+                where: condicion
+            });
+        } catch (err) {
             console.error("Error al obtener días libres:", err);
             throw new Error("No se pudieron obtener los días libres.");
         }
@@ -22,7 +28,7 @@ export class GestorDiasLibres {
             }
 
             return await Dias_libres.create(req_body);
-        } catch(err) {
+        } catch (err) {
             console.error("Error al crear día libre:", err);
             throw new Error("No se pudo crear el día libre.");
         }
@@ -36,7 +42,7 @@ export class GestorDiasLibres {
                 throw new Error("Día libre no encontrado.");
             }
             return diaLibre;
-        } catch(err) {
+        } catch (err) {
             console.error("Error al obtener día libre:", err);
             throw new Error("No se pudo obtener el día libre.");
         }
@@ -46,7 +52,7 @@ export class GestorDiasLibres {
     async actualizar_diaslibres_por_id(req_body, id) {
         try {
             const { fecha_Desde, fecha_Hasta } = req_body;
-            
+
             // Validación de fechas
             if (new Date(fecha_Desde) > new Date(fecha_Hasta)) {
                 throw new Error("La fecha de inicio no puede ser posterior a la fecha de fin.");
@@ -61,7 +67,7 @@ export class GestorDiasLibres {
             } else {
                 throw new Error("No se pudo actualizar el día libre.");
             }
-        } catch(err) {
+        } catch (err) {
             console.error("Error al actualizar día libre:", err);
             throw new Error("No se pudo actualizar el día libre.");
         }
@@ -79,7 +85,7 @@ export class GestorDiasLibres {
             }
 
             return { message: "Día libre eliminado exitosamente." };
-        } catch(err) {
+        } catch (err) {
             console.error("Error al eliminar día libre:", err);
             throw new Error("No se pudo eliminar el día libre.");
         }

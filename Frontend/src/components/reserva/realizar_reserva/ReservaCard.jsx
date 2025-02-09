@@ -33,7 +33,8 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
         const response = await axios.get('/variablesGlobales');
         setReservaData({
           ...reservaData,
-          montoSenia: response.data[0].importe_seña});
+          montoSenia: response.data[0].importe_seña
+        });
 
       } catch (error) {
         console.error('Error al obtener el importe de senia', error);
@@ -99,6 +100,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       servicio: null, // Resetea el servicio cuando cambia el tipo de servicio
       horario: '', // Resetea el horario cuando cambia el servicio
       profesional_data: null,
+      profesional: '',
       fecha: '',
     });
     setFechaInput("")
@@ -176,7 +178,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
         <ProfesionalSelect fecha={fecha} profesional={profesional} profesionales={profesionales} setProfesional={handleProfesionalChange} setHorariosOcupados={setHorariosOcupados} />
       </div>
 
-      <HorarioSelect horarios={reservaData.horariosXprofesional} horariosOcupados={horariosOcupados} servicio_data={reservaData.servicio_data} profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
+      <HorarioSelect fechaSeleccionada={fecha} horarios={reservaData.horariosXprofesional} horariosOcupados={horariosOcupados} servicio_data={reservaData.servicio_data} profesional={profesional} horario={horario} setHorario={(nuevoHorario) => setReservaData({ ...reservaData, horario: nuevoHorario })} />
 
       <button onClick={handleConfirm} className="btn mt-3 btn-continuar" disabled={horario ? false : true}>
         Continuar

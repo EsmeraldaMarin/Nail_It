@@ -8,7 +8,11 @@ const gestorDiasLibres = new GestorDiasLibres();
 // **Consultar todos los días libres**
 routerDiasLibres.get("/", async (req, res) => {
     try {
-        const datos = await gestorDiasLibres.obtener_dias_libres();
+        //esta linea es para filtrar por admin. Viene en forma de query: ?id_admin=
+        const id_admin = req.query.id_admin;
+        
+        //el id_admin puede o no venir en el query, esa verificacion se hace en obtener_dias_libres
+        const datos = await gestorDiasLibres.obtener_dias_libres(id_admin);
         if (datos) {
             res.status(200).json(datos);
         } else {
