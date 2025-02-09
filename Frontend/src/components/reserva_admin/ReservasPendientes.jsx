@@ -166,7 +166,10 @@ const ReservasPendientes = () => {
                                         <td>{reserva.horaInicio}</td>
                                         <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
                                         <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                        <td><VisualizadorComprobante comprobanteURL={reserva.comprobante} /></td>
+                                        <td>
+                                            {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
+                                            :<span className="fs-6">Enviado por Whatsapp</span>}
+                                        </td>
                                         <td>
                                             {botonConfirmacion === reserva.id ? (
                                                 <div>

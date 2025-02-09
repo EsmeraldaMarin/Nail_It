@@ -30,6 +30,7 @@ import PerfilAdmin from "./components/perfil_admin/PerfilAdmin";
 function App() {
     return (
         <div className="App">
+            <ScrollToTop></ScrollToTop>
             <Routes>
 
                 {/* Ruta para el cliente con rutas anidadas */}

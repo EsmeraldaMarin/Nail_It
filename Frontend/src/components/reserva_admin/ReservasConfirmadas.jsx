@@ -125,7 +125,7 @@ const ReservasConfirmadas = () => {
                 <td>{formatPrice(reserva.montoSenia)}</td>
                 <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - reserva.montoSenia)}</strong></td>
                 <td>
-                    <span className="badge rounded-pill" className={getBadgeClassByStatus(reserva.estado)}>
+                    <span className={"badge rounded-pill " + getBadgeClassByStatus(reserva.estado)}>
                         {reservaEstadoName[reserva.estado]}
                     </span>
                 </td>

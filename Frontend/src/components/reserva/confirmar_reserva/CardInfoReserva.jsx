@@ -35,11 +35,11 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         const selectedFile = event.target.files[0];
 
         if (!selectedFile) return;
-        
+
         const formData = new FormData();
         formData.append("file", selectedFile);
         formData.append("upload_preset", "nailit"); // Reemplaza con tu preset
-        
+
         try {
             setSubiendoArchivo(true)
             const fileType = selectedFile.type;
@@ -85,12 +85,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         });
     }
     const handleConfirm = () => {
-        if (esDeEstilista) {
-            registrarReserva();
-        }
-        if (reservaData.comprobante) {
-            registrarReserva();
-        }
+        registrarReserva();
         setPasoActual(3);
     };
     const formatearFecha = (fecha) => {
@@ -147,7 +142,6 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                     </div>
                 </div>
 
-
                 <div style={{ height: "100px" }}>
                     {
                         elegirOtroImporte ?
@@ -167,6 +161,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                             </div>
                     }
                 </div>
+
                 <div className='d-flex justify-content-end'>
                     {elegirOtroImporte ?
                         <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width: "fit-content" }}
@@ -200,7 +195,6 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                     </div>
                 </div>
 
-
                 {!esDeEstilista &&
                     <div className='my-4'>
                         <p className='mb-3'>¿Cómo desea enviar su comprobante?</p>
@@ -222,7 +216,6 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                                 <input className="form-control" type="file" id="formFile" onChange={handleFileChange} />
                             </div>
                         }
-
                     </div>
                 }
                 {
@@ -263,17 +256,31 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                         </div>
                     </div>
                 }
-                <button
-                    onClick={handleConfirm}
-                    className={`btn w-100 ${viaComprobante === 'wpp' ? 'btn-success' : 'btn-primary'}`}
-                    disabled={!reservaData.comprobante && !esDeEstilista && viaComprobante !== 'wpp'}
-                >
-                    {viaComprobante === 'wpp' ? 'Ir a Whatsapp' :
-                        subiendoArchivo ?
-                            <i className='bi bi-arrow-repeat'></i>
-                            : 'Listo'}
-                    {!subiendoArchivo && <i className={`ms-3 bi ${viaComprobante === 'wpp' ? 'bi-whatsapp' : 'bi-check'}`}></i>}
-                </button>
+                {
+                    viaComprobante === 'wpp' ?
+                        <a
+                            href={`https://wa.me/3571315193`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`btn w-100 btn-success`}
+                            onClick={handleConfirm}
+                            style={{ color: "#fff", textDecoration: "none" }}
+                        >
+                            Ir a Whatsapp
+                            <i className={`ms-3 bi bi-whatsapp`}></i>
+                        </a>
+                        :
+                        <button
+                            onClick={handleConfirm}
+                            className={`btn w-100 btn-primary`}
+                            disabled={(!reservaData.comprobante && !esDeEstilista && viaComprobante !== 'wpp') || subiendoArchivo}
+                        >
+                            {subiendoArchivo && <i className='bi bi-arrow-repeat'></i>}
+                            {!subiendoArchivo && "Listo"}
+                            {!subiendoArchivo && <i className={`ms-3 bi bi-check`}></i>}
+                        </button>
+                }
+
             </div>
 
             {/* <span className="text-muted">* Mensaje de confirmación aparecerá aquí</span> */}

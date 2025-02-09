@@ -9,6 +9,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
         reserva => reserva.estado === "por_reembolsar" && reserva.id_profesional === userId
 
     );
+    console.log(reservasReembolso)
 
     const [selectedReserva, setSelectedReserva] = useState(null)
     const [showModal, setShowModal] = useState(false);
@@ -48,7 +49,6 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
-                                {/*<th scope="col">Comprobante</th> */}
                                 <th scope="col">CBU o Alias</th>
                                 <th scope="col">Titular de la cuenta</th>
                                 <th scope="col" >A reembolsar</th>
@@ -59,72 +59,41 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                         <tbody>
                             {reservasReembolso.length > 0 ?
                                 reservasReembolso.map((reserva, index) =>
-                                    reserva.Cliente ?
-                                        <tr key={index}>
-                                            <td className="text-capitalize">{reserva.Cliente.nombre} {reserva.Cliente.apellido}</td>
-                                            <td className='text-center'>
-                                                <a
-                                                    className='wpp-btn'
-                                                    href={`https://wa.me/${reserva.Cliente.numero}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    style={{ color: "#000", textDecoration: "none" }}
-                                                >
-                                                    <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
-                                                </a>
-                                                <span className='display-on-hover'>{reserva.Cliente.numero}</span>
-                                            </td>
-                                            <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
-                                            <td>{reserva.horaInicio}</td>
-                                            {/* <td><a href={reserva.comprobante} target="_blank" rel="noreferrer">
-                                        Ver Comprobante
-                                        </a></td> */}
-                                            <td><strong>{reserva.Cliente.cbu}</strong></td>
-                                            <td><strong>{reserva.Cliente.titular_cuenta}</strong></td>
-                                            <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                            <td><VisualizadorComprobante comprobanteURL={reserva.comprobante}></VisualizadorComprobante></td>
-                                            <td>
-                                                {
-                                                    <div>
-                                                        <button className="btn btn-danger" onClick={() => openModal(reserva)}>
-                                                            Reembolsado
-                                                        </button>
-
-                                                    </div>
-                                                }
-
-                                            </td>
-                                        </tr> :
-                                        <tr key={index}>
-                                            <td className="text-capitalize">{reserva.nombre_cliente} {reserva.apellido_cliente}</td>
-                                            <td className='text-center'><a
+                                    <tr key={index}>
+                                        <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente} {reserva.Cliente ? reserva.Cliente.apellido : reserva.apellido_cliente}</td>
+                                        <td className='text-center'>
+                                            <a
                                                 className='wpp-btn'
-                                                href={`https://wa.me/${reserva.telefono_cliente}`}
+                                                href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 style={{ color: "#000", textDecoration: "none" }}
                                             >
                                                 <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
                                             </a>
-                                                <span className='display-on-hover'>{reserva.telefono_cliente}</span>
-                                            </td>
-                                            <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
-                                            <td>{reserva.horaInicio}</td>
-                                            <td><strong> - </strong></td>
-                                            <td><strong> - </strong></td>
-                                            <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                            <td className='fs-6'>Enviado por Whatsapp</td>
-                                            <td>
-                                                {
-                                                    <div>
-                                                        <button className="btn btn-danger" onClick={() => openModal(reserva)}>
-                                                            Reembolsado
-                                                        </button>
+                                            <span className='display-on-hover'>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</span>
+                                        </td>
+                                        <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
+                                        <td>{reserva.horaInicio}</td>
+                                        <td><strong>{reserva.Cliente?.cbu || "-"}</strong></td>
+                                        <td><strong>{reserva.Cliente?.titular_cuenta || "-"}</strong></td>
+                                        <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
+                                        <td>
+                                            {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
+                                                : <span className="fs-6">Enviado por Whatsapp</span>}
+                                        </td>                                            
+                                        <td>
+                                            {
+                                                <div>
+                                                    <button className="btn btn-danger" onClick={() => openModal(reserva)}>
+                                                        Reembolsado
+                                                    </button>
 
-                                                    </div>
-                                                }
-                                            </td>
-                                        </tr>
+                                                </div>
+                                            }
+
+                                        </td>
+                                    </tr>
                                 )
                                 : <tr><td colSpan="6">No hay reservas pendientes de reembolso</td></tr>}
 
