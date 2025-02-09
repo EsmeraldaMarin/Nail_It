@@ -33,6 +33,27 @@
                     transform: translateY(-10px) !important;
                 }
             }
+            .info-sobre-reservas {
+                position: relative;
+                span {
+                    display: none;
+                }
+                &:hover {
+                    filter: drop-shadow(0 0 1px #aaa);
+                    span {
+                        text-transform: lowercase;
+                        font-size: 14px;
+                        display: inline-block;
+                        padding: 10px;
+                        position: absolute;
+                        top: -60px;
+                        right: 0px;
+                        width: 260px;
+                        background-color: #fff;
+                        clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 98% 90%, 95% 100%, 92% 90%, 0% 90%);
+                    }
+                }
+            }
             .ctn-input-periodo {
                 label {
                     height: fit-content;
@@ -86,4 +107,5 @@
             }
         }
     }
+
 }

@@ -8,7 +8,8 @@ export const routerReservas = Router();
 routerReservas.get("/", async (req, res) => {
     const fecha = req.query.fecha;
     const id_profesional = req.query.id_profesional;
-    const datos = await gestorReservas.obtener_reservas(fecha, id_profesional);
+    const estado = req.query.estado;
+    const datos = await gestorReservas.obtener_reservas(fecha, id_profesional, estado);
     if (datos) {
         res.status(200).json(datos);
     } else {

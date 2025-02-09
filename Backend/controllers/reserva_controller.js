@@ -8,7 +8,7 @@ import {Op} from "sequelize";
 import {sequelize} from "../db/database.js";
 
 export class GestorReservas {
-    async obtener_reservas(fecha, id_profesional) {
+    async obtener_reservas(fecha, id_profesional, estado) {
         let condicion = [];
 
         // FIX WHERE FECHA
@@ -16,6 +16,7 @@ export class GestorReservas {
             [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),
         });
         id_profesional && condicion.push({ id_profesional: `${id_profesional}` })
+        estado && condicion.push({ estado: `${estado}` })
 
         try {
             return await Reservas.findAll({
