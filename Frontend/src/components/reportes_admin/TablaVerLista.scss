@@ -11,8 +11,6 @@ $color-borde: #ddd;
     margin: 0px auto;
     overflow-x: auto;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px #bbb;
-    background: #fff;
     padding: 10px;
 }
 
@@ -22,6 +20,10 @@ $color-borde: #ddd;
     border-collapse: collapse;
     font-family: "Arial", sans-serif;
     font-size: 16px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 5px #bbb;
+    border-width: 0px !important;
 }
 
 // Encabezado
@@ -31,6 +33,7 @@ $color-borde: #ddd;
     padding: 12px;
     text-align: left;
     border-bottom: 2px solid $color-borde;
+
 }
 
 // Botón de ordenar

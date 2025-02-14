@@ -40,7 +40,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
         <div>
             <h4 className="py-3">Reservas pendientes de reembolsar</h4>
 
-            <div className="table-ctn pb-2 reservas-pendientes" >
+            <div className="table-ctn pb-2 reservas-pendientes a-reembolsar" >
                 <div className="table-responsive">
                     <table className="table">
                         <thead className="table-light">
@@ -75,13 +75,21 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         </td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
-                                        <td><strong>{reserva.Cliente?.cbu || "-"}</strong></td>
-                                        <td><strong>{reserva.Cliente?.titular_cuenta || "-"}</strong></td>
+                                        <td><input class="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readonly/></td>
+                                        <td><input class="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readonly/></td>
                                         <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                        <td>
+                                        <td className='visualizar-btn'>
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
-                                                : <span className="fs-6">Enviado por Whatsapp</span>}
-                                        </td>                                            
+                                                : <a
+                                                    className='fs-6'
+                                                    href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{ color:"#000",textDecoration: "none" }}
+                                                >
+                                                    <i className="bi bi-box-arrow-up-right">  Ver Whatsapp </i>
+                                                </a>}
+                                        </td>
                                         <td>
                                             {
                                                 <div>

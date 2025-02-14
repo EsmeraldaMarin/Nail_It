@@ -39,10 +39,11 @@
                 &.btn-confirmacion {
                     color: #28a745;
                     background-color: #fff;
-                    border-radius: 50px;
+                    border-radius: 100px;
                     width: 40px;
                     height: 40px;
-                    font-size: 22px;
+                    font-size: 1.5em !important;
+                    border: 1px solid #28a745;
                     &:hover {
                         color: #fff;
                         background-color: #28a745;
@@ -53,15 +54,48 @@
                 &.btn-cancelacion {
                     color: #f00;
                     background-color: #fff;
-                    border-radius: 50px;
+                    border-radius: 100px;
                     width: 40px;
                     height: 40px;
-                    font-size: 22px;
+                    font-size: 1.5em !important;
+                    border: 1px solid #f00;
                     &:hover {
                         color: #fff;
                         background-color: #f00;
                         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
                         cursor: pointer;
+                    }
+                }
+                &.btn-cancelacion,
+                &.btn-confirmacion {
+                    @media screen and (min-width: 992px) {
+                        width: 55px !important;
+                        height: 55px !important;
+                        font-size: 30px !important;
+                    }
+                }
+            }
+
+            .wpp-btn:hover {
+                & ~ .display-on-hover {
+                    display: block;
+                    position: absolute;
+                    width: 170px;
+                    top: -25px;
+                    left: -15px;
+                    z-index: 10;
+                    background-color: #097b18de;
+                    border-radius: 5px;
+                    padding: 5px;
+                    padding-bottom: 10px;
+                    color: #fff;
+                    clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 45% 86%, 38% 100%, 31% 86%, 0% 86%);
+                }
+            }
+            &.a-reembolsar {
+                .wpp-btn:hover {
+                    & ~ .display-on-hover {
+                        top: -35px;
                     }
                 }
             }
@@ -115,17 +149,15 @@
         .display-on-hover {
             display: none;
         }
-        .wpp-btn:hover {
-            & ~ .display-on-hover {
-                display: block;
-                position: absolute;
-                top: -40px;
-                left: 10px;
-                z-index: 10;
-                background-color: #097b19;
-                padding: 10px;
-                color: #fff;
-                clip-path: polygon(0% 0%, 100% 0%, 99% 86%, 45% 87%, 37% 100%, 30% 87%, 0% 88%);
+    }
+    .visualizar-btn {
+        &:hover {
+            > a {
+                color: #097b19 !important;
+                cursor: pointer;
+            }
+            > div a {
+                color: #007bff !important;
             }
         }
     }

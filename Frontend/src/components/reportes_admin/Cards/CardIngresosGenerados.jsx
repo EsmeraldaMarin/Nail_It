@@ -116,7 +116,7 @@ const CardIngresosGenerados = (
             <div className="input-group mb-3 mt-3">
                 <label className="input-group-text" htmlFor="inputGroupSelect01">Especialidad</label>
                 <select className="form-select" id="inputGroupSelect01" onChange={handleChangeEspecialidad}>
-                    <option value=''>Seleccione una...</option>
+                    <option value=''>Todas</option>
                     {especialidades?.map((especialidad, index) =>
                         <option key={index} value={especialidad.id}>{especialidad.nombre}</option>
                     )}
@@ -125,7 +125,7 @@ const CardIngresosGenerados = (
             <div className="input-group mb-3">
                 <label className="input-group-text" htmlFor="inputGroupSelect01">Servicio</label>
                 <select className="form-select" id="inputGroupSelect01" onChange={handleChangeServicio}>
-                    <option value=''>Seleccione una...</option>
+                    <option value=''>Todas</option>
                     {servicios?.map((servicio, index) =>
                         <option key={index} value={servicio.id}>{servicio.nombre}</option>
                     )}
@@ -134,16 +134,16 @@ const CardIngresosGenerados = (
             <div className="input-group mb-3">
                 <label className="input-group-text" htmlFor="inputGroupSelect01">Operadora</label>
                 <select className="form-select" id="inputGroupSelect01" onChange={handleChangeOperadora}>
-                    <option value=''>Seleccione una...</option>
+                    <option value=''>Todas</option>
                     {operadoras?.map((operadora, index) =>
                         <option key={index} value={operadora.id}>{operadora.nombre}</option>
                     )}
                 </select>
             </div>
-            <button className="btn-ver-lista" onClick={exportarAExcel} style={{ color: '#2d572c' }}>
+            {/*<button className="btn-ver-lista" onClick={exportarAExcel} style={{ color: '#2d572c' }}>
                 Exportar a Excel
                 <i className="bi bi-file-earmark-excel ms-2"></i>
-            </button>
+            </button>*/}
         </div>
     )
 };

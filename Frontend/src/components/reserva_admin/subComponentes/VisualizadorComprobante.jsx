@@ -26,13 +26,7 @@ function VisualizadorComprobante({ comprobanteURL }) {
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ height: '500px', overflow: "auto" }}>
-                        {/*<img 
-                            src={comprobanteURL} 
-                            width="90%" 
-                            height="90%" 
-                            title="Comprobante PDF" 
-                            style={{ border: 'none' }} 
-                        />*/}
+                        
                         <iframe
                             src={comprobanteURL}
                             width="100%"

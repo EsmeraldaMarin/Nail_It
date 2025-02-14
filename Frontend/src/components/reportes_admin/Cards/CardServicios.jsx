@@ -10,17 +10,21 @@ export default function CardServicios({ data }) {
     if (!data || Object.keys(data).length === 0) {
         return <p>No hay datos disponibles.</p>;
     }
+    let colors = ["#4ec2b1", "#a067d3", "#55b0d3",  "#dc0ed1", "#faaceb", "#ce0d23", "#7e8e57", "#8f13e8", "#10cf27", "#8b64fd", "#83ca63", "#c9ac0f"]
 
     // Función para generar colores aleatorios en formato HEX
-    const getRandomColor = () => {
-        return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+    const getColor = (indice) => {
+        if (indice > colors.length - 1) {
+            return colors[indice - colors.length]
+        }
+        return colors[indice]
     };
 
     // Obtener los nombres de los servicios y las cantidades de reservas
     const servicios = Object.entries(data); // [[nombreServicio1, cantidad], [nombreServicio2, cantidad], ...]
 
     // Generar colores aleatorios
-    const colores = servicios.map(() => getRandomColor());
+    const colores = servicios.map((serv, index) => getColor(index));
 
     // Crear datos del gráfico
     const chartData = {

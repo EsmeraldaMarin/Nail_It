@@ -116,8 +116,16 @@ const ReservasPendientes = () => {
             estado: "cancelada"
         });
         if (result) {
+            setMensajeACliente(`*Hola, ${reservaData.Cliente ? reservaData.Cliente.nombre : reservaData.nombre_cliente}!*\n\n` +
+                `Tu seña de *${formatPrice(reservaData.montoSenia)}* correspondiente a la reserva de una sesión de ${reservaData.Servicio.nombre} te ha sido *devuelta* exitosamente.\n` +
+                `Por favor revisa en tu cuenta y comunícate con nosotras ante cualquier inconveniente.`
+                `¡Te esperamos la próxima!\n\n` +
+                `- _Oh My Nails_`
+            )
+            setTelefonoCliente(reservaData.Cliente ? reservaData.Cliente.numero : reservaData.telefono_cliente);
             const response = await axios.get('/reserva');
             setReservas(response.data);
+            setShowModal(true);
         }
     }
     const formatPrice = (price) => {
@@ -138,7 +146,7 @@ const ReservasPendientes = () => {
                         <thead className="table-light">
                             <tr>
                                 <th scope="col">Nombre Cliente</th>
-                                <th scope="col">Teléfono</th>
+                                <th scope="col" className="text-center" style={{ width: "70px" }}>Teléfono</th>
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
                                 <th scope="col">Servicio</th>
@@ -152,23 +160,34 @@ const ReservasPendientes = () => {
                                 reservasEstilista.map((reserva, index) =>
 
                                     <tr key={index}>
-                                        <td className="text-capitalize text-wrap">{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente} {reserva.Cliente ? reserva.Cliente.apellido : reserva.apellido_cliente}</td>
-                                        <td><a
-                                            href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            style={{ color: "#000", textDecoration: "none" }}
-                                        >
-                                            <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
-                                            {reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}
-                                        </a></td>
-                                        <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
-                                        <td>{reserva.horaInicio}</td>
-                                        <td className="text-wrap" style={{ width: "10rem" }}>{reserva.Servicio.nombre}</td>
+                                        <td className="text-capitalize" style={{ width: "15rem" }}>{reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente} {reserva.Cliente ? reserva.Cliente.apellido : reserva.apellido_cliente}</td>
+                                        <td className='text-center' style={{ width: "70px" }}>
+                                            <a
+                                                className='wpp-btn'
+                                                href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{ color: "#000", textDecoration: "none" }}
+                                            >
+                                                <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
+                                            </a>
+                                            <span className='display-on-hover'>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</span>
+                                        </td>
+                                        <td className="text-capitalize" style={{ width: "7em" }}>{formatearFecha(reserva.fecha)}</td>
+                                        <td style={{ width: "7em" }}>{reserva.horaInicio}</td>
+                                        <td className="text-wrap" style={{ width: "15rem" }}>{reserva.Servicio.nombre}</td>
                                         <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                        <td>
+                                        <td className="visualizar-btn">
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
-                                            :<span className="fs-6">Enviado por Whatsapp</span>}
+                                                : <a
+                                                    className='fs-6'
+                                                    href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{ color: "#000", textDecoration: "none" }}
+                                                >
+                                                    <i className="bi bi-box-arrow-up-right">  Ver Whatsapp </i>
+                                                </a>}
                                         </td>
                                         <td>
                                             {botonConfirmacion === reserva.id ? (

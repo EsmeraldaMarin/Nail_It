@@ -22,6 +22,7 @@ const FiltroColumna = ({ column }) => {
     );
 };
 
+
 const TablaVerLista = ({ columns, data }) => {
 
     const [sorting, setSorting] = useState([]); // Estado para ordenamiento
@@ -62,7 +63,7 @@ const TablaVerLista = ({ columns, data }) => {
                     <tr className="fila-filtros">
                         {table.getHeaderGroups().map((headerGroup) =>
                             headerGroup.headers.map((header) => (
-                                <th key={header.id}>
+                                <th key={header.id} >
                                     {header.column.getCanFilter() ? <FiltroColumna column={header.column} /> : null}
                                 </th>
                             ))
@@ -73,7 +74,7 @@ const TablaVerLista = ({ columns, data }) => {
                     {table.getRowModel().rows.map((row) => (
                         <tr key={row.id} className="fila">
                             {row.getVisibleCells().map((cell) => (
-                                <td key={cell.id} className="celda">
+                                <td key={cell.id} className="celda text-capitalize">
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}

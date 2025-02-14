@@ -53,19 +53,25 @@ const Reportes = () => {
         const response = await axios.get(`/reserva?estado=${tipoReserva}`)
         return response.data
     }
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+        }).format(price);
+    };
 
     const handleClickVerLista = async (tipoReserva) => {
         setColumnasTabla([
             { accessorKey: "numero", header: "N°", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "nombre", header: "Nombre Cliente", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "contacto", header: "Contacto", enableSorting: false, enableColumnFilter: false },
+            { accessorKey: "operadora", header: "Operadora", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "servicio", header: "Servicio", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "especialidad", header: "Especialidad", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "fechaTurno", header: "Fecha Turno", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "horaTurno", header: "Hora Turno", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "montoSenia", header: "Importe Seña", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "montoTotal", header: "Importe Total", enableSorting: true, enableColumnFilter: true },
-            { accessorKey: "operadora", header: "Operadora", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "estado", header: "Estado", enableSorting: false, enableColumnFilter: false },
         ])
         let dataObtenida = await fetchReservasConFiltro(tipoReserva);
@@ -80,8 +86,8 @@ const Reportes = () => {
                 especialidad: r.Servicio.Especialidad.nombre,
                 fechaTurno: formatearFecha(r.fecha),
                 horaTurno: r.horaInicio,
-                montoSenia: r.montoSenia,
-                montoTotal: r.montoTotal,
+                montoSenia: formatPrice(r.montoSenia),
+                montoTotal: formatPrice(r.montoTotal),
                 operadora: r.Admin.nombre + " " + r.Admin.apellido,
                 estado: (r.estado).replace("_", " ")
             }
