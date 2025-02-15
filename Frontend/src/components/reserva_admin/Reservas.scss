@@ -24,6 +24,22 @@
         &.mis-reservas {
             border-left: 5px solid #007bff; /* Lateral azul para destacar tus reservas */
             border-right: 5px solid #007bff; /* Lateral azul para destacar tus reservas */
+            .wpp-btn:hover {
+                & ~ .display-on-hover {
+                    display: block;
+                    position: absolute;
+                    width: 170px;
+                    top: -25px;
+                    left: -15px;
+                    z-index: 10;
+                    background-color: #097b18de;
+                    border-radius: 5px;
+                    padding: 5px;
+                    padding-bottom: 10px;
+                    color: #fff;
+                    clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 45% 86%, 38% 100%, 31% 86%, 0% 86%);
+                }
+            }
         }
         &.reservas-gral {
             border-left: 5px solid #6c757d; /* Lateral gris para destacar reservas generales */

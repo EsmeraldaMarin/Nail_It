@@ -30,12 +30,16 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
         }
     };
     const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2,
         }).format(price);
     };
-
     return (
         <div>
             <h4 className="py-3">Reservas pendientes de reembolsar</h4>
@@ -75,8 +79,8 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         </td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
-                                        <td><input class="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readonly/></td>
-                                        <td><input class="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readonly/></td>
+                                        <td><input class="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readonly /></td>
+                                        <td><input class="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readonly /></td>
                                         <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
                                         <td className='visualizar-btn'>
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
@@ -85,7 +89,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                                     href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    style={{ color:"#000",textDecoration: "none" }}
+                                                    style={{ color: "#000", textDecoration: "none" }}
                                                 >
                                                     <i className="bi bi-box-arrow-up-right">  Ver Whatsapp </i>
                                                 </a>}

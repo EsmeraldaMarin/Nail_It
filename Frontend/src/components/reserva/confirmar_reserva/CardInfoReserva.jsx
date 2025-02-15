@@ -20,7 +20,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
             try {
                 const response = await axios.get('/variablesGlobales');
                 setalias(response.data[0].alias)
-                setimporte_seña(parseInt(response.data[0].importe_seña))
+                setimporte_seña(response.data[0].importe_seña)
                 settitular_cuenta(response.data[0].titular_cuenta)
                 setcbu(response.data[0].cbu)
 
@@ -94,7 +94,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
     };
     const handleGuardarMontoSenia = () => {
         const input = document.getElementById("montoSenia");
-        const inputValue = parseFloat(input.value);
+        const inputValue = input.value;
         if (inputValue < importe_seña || inputValue > reservaData.servicio_data.precio) {
             input.classList.add("danger")
             return
@@ -104,10 +104,14 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         setElegirOtroImporte(false);
     };
     const formatPrice = (price) => {
-        if (typeof price === "string") price = parseFloat(price)
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
         }).format(price);
     };
 
@@ -149,10 +153,11 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                                 <label htmlFor="montoSenia">Ingrese el importe que desea transferir:</label>
                                 <div className="input-group mb-1 d-flex align-items-center" style={{ paddingLeft: "20%" }}>
                                     <span className="input-group-text">$</span>
-                                    <input type="text" className="form-control fw-bold" id="montoSenia" aria-label="Amount (to the nearest dollar)" />
+                                    <input type="text" defaultValue={reservaData.montoSenia} className="form-control fw-bold" id="montoSenia" aria-label="Amount (to the nearest dollar)" />
                                     <button className='ok-montoSenia' onClick={handleGuardarMontoSenia}><i className="bi bi-check"></i></button>
                                 </div>
-                                <span className='text-end text-danger texto-advertencia' style={{ fontSize: "12px" }}><i className='bi bi-exclamation-circle me-2'></i>El importe ser mayor a {importe_seña} y menor a {reservaData.servicio_data.precio}</span>
+                                <span className='text-end text-danger texto-advertencia' style={{ fontSize: "12px" }}><i className='bi bi-exclamation-circle me-2'></i>
+                                    El importe ser mayor a {formatPrice(importe_seña)} y menor a {formatPrice(reservaData.servicio_data.precio)}</span>
                             </div>
                             :
                             <div className=' text-end'>
@@ -165,7 +170,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                 <div className='d-flex justify-content-end'>
                     {elegirOtroImporte ?
                         <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width: "fit-content" }}
-                            onClick={() => setElegirOtroImporte(false)}>Señar el mínimo</p>
+                            onClick={() => setElegirOtroImporte(false)}>Volver</p>
                         :
                         <p className='text-decoration-underline mt-3 text-end mb-3' style={{ cursor: "pointer", color: "#0101c2", width: "fit-content" }}
                             onClick={() => setElegirOtroImporte(true)}>Señar otro importe</p>

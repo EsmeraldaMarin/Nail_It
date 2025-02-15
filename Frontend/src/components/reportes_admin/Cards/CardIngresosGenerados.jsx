@@ -20,9 +20,14 @@ const CardIngresosGenerados = (
     const [periodo, setPeriodo] = useState('dia')
 
     const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
         }).format(price);
     };
 
@@ -82,12 +87,12 @@ const CardIngresosGenerados = (
         return new Date(fechaHasta).toLocaleString('es-ES', { month: 'long' })
     }
     return (
-        <div className="card-ingresos-generados" style={{minWidth:"350px"}}>
+        <div className="card-ingresos-generados" style={{ minWidth: "350px" }}>
             <h4 className="text-capitalize">Total Ingresos Generados</h4>
             <div className="d-flex flex-column justify-content-center mt-3">
                 <div className="periodo d-flex justify-content-center align-items-center">
                     {sePuedeMoverFecha && <button className="btn-directions btn btn-secondary mx-2" onClick={retrocederFecha}>{'<'}</button>}
-                    <span className="fs-5 text-capitalize text-center" style={{minWidth:"7em"}}>{sePuedeMoverFecha ? obtenerTitulo() : fechaDesde + " : " + fechaHasta}</span>
+                    <span className="fs-5 text-capitalize text-center" style={{ minWidth: "7em" }}>{sePuedeMoverFecha ? obtenerTitulo() : fechaDesde + " : " + fechaHasta}</span>
                     {sePuedeMoverFecha && <button className="btn-directions btn btn-secondary mx-2" onClick={avanzarFecha}>{'>'}</button>}
                 </div>
                 <span className="m-0 fw-bold text-center my-3" style={{ fontSize: "3em" }}>{formatPrice(ingresosTotales)}</span>

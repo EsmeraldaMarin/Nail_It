@@ -18,7 +18,7 @@ const ReservasConfirmadas = () => {
     useEffect(() => {
         const fetchReservas = async () => {
             try {
-                                // Este GET esta devolviendo todas las reservas existentes cuando solo estas usando las de hoy en el front
+                // Este GET esta devolviendo todas las reservas existentes cuando solo estas usando las de hoy en el front
                 // Agregar filtro de fecha para prevenir una respuesta muy grande y demoras en la carga.
                 const tzoffset = (new Date()).getTimezoneOffset() * 60000;
                 const localISODate = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
@@ -35,14 +35,14 @@ const ReservasConfirmadas = () => {
     }, []);
 
     const hoy = new Date();
-   
+
     // Se agrega columna en la tabla para poder mostrar el estado
     // Se desactiva el filtro de isSameDay ya que el back va devolver esa informacion ya filtrada
     const reservasEstilista = reservas.filter(
         reserva =>
             // reserva.estado === "confirmada" &&
             reserva.id_profesional === userId // &&
-            // isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
+        // isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
     );
 
     //const reservasConfirmadas = reservas.filter(
@@ -73,17 +73,17 @@ const ReservasConfirmadas = () => {
     const getBadgeClassByStatus = (status) => {
         let badgeClass = "badge rounded-pill ";
 
-        if(status == "realizada") {
-            badgeClass += "bg-success";
+        if (status == "realizada") {
+            badgeClass += "text-success border border-success";
         }
-        else if(status == "cancelada") {
-            badgeClass += "bg-danger";
+        else if (status == "cancelada") {
+            badgeClass += "text-danger border border-danger";
         }
-        else if(status == "no_realizada") {
-            badgeClass += "bg-warning";
+        else if (status == "no_realizada") {
+            badgeClass += "text-warning border border-warning";
         }
         else {
-            badgeClass += "bg-primary";
+            badgeClass += "text-primary border border-primary";
         }
 
         return badgeClass;
@@ -102,22 +102,23 @@ const ReservasConfirmadas = () => {
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
-                <td className="text-capitalize text-wrap" style={{ width: "11rem" }}>{reserva.Servicio.nombre}</td>
-                <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>
+                <td className="text-capitalize text-wrap" style={{ minWidth: "170px", maxWidth: "170px" }}>{reserva.Servicio.nombre}</td>
+                <td className="text-capitalize text-wrap" style={{ minWidth: "170px", maxWidth: "170px" }}>
                     {reserva.Cliente
                         ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
                         : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`}
                 </td>
-                <td>
+                <td className='text-center' style={{ width: "70px" }}>
                     <a
+                        className='wpp-btn'
                         href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ color: "#000", textDecoration: "none" }}
                     >
                         <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
-                        {reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}
                     </a>
+                    <span className='display-on-hover'>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</span>
                 </td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
@@ -148,11 +149,15 @@ const ReservasConfirmadas = () => {
             </tr>
         ));
     };
-
     const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2, // Asegura que se muestren dos decimales
+            maximumFractionDigits: 2,
         }).format(price);
     };
 
@@ -167,8 +172,8 @@ const ReservasConfirmadas = () => {
                 <table className="table ">
                     <thead className="table-primary">
                         <tr>
-                            <th scope="col">Servicio</th>
-                            <th scope="col">Cliente</th>
+                            <th scope="col" style={{ minWidth: "170px", maxWidth: "170px" }}>Servicio</th>
+                            <th scope="col" style={{ minWidth: "170px", maxWidth: "170px" }}>Cliente</th>
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>

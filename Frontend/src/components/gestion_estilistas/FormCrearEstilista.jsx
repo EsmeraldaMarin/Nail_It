@@ -22,13 +22,13 @@ function FormCrearEstilista({ modalRef, profesionales, setProfesionales, setFilt
             <div className="modal-dialog modal-dialog-scrollable">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h1 className="modal-title fs-5" id="modalLabel">Crear Estilista</h1>
+                        <h1 className="modal-title fs-5" id="modalLabel">Crear Operadora</h1>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body-crear-estilista">
                         {/* Formulario para crear una nueva estilista */}
                         <Registro
-                            mensajeBoton={"Crear Estilista"}
+                            mensajeBoton={"Crear Operadora"}
                             isAdminParam={true}
                             redirect="/inicio_admin/administracion_general"
                             handleSubmitAdmin={handleSubmitAdmin}

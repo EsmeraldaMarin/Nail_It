@@ -54,9 +54,14 @@ const Reportes = () => {
         return response.data
     }
     const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
         }).format(price);
     };
 

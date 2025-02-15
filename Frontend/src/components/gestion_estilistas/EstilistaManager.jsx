@@ -124,7 +124,7 @@ function EstilistaManager() {
 
             <div className="card-container mt-4">
                 {filteredProfesionales.length === 0 ? (
-                    <p>No se encontraron estilistas.</p>
+                    <p>No se encontraron operadoras.</p>
                 ) : (
                     filteredProfesionales.map((estilista) => (
                         <EstilistaCard key={estilista.id} estilista={estilista} onClick={handleCardClick} />

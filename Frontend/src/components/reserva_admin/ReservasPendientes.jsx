@@ -119,7 +119,7 @@ const ReservasPendientes = () => {
             setMensajeACliente(`*Hola, ${reservaData.Cliente ? reservaData.Cliente.nombre : reservaData.nombre_cliente}!*\n\n` +
                 `Tu seña de *${formatPrice(reservaData.montoSenia)}* correspondiente a la reserva de una sesión de ${reservaData.Servicio.nombre} te ha sido *devuelta* exitosamente.\n` +
                 `Por favor revisa en tu cuenta y comunícate con nosotras ante cualquier inconveniente.`
-                `¡Te esperamos la próxima!\n\n` +
+                    `¡Te esperamos la próxima!\n\n` +
                 `- _Oh My Nails_`
             )
             setTelefonoCliente(reservaData.Cliente ? reservaData.Cliente.numero : reservaData.telefono_cliente);
@@ -129,9 +129,14 @@ const ReservasPendientes = () => {
         }
     }
     const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2, // Asegura que se muestren dos decimales
+            maximumFractionDigits: 2,
         }).format(price);
     };
 

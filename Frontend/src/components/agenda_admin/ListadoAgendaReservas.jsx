@@ -10,6 +10,22 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    if (reservas.length > 0) {
+        console.log(reservas)
+        console.log(reservas[0].montoTotal, reservas[0].montoSenia, reservas[0].montoTotal - reservas[0].montoSenia)
+
+    }
+    const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(price);
+    };
 
     const reservasEstilista = reservas.filter(reserva => reserva.id_profesional === userId);
 
@@ -44,12 +60,6 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
         ));
     };
 
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat('es-AR', {
-            style: 'currency',
-            currency: 'ARS',
-        }).format(price);
-    };
 
     return (
         <div className='container-fluid Reservas'>

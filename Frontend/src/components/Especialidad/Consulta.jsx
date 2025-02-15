@@ -5,22 +5,28 @@ import './Consulta.scss'
 
 export default function ConsultaServicios({ servicios, onNewClick, onActualizar, onEliminar }) {
     const formatPrice = (price) => {
+        if (typeof price === "string") {
+            price = parseFloat(price.replace(",", "."));
+        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
         }).format(price);
     };
+
     const tbody = servicios.map((servicio) => (
         <tr key={servicio.id}>
             <td>{servicio.nombre}</td>
             <td>{formatPrice(servicio.precio)}</td>
             <td>{servicio.duracion} minutos</td>
             <td>{servicio.Especialidad.nombre}</td>
-            <td style={{maxWidth:"180px"}} >
+            <td style={{ maxWidth: "180px" }} >
                 <button className="btn btn-sm btn-primary" onClick={() => { onActualizar(servicio) }}>
                     Actualizar
                 </button>
-                <button className="btn btn-sm btn-danger" style={{marginLeft:"30px"}}  onClick={() => { onEliminar(servicio) }}>
+                <button className="btn btn-sm btn-danger" style={{ marginLeft: "30px" }} onClick={() => { onEliminar(servicio) }}>
                     Eliminar
                 </button>
             </td>

@@ -199,7 +199,7 @@ const Historial_turnos = () => {
                                 </div>
                                 <div className="card-body text-success">
                                     <ul className="list-group list-group-flush">
-                                        <li className="list-group-item"><strong>Estilista:</strong> {reserva.Admin.nombre}</li>
+                                        <li className="list-group-item"><strong>Operadora:</strong> {reserva.Admin.nombre}</li>
                                         <li className="list-group-item"><strong>Fecha:</strong> <span className="text-capitalize">{formatearFecha(reserva.fecha)}</span> - <strong>Hora de Inicio:</strong> {reserva.horaInicio}hs</li>
                                         <li className="list-group-item"><strong>Importe de la seña:</strong> ${reserva.montoSenia} - <strong>Importe Total:</strong> ${reserva.montoTotal}</li>
                                         <li className="list-group-item"><strong>Servicio:</strong> {reserva.Servicio.nombre}</li>
