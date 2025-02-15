@@ -26,7 +26,8 @@ const ReservasConfirmadas = () => {
                 const currentDate = (localISODate).split('T')[0];
 
                 const response = await axios.get('/reserva?fecha=' + currentDate);
-                setReservas(response.data);
+                const reservasQueCumplenEstado = response.data.filter(reserva => ["confirmada", "realizada", "no_realizada"].includes(reserva.estado))
+                setReservas(reservasQueCumplenEstado);
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
             }
@@ -39,9 +40,7 @@ const ReservasConfirmadas = () => {
     // Se agrega columna en la tabla para poder mostrar el estado
     // Se desactiva el filtro de isSameDay ya que el back va devolver esa informacion ya filtrada
     const reservasEstilista = reservas.filter(
-        reserva =>
-            // reserva.estado === "confirmada" &&
-            reserva.id_profesional === userId // &&
+        reserva => reserva.id_profesional === userId // &&
         // isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
     );
 
@@ -211,7 +210,7 @@ const ReservasConfirmadas = () => {
                                 <tr key={index}>
                                     <th className="text-uppercase" style={{ backgroundColor: "#eee" }}>{reserva.Admin.nombre}</th>
                                     <td style={{ width: "20rem" }}>{reserva.Servicio.nombre}</td>
-                                    <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre + " " + reserva.Cliente.apellido : reserva.nombre_cliente + " " + reserva.nombre_cliente}</td>
+                                    <td className="text-capitalize">{reserva.Cliente ? reserva.Cliente.nombre + " " + reserva.Cliente.apellido : reserva.nombre_cliente + " " + reserva.apellido_cliente}</td>
                                     <td>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</td>
                                     <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                     <td>{reserva.horaInicio}</td>

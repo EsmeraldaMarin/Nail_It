@@ -79,8 +79,8 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         </td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
-                                        <td><input class="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readonly /></td>
-                                        <td><input class="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readonly /></td>
+                                        <td><input class="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readonly style={{cursor:"text"}} /></td>
+                                        <td><input class="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readonly style={{cursor:"text"}} /></td>
                                         <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
                                         <td className='visualizar-btn'>
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />

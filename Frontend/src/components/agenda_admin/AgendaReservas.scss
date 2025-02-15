@@ -46,4 +46,20 @@ div.agenda-section {
     .modal-dialog {
         z-index: 1050; /* Modal debe aparecer por encima de la superposición */
     }
+    .wpp-btn:hover {
+        & ~ .display-on-hover {
+            display: block;
+            position: absolute;
+            width: 170px;
+            top: -35px;
+            left: -15px;
+            z-index: 10;
+            background-color: #097b18de;
+            border-radius: 5px;
+            padding: 5px;
+            padding-bottom: 10px;
+            color: #fff;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 45% 86%, 38% 100%, 31% 86%, 0% 86%);
+        }
+    }
 }

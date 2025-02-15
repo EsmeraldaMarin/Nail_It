@@ -40,7 +40,7 @@ routerServicios.post("/", async (req, res) => {
         if (!req.body.nombre || typeof req.body.nombre !== 'string' || req.body.nombre.trim() === '') {
             return res.status(400).json({ message: "Nombre de servicio es requerido" });
         }
-        if (!req.body.precio || typeof req.body.precio !== "number"){
+        if (!req.body.precio || typeof req.body.precio !== "number") {
             return res.status(400).json({ message: "precio de servicio es requerido" });
         }
         if (!req.body.duracion || typeof req.body.duracion !== "number") {
@@ -49,7 +49,7 @@ routerServicios.post("/", async (req, res) => {
         if (!req.body.id_especialidad || typeof req.body.id_especialidad !== "number") {
             return res.status(400).json({ message: "id_especialidad de servicio es requerido" });
         }
-      
+
         const servicio_existente = await gestorServicios.obtener_servicio_por_nombre(req.body.nombre);
         if (servicio_existente) {
             return res.status(400).json({ message: "El servicio ya está registrado." });
@@ -109,8 +109,30 @@ routerServicios.put("/:id", async (req, res) => {
 
         // Modificación del servicio
         const servicioModificado = await gestorServicios.actualizar_servicio(req.body, servicioId);
-        res.status(200).json({message: "Servicio modificado!"});
+        res.status(200).json({ message: "Servicio modificado!" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
+routerServicios.put("/:id/cambioEstado", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { esta_activo } = req.body;
+        if (!id || esta_activo === null || esta_activo === undefined || esta_activo === "") {
+            return res.status(400).json({ message: "Faltan parametros para realizar la operacion" });
+        }
+
+        // Verificar si el servicio existe
+        const servicio_existente = await gestorServicios.obtener_servicio_por_id(id);
+        if (!servicio_existente) {
+            return res.status(404).json({ message: "Servicio no encontrado." });
+        }
+        const servicioModificado = await gestorServicios.modificar_estado_servicio(esta_activo, id);
+        res.json({ message: "Servicio desactivado con éxito"});
+
+    } catch (error) {
+        res.status(500).json({ message: "Error al desactivar el servicio", error: error.message });
+    }
+});
+

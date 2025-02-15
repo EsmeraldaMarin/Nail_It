@@ -10,11 +10,17 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
-    if (reservas.length > 0) {
-        console.log(reservas)
-        console.log(reservas[0].montoTotal, reservas[0].montoSenia, reservas[0].montoTotal - reservas[0].montoSenia)
 
+
+    //mejora: esto es necesario porque el valor de montoSenia por alguna razon se guarda como string y no deberia ser asi
+    function convertirAFloat(valor) {
+        // Reemplazar la coma por un punto y convertir a número
+        if (typeof valor === "string") {
+            return parseFloat(valor.replace(",", "."));
+        }
+        return valor
     }
+
     const formatPrice = (price) => {
         if (typeof price === "string") {
             price = parseFloat(price.replace(",", "."));
@@ -32,28 +38,29 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
-                <td className="text-capitalize text-wrap" style={{ width: "11rem" }}>{reserva.Servicio.nombre}</td>
-                <td className="text-capitalize text-wrap" style={{ width: "8rem" }}>
+                <td className="text-capitalize">{reserva.Servicio.nombre}</td>
+                <td className="text-capitalize text-wrap" width={"11em"}>
                     {reserva.Cliente
                         ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
                         : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`}
                 </td>
-                <td>
+                <td className='text-center' style={{ width: "70px" }}>
                     <a
+                        className='wpp-btn'
                         href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ color: "#000", textDecoration: "none" }}
                     >
                         <i className="bi bi-whatsapp" style={{ color: "green" }}> </i>
-                        {reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}
                     </a>
+                    <span className='display-on-hover'>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</span>
                 </td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
-                <td>{formatPrice(reserva.montoTotal)}</td>
-                <td>{formatPrice(reserva.montoSenia)}</td>
-                <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - reserva.montoSenia)}</strong></td>
+                <td className='text-end'>{formatPrice(reserva.montoTotal)}</td>
+                <td className='text-end'>{formatPrice(reserva.montoSenia)}</td>
+                <td className="fs-5 text-end"><strong>{formatPrice((reserva.montoTotal) - convertirAFloat(reserva.montoSenia))}</strong></td>
                 <td><button className='btn btn-danger' onClick={() => handleCancelarReserva(reserva.id)}>Cancelar</button></td>
 
             </tr>
@@ -73,9 +80,9 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
-                            <th scope="col">Precio servicio</th>
-                            <th scope="col">Importe abonado</th>
-                            <th scope="col">Importe a cobrar</th>
+                            <th scope="col" className='text-end'>Precio servicio</th>
+                            <th scope="col" className='text-end'>Importe abonado</th>
+                            <th scope="col" className='text-end'>Importe a cobrar</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>

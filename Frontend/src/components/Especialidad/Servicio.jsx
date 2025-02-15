@@ -12,10 +12,11 @@ const Servicio = () => {
     const [action, setAction] = useState('C')
     const [item, setItem] = useState({})
     const [especialidades, setEspecialidades] = useState([]);
+    const [activar, setActivar] = useState(true);
 
     //modales
     const [showModal, setShowModal] = useState(false)
-    const [showModalConfirmarEliminacion, setShowModalConfirmarEliminacion] = useState(false)
+    const [showModalConfirmarOperacion, setShowModalConfirmarOperacion] = useState(false)
     const [showModalNoSePuedeEliminarServicio, setShowModalNoSePuedeEliminarServicio] = useState(false)
     const [tituloModal, setTituloModal] = useState("")
     const [cuerpoModal, setCuerpoModal] = useState("")
@@ -45,37 +46,46 @@ const Servicio = () => {
         setAction('A')
     }
 
-    const onEliminar = async (item) => {
-        const response = await axios.get('/reserva');
-        const hayReservaDeEseServicio = response.data.some(r => r.Servicio.id === item.id)
-
-        if (hayReservaDeEseServicio) {
-            setTituloModal("No se puede eliminar el servicio");
-            setCuerpoModal(`El servicio de ${item.nombre.toUpperCase()} no se puede eliminar porque hay reservas activas de ese servicio. 
-            Para continuar este proceso, cancele todas las reservas relacionadas al servicio que desea eliminar y vuelva a intentarlo. `);
-            setBotonIzqModal("");
-            setBotonDerModal("Entendido");
-            setShowModalNoSePuedeEliminarServicio(true);
-            setItem({})
-            return
-        }
-        setItem(item)
-        setTituloModal("Eliminar Servicio");
-        setCuerpoModal(`¿Está seguro que desea eliminar el servicio de ${item.nombre.toUpperCase()}?`);
-        setBotonIzqModal("Eliminar servicio");
-        setBotonDerModal("Conservar servicio");
-        setShowModalConfirmarEliminacion(true);
+    const onToggleActivo = async (item, estado_servicio) => {
+        const accion = estado_servicio ? "Activar" : "Desactivar"
+        setItem(item);
+        //AQUI PUEDE SER TRUE O FALSE
+        setActivar(estado_servicio);
+        setTituloModal(`${accion} Servicio`);
+        setCuerpoModal(`¿Está seguro que desea ${accion.toLowerCase()} el servicio de ${item.nombre.toUpperCase()}?`);
+        setBotonIzqModal(`${accion} servicio`);
+        setBotonDerModal("Cancelar acción");
+        setShowModalConfirmarOperacion(true);
     }
-    const onConfirmarEliminacion = async () => {
-        console.log("se confirmo la eliminacion")
-        const result = await axios.delete(`/servicio/${item.id}`)
+
+    const onConfirmarOperacion = async () => {
+
+        setShowModalConfirmarOperacion(false);
+
+        const result = await axios.put(`/servicio/${item.id}/cambioEstado`, {
+            esta_activo: activar
+        })
         if (result) {
             const response = await axios.get('/servicio');
             setServicios(response.data);
             setAction('C')
         }
+
+        if (!activar) {
+            //mejora: hacer un endpoint para traer solo las reservas que correcpondan a ese servicio.
+            const response = await axios.get('/reserva');
+            const hayReservaDeEseServicio = response.data.some(r => r.Servicio.id === item.id)
+
+            if (hayReservaDeEseServicio) {
+                setTituloModal("Servicio desactivado");
+                setCuerpoModal(`El servicio de ${item.nombre.toUpperCase()} se encuentra desactivado pero aún hay reservas activas de ese servicio.`);
+                setBotonIzqModal("");
+                setBotonDerModal("Entendido");
+                setShowModalNoSePuedeEliminarServicio(true);
+            }
+        }
+
         setItem({})
-        setShowModalConfirmarEliminacion(false);
     }
 
     const onCancelar = () => {
@@ -137,16 +147,16 @@ const Servicio = () => {
 
     return (
         <>
-            {action === 'C' && <ConsultaServicios servicios={servicios} onNewClick={onNewClick} onActualizar={onActualizar} onEliminar={onEliminar}></ConsultaServicios>}
+            {action === 'C' && <ConsultaServicios servicios={servicios} onNewClick={onNewClick} onActualizar={onActualizar} onToggleActivo={onToggleActivo}></ConsultaServicios>}
             {action !== 'C' && <RegistrarServicio onGuardar={onGuardar} onCancelar={onCancelar} item={item} actualizado={actualizado} onGuardarEsp={onGuardarEsp} registrarEsp={registrarEsp} especialidades={especialidades} />}
-            {showModalConfirmarEliminacion &&
+            {showModalConfirmarOperacion &&
                 <ModalServicio
-                    showModal={showModalConfirmarEliminacion}
+                    showModal={showModalConfirmarOperacion}
                     closeModal={() => {
-                        setShowModalConfirmarEliminacion(false)
+                        setShowModalConfirmarOperacion(false)
                         setItem({})
                     }}
-                    title={tituloModal} body={cuerpoModal} btnLeft={botonIzqModal} btnRight={botonDerModal} confirmOperation={onConfirmarEliminacion}></ModalServicio >}
+                    title={tituloModal} body={cuerpoModal} btnLeft={botonIzqModal} btnRight={botonDerModal} confirmOperation={onConfirmarOperacion}></ModalServicio >}
             {showModalNoSePuedeEliminarServicio &&
                 <ModalServicio
                     showModal={showModalNoSePuedeEliminarServicio}
@@ -154,7 +164,7 @@ const Servicio = () => {
                         setShowModalNoSePuedeEliminarServicio(false)
                         setItem({})
                     }}
-                    title={tituloModal} body={cuerpoModal} btnLeft={botonIzqModal} btnRight={botonDerModal} confirmOperation={onConfirmarEliminacion}></ModalServicio >}
+                    title={tituloModal} body={cuerpoModal} btnLeft={botonIzqModal} btnRight={botonDerModal} confirmOperation={onConfirmarOperacion}></ModalServicio >}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Registrar Nueva Especialidad</Modal.Title>

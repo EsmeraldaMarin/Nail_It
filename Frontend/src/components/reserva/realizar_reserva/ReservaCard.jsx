@@ -51,7 +51,8 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
       if (tipoServicio != "") {
         try {
           const response = await axios.get(`/servicio/especialidad/${tipoServicio}`);
-          setServicios(response.data);
+          const serviciosActivos = response.data.filter(servicio => servicio.esta_activo)
+          setServicios(serviciosActivos);
         } catch (error) {
           console.error('Error al obtener las servicios', error);
         }

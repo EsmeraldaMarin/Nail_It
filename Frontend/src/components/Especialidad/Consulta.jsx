@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig/axiosConfig';
 import './Consulta.scss'
 
-export default function ConsultaServicios({ servicios, onNewClick, onActualizar, onEliminar }) {
+export default function ConsultaServicios({ servicios, onNewClick, onActualizar, onToggleActivo }) {
     const formatPrice = (price) => {
         if (typeof price === "string") {
             price = parseFloat(price.replace(",", "."));
@@ -26,8 +26,10 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar,
                 <button className="btn btn-sm btn-primary" onClick={() => { onActualizar(servicio) }}>
                     Actualizar
                 </button>
-                <button className="btn btn-sm btn-danger" style={{ marginLeft: "30px" }} onClick={() => { onEliminar(servicio) }}>
-                    Eliminar
+                <button className={servicio.esta_activo ? "btn btn-sm btn-danger" : "btn btn-sm btn-success"} style={{ marginLeft: "30px" }} onClick={() => { onToggleActivo(servicio, !servicio.esta_activo) }}>
+                    {servicio.esta_activo ?
+                        <i className="bi bi-eye-slash"> Desactivar</i> :
+                        <i className="bi bi-eye"> Activar</i>}
                 </button>
             </td>
         </tr>

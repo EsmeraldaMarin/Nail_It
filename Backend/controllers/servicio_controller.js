@@ -5,6 +5,10 @@ import { Servicios } from "../db/servicio_tabla.js";
 export class GestorServicios {
     async obtener_servicios(condicion) {
         return await Servicios.findAll({
+            order: [
+                ['esta_activo', 'DESC'], // Los activos primero
+                ['nombre', 'ASC'] // Luego ordena alfabéticamente
+            ],
             where: condicion,
             include: [
                 {
@@ -62,6 +66,11 @@ export class GestorServicios {
 
     async actualizar_servicio(body, id) {
         return await Servicios.update(body, {
+            where: { id: id }
+        })
+    }
+    async modificar_estado_servicio(estado, id) {
+        return await Servicios.update({ esta_activo: estado }, {
             where: { id: id }
         })
     }

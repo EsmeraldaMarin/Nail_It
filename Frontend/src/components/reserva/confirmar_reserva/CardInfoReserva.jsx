@@ -92,9 +92,13 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    function convertirAFloat(valor) {
+        // Reemplazar la coma por un punto y convertir a número
+        return parseFloat(valor.replace(",", "."));
+    }
     const handleGuardarMontoSenia = () => {
         const input = document.getElementById("montoSenia");
-        const inputValue = input.value;
+        const inputValue = convertirAFloat(input.value);
         if (inputValue < importe_seña || inputValue > reservaData.servicio_data.precio) {
             input.classList.add("danger")
             return
