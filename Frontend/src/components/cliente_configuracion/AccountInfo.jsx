@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../axiosConfig/axiosConfig';
 import UpdateProfile from './UpdateProfile';
 import "./EstilosAccount.scss"
+import { Link } from 'react-router-dom';
 
 const AccountInfo = () => {
     const [clienteInfo, setClienteInfo] = useState(null);
@@ -12,7 +13,7 @@ const AccountInfo = () => {
         const fetchClienteInfo = async () => {
 
             try {
-                const response = await axios.get(`http://localhost:5050/cliente/${userId}`);
+                const response = await axios.get(`/cliente/${userId}`);
                 setClienteInfo(response.data);
             } catch (error) {
                 console.error('Error fetching client info:', error);
@@ -47,7 +48,7 @@ const AccountInfo = () => {
                         </li>
                     </ul>
                     <div className="col-12 text-end pt-2">
-                        <a href="#" >Olvidé mi contraseña</a>
+                        <Link to={'/forgot-password'}>Olvidé mi contraseña</Link>
                     </div>
                     <button className="btn btn-dark mt-3" onClick={() => setModoEdicion(!modoEdicion)}>Editar</button>
                 </>

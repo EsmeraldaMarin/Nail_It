@@ -131,7 +131,7 @@ const Login = () => {
 
                 <div className="col-12">
                     <button className="btn btn-primary" type="submit">Iniciar sesión</button>
-                    <a href="#" >Olvidé mi contraseña</a>
+                    <Link to={'/forgot-password'}>Olvidé mi contraseña</Link>
                 </div>
                 <hr></hr>
                 <div className="col-12">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../axiosConfig/axiosConfig';
 
 const UpdateProfile = ({ clienteInfo, setClienteInfo, userId, modoEdicion, setModoEdicion }) => {
 
@@ -13,7 +13,7 @@ const UpdateProfile = ({ clienteInfo, setClienteInfo, userId, modoEdicion, setMo
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`http://localhost:5050/cliente/${userId}`, clienteUpdatedData);
+            const response = await axios.put(`/cliente/${userId}`, clienteUpdatedData);
             setMessage('Profile updated successfully');
             setClienteInfo(clienteUpdatedData)
             setModoEdicion(!modoEdicion)

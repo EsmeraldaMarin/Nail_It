@@ -1,5 +1,6 @@
 import { Clientes } from "../db/cliente_tabla.js";
 import bcrypt from "bcryptjs";
+import { Op } from "sequelize";
 
 export class GestorClientes{
     async obtener_clientes(){
@@ -16,6 +17,15 @@ export class GestorClientes{
 
     async obtener_cliente_por_email(email){
         return await Clientes.findOne({where: {email: email}});
+    }
+    
+    async obtener_cliente_por_token(token, fechaHoy) {
+        return await Clientes.findOne({
+            where: {
+                reset_token: token,
+                reset_expiration: { [Op.gt]: fechaHoy } // Usa el argumento fechaHoy
+            }
+        });
     }
 
     async actualizar_cliente_email(req_body, email){
@@ -40,19 +50,5 @@ export class GestorClientes{
             where: {email: mail}
         })
     }
-    /**
-     *
-     * @param id Client id
-     * @param new_password New unencrypted password to be set
-     * @returns {Promise<*>}
-     */
-    async change_password(id, new_password) {
-        new_password = await bcrypt.hash(new_password, 10);
-
-        return await Clientes.update({
-            password: new_password,
-        }, {
-            where: {id: id}
-        });
-    }
+   
 }

@@ -1,10 +1,11 @@
 import { Admins } from "../db/admin_tabla.js";
+import { Op } from "sequelize";
 
 export class GestorAdmins {
     async obtener_admins() {
         try {
             return await Admins.findAll();
-        } catch(err){
+        } catch (err) {
             console.log(err)
         }
     }
@@ -16,6 +17,13 @@ export class GestorAdmins {
     async obtener_admin_por_email(email) {
         return await Admins.findOne({ where: { email: email } });
     }
+
+    async obtener_admin_por_token(token, fechaHoy) {
+        return await Admins.findOne({
+            where: { reset_token: token, reset_expiration: { [Op.gt]: fechaHoy } }
+        })
+    }
+
     async obtener_admin(id) {
         return await Admins.findOne({ where: { id: id } });
     }
@@ -39,27 +47,6 @@ export class GestorAdmins {
         })
     }
 
-    
-    async change_password(id, new_password) {
-        return await Admins.update({
-            password: new_password,
-        }, {
-            where: {id: id}
-        });
-    }
 
-    /**
-     *
-     * @param id Client id
-     * @param new_password New password to be set
-     * @returns {Promise<*>}
-     */
-    async change_password(id, new_password) {
-        return await Admins.update({
-            password: new_password,
-        }, {
-            where: {id: id}
-        });
-    }
 }
 

@@ -26,6 +26,8 @@ import ConfiguracionAdmin from "./components/configuracion_admin/ConfiguracionAd
 import ScrollToTop from "./ScrollToTop";
 import Reportes from "./components/reportes_admin/Reportes";
 import PerfilAdmin from "./components/perfil_admin/PerfilAdmin";
+import ForgotPassword from "./components/cliente_configuracion/ForgotPassword";
+import ResetPassword from "./components/cliente_configuracion/ResetPassword";
 
 function App() {
     return (
@@ -58,6 +60,8 @@ function App() {
                 {/* Rutas básicas */}
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Login />}></Route>
+                <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+                <Route path="/reset-password/:token" element={<ResetPassword />}></Route>
                 <Route path="/registro" element={<Registro />}></Route>
                 <Route path="/inicio" element={<Inicio />}></Route>
             </Routes>

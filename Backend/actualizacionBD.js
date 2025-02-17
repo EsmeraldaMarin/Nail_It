@@ -1,56 +1,95 @@
 import { sequelize } from "./db/database.js";
-async function actualizarServicios() {
+
+async function actualizarClientesYAdmins() {
     try {
-        console.log("Iniciando actualización de la tabla Servicios...");
+        console.log("Iniciando actualización de las tablas Clientes y Admins...");
 
         // Desactivar claves foráneas temporalmente (SQLite)
         await sequelize.query("PRAGMA foreign_keys = OFF;");
 
-        // Crear una tabla temporal con los datos existentes
-        await sequelize.query(`
-            CREATE TABLE Servicios_temp AS SELECT * FROM Servicios;
-        `);
+        // ======================== CLIENTES ========================
+        console.log("Actualizando tabla Clientes...");
+
+        // Crear tabla temporal con los datos actuales
+        await sequelize.query("CREATE TABLE Clientes_temp AS SELECT * FROM Clientes;");
 
         // Eliminar la tabla original
-        await sequelize.query("DROP TABLE Servicios;");
+        await sequelize.query("DROP TABLE Clientes;");
 
         // Crear la nueva tabla con la estructura actualizada
         await sequelize.query(`
-            CREATE TABLE Servicios (
+            CREATE TABLE Clientes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT,
-                precio DOUBLE,
-                duracion INTEGER,
-                esta_activo BOOLEAN DEFAULT 1,
-                id_especialidad INTEGER,
-                FOREIGN KEY (id_especialidad) REFERENCES Especialidades(id)
+                apellido TEXT,
+                numero TEXT,
+                email TEXT,
+                password TEXT,
+                verificado BOOLEAN,
+                cbu TEXT NULL,
+                titular_cuenta TEXT NULL,
+                reset_token TEXT NULL,
+                reset_expiration DATETIME NULL
             );
         `);
 
-        // Rellenar la nueva tabla con los datos existentes desde la tabla temporal
+        // Restaurar los datos desde la tabla temporal
         await sequelize.query(`
-            INSERT INTO Servicios (id, nombre, precio, duracion, id_especialidad)
-            SELECT id, nombre, precio, duracion, id_especialidad FROM Servicios_temp;
-        `);
-
-        // Actualizar los valores de la nueva columna
-        await sequelize.query(`
-            UPDATE Servicios SET esta_activo = 1;
+            INSERT INTO Clientes (id, nombre, apellido, numero, email, password, verificado, cbu, titular_cuenta)
+            SELECT id, nombre, apellido, numero, email, password, verificado, cbu, titular_cuenta FROM Clientes_temp;
         `);
 
         // Eliminar la tabla temporal
-        await sequelize.query("DROP TABLE Servicios_temp;");
+        await sequelize.query("DROP TABLE Clientes_temp;");
+
+        console.log("Tabla Clientes actualizada.");
+
+        // ======================== ADMINS ========================
+        console.log("Actualizando tabla Admins...");
+
+        // Crear tabla temporal con los datos actuales
+        await sequelize.query("CREATE TABLE Admins_temp AS SELECT * FROM Admins;");
+
+        // Eliminar la tabla original
+        await sequelize.query("DROP TABLE Admins;");
+
+        // Crear la nueva tabla con la estructura actualizada
+        await sequelize.query(`
+            CREATE TABLE Admins (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre TEXT,
+                apellido TEXT,
+                numero TEXT,
+                email TEXT,
+                password TEXT,
+                mustChangePassword BOOLEAN,
+                verificado BOOLEAN,
+                reset_token TEXT NULL,
+                reset_expiration DATETIME NULL
+            );
+        `);
+
+        // Restaurar los datos desde la tabla temporal
+        await sequelize.query(`
+            INSERT INTO Admins (id, nombre, apellido, numero, email, password, mustChangePassword, verificado)
+            SELECT id, nombre, apellido, numero, email, password, mustChangePassword, verificado FROM Admins_temp;
+        `);
+
+        // Eliminar la tabla temporal
+        await sequelize.query("DROP TABLE Admins_temp;");
+
+        console.log("Tabla Admins actualizada.");
 
         // Reactivar claves foráneas
         await sequelize.query("PRAGMA foreign_keys = ON;");
 
-        console.log("Tabla Servicios actualizada con éxito.");
+        console.log("✅ Actualización de las tablas finalizada con éxito.");
     } catch (error) {
-        console.error("Error al actualizar la tabla Servicios:", error.message);
+        console.error("❌ Error al actualizar las tablas:", error.message);
     } finally {
         await sequelize.close();
     }
 }
 
-// Llama a la función si quieres ejecutarla directamente
-actualizarServicios();
+// Ejecutar la función
+//actualizarClientesYAdmins();

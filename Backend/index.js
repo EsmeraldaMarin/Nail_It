@@ -24,9 +24,9 @@ import { GestorVariables } from "./controllers/variableGlobal_controller.js";
 import { AdminHorarioEspecialidad } from "./db/adminHorarioEspecialidad_tabla.js";
 import { GestorAdminHorarioEspecialidad } from "./controllers/adminHorarioEspecialidad_controller.js";
 import { routerAdminHorarioEspecialidad } from "./routes/adminHorarioEspecialidad_routes.js";
-import { uploadRouter } from "./routes/upload_routes.js";
 import { GestorDiasLibres } from "./controllers/dias_libres_controller.js";
 import routerDiasLibres from "./routes/dias_libres_routes.js";
+import routerPassword from "./controllers/services/forgot_password.service.js";
 import cron from "node-cron";
 
 const PORT = 5050;
@@ -66,7 +66,6 @@ AdminHorarioEspecialidad.belongsTo(Especialidades, { foreignKey: 'id_especialida
 
 
 // Definición de relaciones entre tablas.
-app.use('uploads/', express.static('uploads'))
 app.use('', routerClientes);
 app.use('/admin', routerAdmins);
 app.use("/especialidad", routerEspecialidades);
@@ -76,12 +75,11 @@ app.use("/verificar", routerVerificar);
 app.use("/estado", routerEstados);
 app.use("/horario", routerAdminHorarioEspecialidad);
 app.use("/variablesGlobales", routerVariablesGlobales);
-app.use("/api", uploadRouter);
+app.use("/auth", routerPassword);
 app.use("/diasLibres", routerDiasLibres);
 
 app.listen(PORT, () =>
     console.log(`Servidor corriendo en http://localhost:${PORT}`));
-
 
 
 cron.schedule('0 0 0 * * *', async () => {

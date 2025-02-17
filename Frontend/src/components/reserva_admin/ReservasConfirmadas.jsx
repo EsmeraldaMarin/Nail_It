@@ -14,6 +14,14 @@ const ReservasConfirmadas = () => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    //mejora: esto es necesario porque el valor de montoSenia por alguna razon se guarda como string y no deberia ser asi
+    function convertirAFloat(valor) {
+        // Reemplazar la coma por un punto y convertir a número
+        if (typeof valor === "string") {
+            return parseFloat(valor.replace(",", "."));
+        }
+        return valor
+    }
 
     useEffect(() => {
         const fetchReservas = async () => {
@@ -123,7 +131,7 @@ const ReservasConfirmadas = () => {
                 <td>{reserva.horaInicio}</td>
                 <td>{formatPrice(reserva.montoTotal)}</td>
                 <td>{formatPrice(reserva.montoSenia)}</td>
-                <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - reserva.montoSenia)}</strong></td>
+                <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - convertirAFloat(reserva.montoSenia))}</strong></td>
                 <td>
                     <span className={"badge rounded-pill " + getBadgeClassByStatus(reserva.estado)}>
                         {reservaEstadoName[reserva.estado]}
