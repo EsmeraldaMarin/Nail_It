@@ -10,7 +10,7 @@ const ConfiguracionAdmin = () => {
         titular_cuenta: "",
         horario_apertura: "",
         horario_cierre: "",
-        importe_seña:"",
+        importe_seña: "",
         cuil: ""
     });
 
@@ -18,6 +18,7 @@ const ConfiguracionAdmin = () => {
     const [showModal, setShowModal] = useState(false);
     const [currentField, setCurrentField] = useState("");
     const [tempValue, setTempValue] = useState("");
+    const [mensajeError, setMensajeError] = useState("")
 
     useEffect(() => {
         const fetchVariablesGlobales = async () => {
@@ -34,6 +35,7 @@ const ConfiguracionAdmin = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        setMensajeError("")
     };
 
     const handleModifyClick = (field) => {
@@ -49,12 +51,30 @@ const ConfiguracionAdmin = () => {
     };
 
     const handleSaveClick = () => {
+        if (currentField === "horario_apertura") {
+            const desde = convertirHoraANumero(formData[currentField]);
+            const hasta = convertirHoraANumero(formData["horario_cierre"]);
+            if (desde > hasta) {
+                setMensajeError("El horario de apertura debe ser anterior al de cierre.")
+                return
+            }
+        } else if (currentField === "horario_cierre") {
+            const desde = convertirHoraANumero(formData["horario_apertura"]);
+            const hasta = convertirHoraANumero(formData[currentField]);
+            if (desde > hasta) {
+                setMensajeError("El horario de apertura debe ser anterior al de cierre.")
+                return
+            }
+        }
         setShowModal(true); // Mostrar el modal al hacer clic en "Guardar"
+    };
+    const convertirHoraANumero = (hora) => {
+        const [horas, minutos] = hora.split(":").map(Number);
+        return horas + minutos / 60;
     };
 
     const handleConfirmSave = async () => {
         try {
-
             const response = await axios.put(`/variablesGlobales/1`, { [currentField]: formData[currentField] });
             setFormData((prev) => ({ ...prev, [currentField]: formData[currentField] }));
             setEditableField(""); // Bloquear edición después de guardar
@@ -73,12 +93,15 @@ const ConfiguracionAdmin = () => {
 
     return (
         <div className="configuracion-ctn">
-            <div className="configuracion-section">
+            <div className={mensajeError.length > 0 ? 'configuracion-section bg-danger bg-opacity-10' : 'configuracion-section'}>
                 <h3>Configuración de Oh My Nails</h3>
-                <p className="text-danger fs-5 fw-bold">
+                {mensajeError.length == 0 ? <p className="text-danger fs-5 fw-bold">
                     <i className="bi bi-exclamation-triangle me-2"></i>
                     Advertencia: Los datos de esta sección son sensibles, revise cuidadosamente antes de realizar un cambio.
-                </p>
+                </p> :
+                    <div class="alert alert-danger fs-5" role="alert">
+                        {mensajeError}
+                    </div>}
                 <form className="">
                     <p className="my-3 fw-bold fs-5">Datos de cuenta bancaria</p>
                     <div className="d-flex flex-wrap mb-3 justify-content-between" >
@@ -160,6 +183,7 @@ const ConfiguracionAdmin = () => {
                             </div>
                         ))}
                     </div>
+
                 </form>
 
             </div>

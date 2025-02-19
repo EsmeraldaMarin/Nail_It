@@ -63,6 +63,14 @@ export class GestorServicios {
             console.error(error);
         }
     }
+    async obtener_servicio_por_nombre_y_id_especialidad(nombre, id_especialidad) {
+        try {
+            return await Servicios.findOne({ where: { nombre, id_especialidad} });
+        } catch (error) {
+            console.error(error);
+            throw new Error("No se pudo obtener el servicio."); 
+        }
+    }
 
     async actualizar_servicio(body, id) {
         return await Servicios.update(body, {

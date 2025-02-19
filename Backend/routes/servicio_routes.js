@@ -50,9 +50,13 @@ routerServicios.post("/", async (req, res) => {
             return res.status(400).json({ message: "id_especialidad de servicio es requerido" });
         }
 
-        const servicio_existente = await gestorServicios.obtener_servicio_por_nombre(req.body.nombre);
+        const servicio_existente = await gestorServicios.obtener_servicio_por_nombre_y_id_especialidad(req.body.nombre, req.body.id_especialidad);
         if (servicio_existente) {
-            return res.status(400).json({ message: "El servicio ya está registrado." });
+            return res.status(409).json({
+                status: 409,
+                error: "Conflict",
+                message: "Ya existe un servicio con este nombre para esa especialidad"
+            });
         }
 
         // Creación de la especialidad. 

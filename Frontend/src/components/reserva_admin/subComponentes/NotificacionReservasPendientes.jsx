@@ -9,12 +9,12 @@ const NotificacacionReservasPendientes = ({ tipoNoti }) => {
         setMensaje("Tienes reservas pendientes de confirmar")
     }
     return (
-        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body">
+        <div className="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-body">
                 {mensaje}
-                <div class="mt-2 pt-2 border-top">
-                    <button type="button" class="btn btn-primary btn-sm">Ir a reservas pendientes</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+                <div className="mt-2 pt-2 border-top">
+                    <button type="button" className="btn btn-primary btn-sm">Ir a reservas pendientes</button>
+                    <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
                 </div>
             </div>
         </div>

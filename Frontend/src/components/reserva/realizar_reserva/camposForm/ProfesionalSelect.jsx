@@ -16,7 +16,7 @@ const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, 
   const buscarReservasEnDiayProfesionalSeleccionado = async (fecha, id_profesional) => {
     try {
       const response = await axios.get(`/reserva?fecha=${fecha}&id_profesional=${id_profesional}`);
-      const horarios_ocupados = response.data.filter(res => res.estado != "cancelada")
+      const horarios_ocupados = response.data.filter(res => res.estado != "cancelada" && res.estado != "por_reembolsar")
       setHorariosOcupados(horarios_ocupados)
     } catch (error) {
       console.error('Error al buscar las reservas', error);

@@ -130,7 +130,11 @@ routerClientes.post("/registro", async (req, res) => {
 
         const clienteARevisar = await gestorClientes.obtener_cliente_por_email(req.body.email);
         if (clienteARevisar) {
-            return res.status(400).json({ message: "El email ya está registrado." })
+            return res.status(409).json({
+                status: 409,
+                error: "Conflict",
+                message: "Ya existe un usuario registrado con ese email"
+            });
         }
 
         const { password } = req.body;

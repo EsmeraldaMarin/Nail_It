@@ -7,6 +7,10 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate(); // Hook para redirigir
     const [errorMessage, setErrorMessage] = useState("");
+    //mensajes al usuario
+    const [mensajeUsuarioExistente, setMensajeUsuarioExistente] = useState('');
+    const [mensajeErrorLongitudPassword, setMnesajeErrorLongitudPassword] = useState('');
+
     const [formData, setFormData] = useState({
         nombre: '',
         apellido: '',
@@ -18,6 +22,7 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
     });
 
     const handleChange = (e) => {
+        setMensajeUsuarioExistente("")
         const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
@@ -34,6 +39,10 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
         if (!nombre || !apellido || !email || !numero || !password || !confirmPassword) {
             setErrorMessage("Todos los campos son obligatorios.");
             return;
+        }
+        if(password.length <8){
+            setMnesajeErrorLongitudPassword("La contraseña debe tener al menos 8 caracteres.")
+            return
         }
 
         // Validación de formato de email
@@ -67,6 +76,10 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
             handleSubmitAdmin(response.data)
             navigate(redirect)
         } catch (error) {
+            if (error.response?.status === 409) {
+                setMensajeUsuarioExistente(error.response?.data.message)
+                setLoading(false);
+            }
             console.error('Error en el registro:', error);
         }
         setFormData({
@@ -87,6 +100,7 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
             <div className="header">Nail It</div>
 
             <form onSubmit={handleSubmit} className="row g-3">
+                {mensajeUsuarioExistente && <p className='text-danger'>{mensajeUsuarioExistente}.</p>}
                 <div className="form-group col-md-6">
                     <label className="form-label">Nombre</label>
                     <input
@@ -118,14 +132,13 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                         className="form-control"
                         value={formData.email}
                         onChange={handleChange}
-                        autoComplete="username"
                         required
                     />
                 </div>
                 <div className="form-group col-md-6">
                     <label className="form-label" >Número de teléfono</label>
                     <input
-                        type="tel"
+                        type="number"
                         name="numero"
                         className="form-control"
                         value={formData.numero}
@@ -142,20 +155,19 @@ const Registro = ({ mensajeBoton = "Registrarme", isAdminParam = false, redirect
                         className="form-control"
                         value={formData.password}
                         onChange={handleChange}
-                        autoComplete="new-password"
                         required
                     />
+                    {mensajeErrorLongitudPassword && <p className='text-danger'>{mensajeErrorLongitudPassword}</p>}
                 </div>
                 <div className="form-group col-md-6">
-                    <label className="form-label" htmlFor="password" >Repetir Contraseña</label>
+                    <label className="form-label" htmlFor="repeatPassword" >Repetir Contraseña</label>
                     <input
-                        id="password"
+                        id="repeatPassword"
                         type="password"
                         name="confirmPassword"
                         className="form-control"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        autoComplete="new-password"
                         required
                     />
                 </div>

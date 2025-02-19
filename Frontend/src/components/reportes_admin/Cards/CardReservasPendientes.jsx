@@ -17,7 +17,7 @@ const CardReporteReservasPendientes = ({ index, cantReservasAConfirmar, cantRese
                     <p className="m-0 fw-bold text-center" style={{ fontSize: "5.3em", transform: 'translatey(-20px)' }}>{cantReservasAConfirmar}</p>
                 </div>
                 <div className="d-flex flex-column justify-content-center">
-                    <span className="text-center">Por Confirmar</span>
+                    <span className="text-center">Por Reembolsar</span>
                     <p className="m-0 fw-bold text-center" style={{ fontSize: "5.3em", transform: 'translatey(-20px)' }}>{cantReservasAReembolsar}</p>
                 </div>
             </div>

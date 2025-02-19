@@ -3,6 +3,7 @@ import './CardInfoReserva.scss';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import axios from '../../../axiosConfig/axiosConfig'
+import { preciosFormatter, preciosFormatterSinMensajes } from '../../componentesDeFormato/PreciosFormatter';
 
 const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReservaData, registrarReserva }) => {
     const { profesional_data, fecha, servicio_data, tipoServicio, horario, precio, monto } = reservaData;
@@ -14,6 +15,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
     const [titular_cuenta, settitular_cuenta] = useState('')
     const [importe_seña, setimporte_seña] = useState('')
     const [subiendoArchivo, setSubiendoArchivo] = useState(false)
+    const [mensajeErrorEnImporte, setMensajeErrorEnImporte] = useState("")
 
     useEffect(() => {
         const fetchVariablesGlobales = async () => {
@@ -50,18 +52,13 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                 return;
             }
             const resourceType = fileType === "application/pdf" ? "raw" : "auto";
-            console.log(resourceType)
             formData.append("resource_type", resourceType);
-            for (const [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
+           
             const response = await fetch("https://api.cloudinary.com/v1_1/dnmfolf5m/upload", {
                 method: "POST",
                 body: formData,
             });
             const data = await response.json();
-            console.log(data)
-            console.log("Archivo subido a Cloudinary:", data.secure_url);
 
             setReservaData({
                 ...reservaData,
@@ -92,21 +89,31 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
-    function convertirAFloat(valor) {
-        // Reemplazar la coma por un punto y convertir a número
-        return parseFloat(valor.replace(",", "."));
-    }
+
     const handleGuardarMontoSenia = () => {
         const input = document.getElementById("montoSenia");
-        const inputValue = convertirAFloat(input.value);
-        if (inputValue < importe_seña || inputValue > reservaData.servicio_data.precio) {
+        //primero valida que no sea negativo, ni que tenga problema con comas o puntos
+        const importeConFormato = preciosFormatter(input.value, setMensajeErrorEnImporte)
+        if (!importeConFormato) {
             input.classList.add("danger")
             return
         }
+        //luego valida que se encuentre dentro del rango permitido de precios
+        if (importeConFormato < preciosFormatterSinMensajes(importe_seña)) {
+            input.classList.add("danger")
+            setMensajeErrorEnImporte("El importe ingresado es menor a la seña mínima permitida")
+            return
+        } else if (importeConFormato > reservaData.servicio_data.precio) {
+            input.classList.add("danger")
+            setMensajeErrorEnImporte("El importe ingresado es mayor al precio del servicio")
+            return
+        }
         input.classList.remove("danger")
-        setReservaData({ ...reservaData, montoSenia: inputValue });
+        setMensajeErrorEnImporte("")
+        setReservaData({ ...reservaData, montoSenia: importeConFormato });
         setElegirOtroImporte(false);
     };
+
     const formatPrice = (price) => {
         if (typeof price === "string") {
             price = parseFloat(price.replace(",", "."));
@@ -153,8 +160,11 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                 <div style={{ height: "100px" }}>
                     {
                         elegirOtroImporte ?
-                            <div className='text-end'>
-                                <label htmlFor="montoSenia">Ingrese el importe que desea transferir:</label>
+                            <div className='text-end position-relative'>
+
+                                {mensajeErrorEnImporte ? <p className="fs-5 text-danger">{mensajeErrorEnImporte}</p> :
+                                    <label htmlFor="montoSenia">Ingrese el importe que desea transferir:</label>
+                                }
                                 <div className="input-group mb-1 d-flex align-items-center" style={{ paddingLeft: "20%" }}>
                                     <span className="input-group-text">$</span>
                                     <input type="text" defaultValue={reservaData.montoSenia} className="form-control fw-bold" id="montoSenia" aria-label="Amount (to the nearest dollar)" />
@@ -255,7 +265,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                         <div className="form-group col-md-6">
                             <label className="form-label" >Número de teléfono</label>
                             <input
-                                type="tel"
+                                type="number"
                                 name="telefono_cliente"
                                 className="form-control"
                                 value={reservaData.userId.telefono_cliente}

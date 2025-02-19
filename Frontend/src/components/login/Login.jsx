@@ -116,7 +116,7 @@ const Login = () => {
                     />
 
                 </div>
-                <div className="form-group col-md-6 form-check">
+                <div className="ms-3 form-group col-md-6 form-check">
                     <label className="form-check-label" htmlFor="gridCheck1">Soy admin</label>
                     <input
                         className="form-check-input"

@@ -50,13 +50,22 @@ const ReservasConfirmadas = () => {
     const reservasEstilista = reservas.filter(
         reserva => reserva.id_profesional === userId // &&
         // isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
-    );
-
-    //const reservasConfirmadas = reservas.filter(
-    //    reserva =>
-    //        reserva.estado === "confirmada" &&
-    //        isSameDay(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000), hoy)
-    //);
+    ).sort((a, b) => {
+        const estadosFinales = ["realizada", "no_realizada"];
+    
+        // Si "a" es una reserva finalizada y "b" no, mover "a" al final (retorna 1)
+        if (estadosFinales.includes(a.estado) && !estadosFinales.includes(b.estado)) {
+            return 1;
+        }
+    
+        // Si "b" es una reserva finalizada y "a" no, mover "b" al final (retorna -1)
+        if (!estadosFinales.includes(a.estado) && estadosFinales.includes(b.estado)) {
+            return -1;
+        }
+    
+        // Si ambos tienen el mismo estado, mantener el orden
+        return 0;
+    });
 
     const handleAction = async () => {
         const { action, id } = modal;
@@ -87,7 +96,7 @@ const ReservasConfirmadas = () => {
             badgeClass += "text-danger border border-danger";
         }
         else if (status == "no_realizada") {
-            badgeClass += "text-warning border border-warning";
+            badgeClass += "text-danger border border-danger";
         }
         else {
             badgeClass += "text-primary border border-primary";
@@ -108,7 +117,7 @@ const ReservasConfirmadas = () => {
 
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
-            <tr key={index}>
+            <tr key={index} className={["realizada", "no_realizada"].includes(reserva.estado) && "table-active realizadas"}>
                 <td className="text-capitalize text-wrap" style={{ minWidth: "170px", maxWidth: "170px" }}>{reserva.Servicio.nombre}</td>
                 <td className="text-capitalize text-wrap" style={{ minWidth: "170px", maxWidth: "170px" }}>
                     {reserva.Cliente

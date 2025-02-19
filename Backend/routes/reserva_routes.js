@@ -136,7 +136,6 @@ routerReservas.post("/", async (req, res) => {
 
         // Crear la reserva
         const nuevaReserva = await gestorReservas.crear_reserva(reservaData);
-        console.log(nuevaReserva)
         res.status(201).json(nuevaReserva);
     } catch (error) {
         res.status(400).json({ error: error.message });

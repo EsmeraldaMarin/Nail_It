@@ -38,7 +38,7 @@ function EstilistaModal({
                                 </div>
                                 <div>
                                     <label htmlFor="">Telefono:</label>
-                                    <input type="tel" disabled={modoConsulta} value={estilistaData.numero} onChange={(e) => setEstilistaData({ ...estilistaData, numero: e.target.value })} />
+                                    <input type="number" disabled={modoConsulta} value={estilistaData.numero} onChange={(e) => setEstilistaData({ ...estilistaData, numero: e.target.value })} />
                                 </div>
                             </div>
                         )}

@@ -23,6 +23,7 @@ const Historial_turnos = () => {
     useEffect(() => {
         fetchReservas();
     }, []);
+
     const fetchReservas = async () => {
         try {
             const response = await axios.get(`/reserva/user/${userId}`);
@@ -62,10 +63,9 @@ const Historial_turnos = () => {
                 });
             }
 
-
-            if (result.status === 200) {
+            if (result) {
                 const response = await axios.get(`/reserva/user/${userId}`);
-                setReservas(response.data);
+                fetchReservas();
                 setShowModal(false);
                 setReservaParaCancelar(null);
             }
@@ -128,14 +128,15 @@ const Historial_turnos = () => {
         return diferenciaHoras;
     };
     const validateCBUOrAlias = (value) => {
-        if (/^\d{22}$/.test(value)) {
-            return true;
-        }
-        if (/^[a-zA-Z0-9]{6,20}$/.test(value) && !/^\d+$/.test(value)) {
-            return true;
-        }
-        return false;
-    }
+        if (!value) return false; // Evita valores null, undefined o vacíos
+        value = value.trim(); // Elimina espacios innecesarios
+    
+        const esCBU = /^\d{22}$/.test(value);
+        const esAlias = /^(?!.*\.\.)(?!^\.)[a-zA-Z0-9.]{6,20}(?<!\.)$/.test(value);
+    
+        return esCBU || esAlias;
+    };
+    
     const obtenerClasesCard = (estado) => {
         switch (estado) {
             case 'cancelada':

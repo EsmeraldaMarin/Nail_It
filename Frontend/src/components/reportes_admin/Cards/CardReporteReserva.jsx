@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const CardReporteReserva = ({ index, cantidadReservas, tipoReserva, handleClickVerLista, handleChangePeriodo }) => {
+const CardReporteReserva = ({ index, porcentaje, cantidadReservas, tipoReserva, handleClickVerLista, handleChangePeriodo }) => {
     return (
         <div className="card-reporte-reserva mb-3">
             <h4 className="text-capitalize d-flex justify-content-between">Total reservas {tipoReserva.replace("_", " ")}s
@@ -9,29 +9,28 @@ const CardReporteReserva = ({ index, cantidadReservas, tipoReserva, handleClickV
                 </i>
             </h4>
 
-            <div className="d-flex ctn-input-periodo">
+            {/*<div className="d-flex ctn-input-periodo">
                 <input type="radio" className="btn-check" name="options-base" id={index + "dia"} autoComplete="off" onChange={handleChangePeriodo} />
                 <label className="py-0 px-3 btn btn-primary" htmlFor={index + "dia"}>Día</label>
                 <input type="radio" className="btn-check" name="options-base" id={index + "semana"} autoComplete="off" onChange={handleChangePeriodo} />
                 <label className="py-0 px-3 mx-2 btn btn-secondary" htmlFor={index + "semana"}>Semana</label>
                 <input type="radio" className="btn-check" name="options-base" id={index + "mes"} autoComplete="off" onChange={handleChangePeriodo} />
                 <label className="py-0 px-3 me-2 btn btn-secondary" htmlFor={index + "mes"}>Mes</label>
-                {/*<button className="btn-seleccionar-periodo" onClick={handleChangePeriodo}>Seleccionar Período</button>*/}
-            </div>
-
+                /*<button className="btn-seleccionar-periodo" onClick={handleChangePeriodo}>Seleccionar Período</button>
+            </div>*/}
             <div className="d-flex flex-column justify-content-center mt-3">
                 <div className="periodo d-flex justify-content-center align-items-center">
-                    <button className="btn-directions btn btn-secondary mx-2">{'<'}</button>
+                   {/* <button className="btn-directions btn btn-secondary mx-2">{'<'}</button>
                     <span className="fs-5">30/01/2025</span>
-                    <button className="btn-directions btn btn-secondary mx-2">{'>'}</button>
+                    <button className="btn-directions btn btn-secondary mx-2">{'>'}</button>*/}
                 </div>
                 <p className="m-0 fw-bold text-center" style={{ fontSize: "5em", transform: 'translatey(-20px)' }}>{cantidadReservas}</p>
             </div>
-            <div className="d-flex align-items-end justify-content-between " style={{ transform: 'translateY(-45px)' }}>
-                <button className="btn-ver-lista" onClick={() => handleClickVerLista(tipoReserva)}>Ver Lista</button>
-                <i ></i>
+            <div className="d-flex align-items-end justify-content-between " style={{ transform: 'translateY(-15px)' }}>
+                <i className="me-2">Representan un <strong className="fs-5">{porcentaje}%</strong> de las reservas totales</i>
+                <button className="btn-ver-lista d-flex flex-nowrap text-nowrap" onClick={() => handleClickVerLista(tipoReserva)}>Ver Lista <i className="ms-2 bi bi-card-list"></i></button>
             </div>
-        </div>
+        </div >
     )
 };
 

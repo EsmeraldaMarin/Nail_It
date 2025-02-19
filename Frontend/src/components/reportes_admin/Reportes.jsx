@@ -13,6 +13,7 @@ const Reportes = () => {
     const [especialidades, setEspecialidades] = useState([])
     const [servicios, setServicios] = useState([])
     const [operadoras, setOperadoras] = useState([])
+    const [cantidadTotalReservas, setCantidadTotalReservas] = useState([])
     const [reservasPendientes, setReservasPendientes] = useState([])
     const [reservasPorReembolsar, setReservasPorReembolsar] = useState([])
     const [reservasCanceladas, setReservasCanceladas] = useState([])
@@ -29,6 +30,7 @@ const Reportes = () => {
                 const serviciosResponse = await axios.get('/servicio');
                 const operadorasResponse = await axios.get('/admin');
                 const todasLasReservas = await axios.get('/reserva');
+                setCantidadTotalReservas(todasLasReservas.data.length);
                 setReservasPendientes(todasLasReservas.data.filter(reserva => reserva.estado === "pendiente"))
                 setReservasPorReembolsar(todasLasReservas.data.filter(reserva => reserva.estado === "por_reembolsar"))
                 setReservasCanceladas(todasLasReservas.data.filter(reserva => reserva.estado === "cancelada"))
@@ -105,9 +107,9 @@ const Reportes = () => {
         <div className="reportes">
             <div className="cards-ctn d-flex flex-wrap justify-content-evenly">
                 <CardReporteReservasPendientes index={'1'} cantReservasAConfirmar={reservasPendientes.length} cantReservasAReembolsar={reservasPorReembolsar.length} />
-                <CardReporteReserva index={'2'} cantidadReservas={reservasRealizada.length} tipoReserva={'realizada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
-                <CardReporteReserva index={'3'} cantidadReservas={reservasNoRealizada.length} tipoReserva={'no_realizada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
-                <CardReporteReserva index={'4'} cantidadReservas={reservasCanceladas.length} tipoReserva={'cancelada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
+                <CardReporteReserva index={'2'} porcentaje={Math.trunc((reservasRealizada.length / cantidadTotalReservas)*100)} cantidadReservas={reservasRealizada.length} tipoReserva={'realizada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
+                <CardReporteReserva index={'3'} porcentaje={Math.trunc((reservasNoRealizada.length / cantidadTotalReservas)*100)} cantidadReservas={reservasNoRealizada.length} tipoReserva={'no_realizada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
+                <CardReporteReserva index={'4'} porcentaje={Math.trunc((reservasCanceladas.length / cantidadTotalReservas)*100)} cantidadReservas={reservasCanceladas.length} tipoReserva={'cancelada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
             </div>
             <div className="table-ctn">
                 {(operadoras && !modoVerLista) && <CardsVariasCtn

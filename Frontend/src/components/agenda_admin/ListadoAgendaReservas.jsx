@@ -32,14 +32,21 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
             maximumFractionDigits: 2,
         }).format(price);
     };
-
-    const reservasEstilista = reservas.filter(reserva => reserva.id_profesional === userId);
+    const reservasEstilista = reservas.filter(reserva => {
+        //mejora: esta funcionalidad se aplica en varios lugares porqeu me toma una fecha anteriror a la que deberia ser
+        const fechaReserva = new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); // Ajustar a medianoche para comparar solo la fecha
+        return fechaReserva >= hoy && reserva.id_profesional === userId;
+    });
 
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index}>
+                <td className="text-capitalize table-active">{formatearFecha(reserva.fecha)}</td>
+                <td className='table-active'>{reserva.horaInicio}</td>
                 <td className="text-capitalize">{reserva.Servicio.nombre}</td>
-                <td className="text-capitalize text-wrap" width={"11em"}>
+                <td className="text-capitalize" width={"11em"}>
                     {reserva.Cliente
                         ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
                         : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`}
@@ -56,8 +63,7 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
                     </a>
                     <span className='display-on-hover'>{reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}</span>
                 </td>
-                <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
-                <td>{reserva.horaInicio}</td>
+            
                 <td className='text-end'>{formatPrice(reserva.montoTotal)}</td>
                 <td className='text-end'>{formatPrice(reserva.montoSenia)}</td>
                 <td className="fs-5 text-end"><strong>{formatPrice((reserva.montoTotal) - convertirAFloat(reserva.montoSenia))}</strong></td>
@@ -75,11 +81,11 @@ const ListadoAgendaReservas = ({ reservas, handleCancelarReserva }) => {
                 <table className="table ">
                     <thead className="table-primary">
                         <tr>
+                            <th scope="col">Fecha Turno</th>
+                            <th scope="col">Hora Turno</th>
                             <th scope="col">Servicio</th>
                             <th scope="col">Cliente</th>
                             <th scope="col">Teléfono</th>
-                            <th scope="col">Fecha Turno</th>
-                            <th scope="col">Hora Turno</th>
                             <th scope="col" className='text-end'>Precio servicio</th>
                             <th scope="col" className='text-end'>Importe abonado</th>
                             <th scope="col" className='text-end'>Importe a cobrar</th>

@@ -33,13 +33,15 @@ export default function Vacaciones() {
             setMensaje("Ambas fechas son requeridas.");
             return;
         }
-
+        if(new Date(fechaDesde) > new Date(fechaHasta)){
+            setMensaje("La fecha de fin no puede ser anterior que la fecha de inicio")
+            return
+        }
 
         if (!idAdmin) {
             setMensaje("No estás autenticado.");
             return;
         }
-
         try {
             const datos = {
                 id_admin: idAdmin,  // Usar el id_admin desde el localStorage
@@ -51,7 +53,6 @@ export default function Vacaciones() {
             const response = await axios.post("/diasLibres", datos);
 
             if (response.status === 201) {
-                //console.log(datos);
                 setMensaje("Días libres guardados correctamente.");
                 const fetchData = await axios.get(`/diasLibres?id_admin=${idAdmin}`);
                 setDiasLibres(fetchData.data);
@@ -88,7 +89,10 @@ export default function Vacaciones() {
                         type="date"
                         className="form-control"
                         value={fechaDesde}
-                        onChange={(e) => setFechaDesde(e.target.value)}
+                        onChange={(e) => {
+                            setFechaDesde(e.target.value)
+                            setMensaje("")
+                        }}
                         required
                     />
                     <label>Fecha hasta:</label>
@@ -96,13 +100,16 @@ export default function Vacaciones() {
                         type="date"
                         className="form-control"
                         value={fechaHasta}
-                        onChange={(e) => setFechaHasta(e.target.value)}
+                        onChange={(e) => {
+                            setFechaHasta(e.target.value)
+                            setMensaje("")
+                        }}
                         required
                     />
                     <button type="submit" className="btn btn-success mt-3">Confirmar</button>
                 </form>
 
-                {mensaje && <div className="mt-3">{mensaje}</div>}
+                {mensaje && <div className="mt-3 fs-5 text-bg-secondary py-1 px-3">{mensaje}</div>}
             </div>
             {/* Tabla de días libres */}
             <h4 className="mt-4">Días libres registrados:</h4>

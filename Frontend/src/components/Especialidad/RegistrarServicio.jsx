@@ -1,56 +1,64 @@
 
 import React, { useState, useEffect } from 'react';
-import {useForm} from 'react-hook-form' 
-import axios from '../../axiosConfig/axiosConfig';
+import { useForm } from 'react-hook-form';
+import { preciosFormatter } from '../componentesDeFormato/PreciosFormatter';
 
-
-
-export default function RegistrarServicio({onGuardar, onCancelar, item, actualizado,  registrarEsp, especialidades}){
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm({values: item})
-
-    
-
+export default function RegistrarServicio({ mensajeServicioExistente, onGuardar, onCancelar, item, actualizado, registrarEsp, especialidades }) {
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({ values: item })
+    const [mensajeErrorEnImporte, setMensajeErrorEnImporte] = useState("")
+    console.log(mensajeServicioExistente)
     useEffect(() => {
-        
-                if (item && item.id_especialidad) {
-                    setValue('id_especialidad', item.id_especialidad);
-                }
-            } );
 
+        if (item && item.id_especialidad) {
+            setValue('id_especialidad', item.id_especialidad);
+        }
+    });
 
     const onSubmit = (data) => {
+        const importeConFormato = preciosFormatter(data.precio, setMensajeErrorEnImporte);
+        //si no cumple con el formato no debe permitir seguir con la operacion
+        if (!importeConFormato) return
+
+        //se modifica el precio ingresado por teclado por el precio con formato adecuado 5555.5
+        data.precio = importeConFormato;
+
         if (item.id)
-            actualizado(item.id,data) 
+            actualizado(item.id, data)
         else
             onGuardar(data)
     }
     const especialidades2 = especialidades
 
-
-
-
-
-    
-    return(
+    return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h5>{item.id !==undefined?'Actualizar Datos del servicio': 'Nuevo servicio'}</h5>
+                <h5>{item.id !== undefined ? 'Actualizar Datos del servicio' : 'Nuevo servicio'}</h5>
                 <div className="form-group">
                     <label htmlFor="nombre">Nombre del servicio</label>
                     <input type="text" className="form-control" id="nombre" placeholder="Ingrese Nombre del servicio"
-                    {...register('nombre', {required: 'Campo obligatorio'})} />
+                        {...register('nombre', { required: 'Campo obligatorio' })} />
+                    {mensajeServicioExistente && <p className='text-danger'>{mensajeServicioExistente}</p>}
                     {errors.nombre && <span className="text-danger">{errors.nombre.message}</span>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="precio">Precio del servicio</label>
                     <textarea type="number" className="form-control" id="precio" placeholder="Ingrese el precio (sin $)"
-                    {...register('precio', {required: 'Campo obligatorio'})} />
+                        {...register('precio', { required: 'Campo obligatorio' })} />
+                    {mensajeErrorEnImporte && <p className='text-danger'>{mensajeErrorEnImporte}</p>}
                     {errors.precio && <span className="text-danger">{errors.precio.message}</span>}
                 </div>
                 <div className="form-group">
-                    <label htmlFor="duracion">Duracion del servicio (en minutos) </label>
-                    <textarea type="number" className="form-control" id="duracion" placeholder="Ingrese la duracion (en min)"
-                    {...register('duracion', {required: 'Campo obligatorio'})} />
+                    <label htmlFor="duracion">Duración del servicio (en minutos)</label>
+                    <textarea
+                        type="number"
+                        className="form-control"
+                        id="duracion"
+                        placeholder="Ingrese la duración (en min)"
+                        {...register('duracion', {
+                            required: 'Campo obligatorio',
+                            min: { value: 1, message: 'La duración debe ser mayor a 0' }
+                        })}
+                    />
                     {errors.duracion && <span className="text-danger">{errors.duracion.message}</span>}
                 </div>
                 {/* Campo desplegable para especialidades */}
@@ -79,9 +87,10 @@ export default function RegistrarServicio({onGuardar, onCancelar, item, actualiz
                 )}
                 <div className="form-group mt-3">
                     <button type="submit" className="btn btn-primary mx-1">Guardar</button>
-                    <button type="button" onClick={onCancelar}  className="btn btn-secondary mx-1"> Cancelar</button>
+                    <button type="button" onClick={onCancelar} className="btn btn-secondary mx-1"> Cancelar</button>
                 </div>
             </form>
         </>
-        
-    )}
+
+    )
+}

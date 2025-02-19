@@ -19,10 +19,10 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar,
     const tbody = servicios.map((servicio) => (
         <tr key={servicio.id}>
             <td>{servicio.nombre}</td>
+            <td>{servicio.Especialidad.nombre}</td>
             <td>{formatPrice(servicio.precio)}</td>
             <td>{servicio.duracion} minutos</td>
-            <td>{servicio.Especialidad.nombre}</td>
-            <td style={{ maxWidth: "180px" }} >
+            <td style={{ width: "fit-content" }} >
                 <button className="btn btn-sm btn-primary" onClick={() => { onActualizar(servicio) }}>
                     Actualizar
                 </button>
@@ -51,9 +51,9 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar,
                         <thead style={{ position: "sticky", top: "0", boxShadow: "0 0 5px 0 #bbb" }}>
                             <tr>
                                 <th scope="col">Servicio</th>
+                                <th scope="col">Especialidad</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Duración</th>
-                                <th scope="col">Especialidad</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>

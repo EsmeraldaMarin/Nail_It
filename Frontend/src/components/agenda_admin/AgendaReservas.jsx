@@ -12,7 +12,7 @@ import ListadoAgendaReservas from './ListadoAgendaReservas';
 
 const AgendaReservas = () => {
     const [reservas, setReservas] = useState([]);
-    const [reservas2, setReservas2] = useState([]);
+    const [reservasParaListado, setReservasParaListado] = useState([]);
     const [modalReserva, setModalReserva] = useState(null);
 
     // Necesario para enviar por wpp notificacion a cliente---------------
@@ -70,7 +70,7 @@ const AgendaReservas = () => {
                         };
                     });
                 setReservas(eventos);
-                setReservas2(response.data.filter((res) => res.id_profesional == userId && res.estado === "confirmada"))
+                setReservasParaListado(response.data.filter((res) => res.id_profesional == userId && res.estado === "confirmada"))
             })
             .catch((error) => {
                 console.error("Error al cargar reservas:", error);
@@ -103,7 +103,7 @@ const AgendaReservas = () => {
                 extendedProps: { id: reserva.id, estado: reserva.estado }
             }));
         setReservas(eventosActualizados);
-        setReservas2(eventosActualizados);
+        setReservasParaListado(nuevaLista.data.filter((res) => res.id_profesional == userId && res.estado === "confirmada"));
         setModalReserva(null);
         setShowModal(true);
     }
@@ -207,7 +207,7 @@ const AgendaReservas = () => {
                 </div>
             )}
 
-            <ListadoAgendaReservas reservas={reservas2} handleCancelarReserva={handleCancelarReserva}></ListadoAgendaReservas>
+            <ListadoAgendaReservas reservas={reservasParaListado} handleCancelarReserva={handleCancelarReserva}></ListadoAgendaReservas>
 
             <ModalEnviarMensaje
                 showModal={showModal}

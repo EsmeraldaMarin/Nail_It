@@ -23,6 +23,9 @@ const Servicio = () => {
     const [botonIzqModal, setBotonIzqModal] = useState("")
     const [botonDerModal, setBotonDerModal] = useState("")
 
+    //mensajes al usuario
+    const [mensajeServicioExistente, setMensajeServicioExistente] = useState('')
+
     useEffect(() => {
         const fetchServicios = async () => {
             try {
@@ -77,8 +80,8 @@ const Servicio = () => {
             const hayReservaDeEseServicio = response.data.some(r => r.Servicio.id === item.id)
 
             if (hayReservaDeEseServicio) {
-                setTituloModal("Servicio desactivado");
-                setCuerpoModal(`El servicio de ${item.nombre.toUpperCase()} se encuentra desactivado pero aún hay reservas activas de ese servicio.`);
+                setTituloModal("Cuidado: Aún hay reservas activas");
+                setCuerpoModal(`El servicio de ${item.nombre} se encuentra desactivado pero aún hay reservas activas de ese servicio.`);
                 setBotonIzqModal("");
                 setBotonDerModal("Entendido");
                 setShowModalNoSePuedeEliminarServicio(true);
@@ -94,18 +97,24 @@ const Servicio = () => {
     }
 
     const onGuardar = async (data) => {
-        const result = await axios.post(`/servicio`, {
-            nombre: data.nombre,
-            precio: parseFloat(data.precio), // Convertir a número
-            duracion: parseInt(data.duracion, 10), // Convertir a número
-            id_especialidad: parseInt(data.id_especialidad, 10)
-        });
-        if (result) {
-            const response = await axios.get('/servicio');
-            setServicios(response.data);
-            setAction('C')
-
+        try {
+            const result = await axios.post(`/servicio`, {
+                nombre: data.nombre,
+                precio: parseFloat(data.precio), // Convertir a número
+                duracion: parseInt(data.duracion, 10), // Convertir a número
+                id_especialidad: parseInt(data.id_especialidad, 10)
+            });
+            if (result) {
+                const response = await axios.get('/servicio');
+                setServicios(response.data);
+                setAction('C')
+            }
+        } catch (error) {
+            if (error.response?.status === 409) {
+                setMensajeServicioExistente(error.response?.data.message)
+            }
         }
+
     }
 
     const onGuardarEsp = async (data) => {
@@ -148,7 +157,7 @@ const Servicio = () => {
     return (
         <>
             {action === 'C' && <ConsultaServicios servicios={servicios} onNewClick={onNewClick} onActualizar={onActualizar} onToggleActivo={onToggleActivo}></ConsultaServicios>}
-            {action !== 'C' && <RegistrarServicio onGuardar={onGuardar} onCancelar={onCancelar} item={item} actualizado={actualizado} onGuardarEsp={onGuardarEsp} registrarEsp={registrarEsp} especialidades={especialidades} />}
+            {action !== 'C' && <RegistrarServicio mensajeServicioExistente={mensajeServicioExistente} onGuardar={onGuardar} onCancelar={onCancelar} item={item} actualizado={actualizado} onGuardarEsp={onGuardarEsp} registrarEsp={registrarEsp} especialidades={especialidades} />}
             {showModalConfirmarOperacion &&
                 <ModalServicio
                     showModal={showModalConfirmarOperacion}

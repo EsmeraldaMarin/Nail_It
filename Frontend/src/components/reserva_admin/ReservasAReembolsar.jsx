@@ -9,7 +9,6 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
         reserva => reserva.estado === "por_reembolsar" && reserva.id_profesional === userId
 
     );
-    console.log(reservasReembolso)
 
     const [selectedReserva, setSelectedReserva] = useState(null)
     const [showModal, setShowModal] = useState(false);
@@ -79,8 +78,8 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         </td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
-                                        <td><input class="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readonly style={{cursor:"text"}} /></td>
-                                        <td><input class="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readonly style={{cursor:"text"}} /></td>
+                                        <td><input className="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readOnly style={{cursor:"text"}} /></td>
+                                        <td><input className="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readOnly style={{cursor:"text"}} /></td>
                                         <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
                                         <td className='visualizar-btn'>
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />

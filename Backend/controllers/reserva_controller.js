@@ -103,7 +103,7 @@ export class GestorReservas {
                 Por favor, revisa tu panel para confirmar.`;
 
             // Enviar la notificación de WhatsApp
-            // await enviarNotificacion(estilista.numero, mensaje);
+            await enviarNotificacion(estilista.numero, mensaje);
 
             return reserva; // Devuelve la reserva creada
         } catch (error) {
