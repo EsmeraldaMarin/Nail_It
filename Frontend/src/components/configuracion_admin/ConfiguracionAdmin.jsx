@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ConfiguracionAdmin.scss";
 import axios from '../../axiosConfig/axiosConfig';
+import { preciosFormatter } from "../componentesDeFormato/PreciosFormatter";
 
 const ConfiguracionAdmin = () => {
     const [formData, setFormData] = useState({
@@ -65,6 +66,9 @@ const ConfiguracionAdmin = () => {
                 setMensajeError("El horario de apertura debe ser anterior al de cierre.")
                 return
             }
+        } else if (currentField === "importe_seña") {
+            const cumpleFormato = preciosFormatter(formData[currentField], setMensajeError)
+            if (!cumpleFormato) return
         }
         setShowModal(true); // Mostrar el modal al hacer clic en "Guardar"
     };
