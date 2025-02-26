@@ -138,10 +138,10 @@ const ReservasConfirmadas = () => {
                 </td>
                 <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                 <td>{reserva.horaInicio}</td>
-                <td>{formatPrice(reserva.montoTotal)}</td>
-                <td>{formatPrice(reserva.montoSenia)}</td>
-                <td className="fs-5"><strong>{formatPrice(reserva.montoTotal - convertirAFloat(reserva.montoSenia))}</strong></td>
-                <td>
+                <td className='text-end'>{formatPrice(reserva.montoTotal)}</td>
+                <td className='text-end'>{formatPrice(reserva.montoSenia)}</td>
+                <td className="fs-5 text-end"><strong>{formatPrice(reserva.montoTotal - convertirAFloat(reserva.montoSenia))}</strong></td>
+                <td className='text-end'>
                     <span className={"badge rounded-pill " + getBadgeClassByStatus(reserva.estado)}>
                         {reservaEstadoName[reserva.estado]}
                     </span>
@@ -193,10 +193,10 @@ const ReservasConfirmadas = () => {
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
-                            <th scope="col">Precio servicio</th>
-                            <th scope="col">Importe abonado</th>
-                            <th scope="col">Importe a cobrar</th>
-                            <th scope="col">Estado</th>
+                            <th scope="col" className='text-end'>Precio servicio</th>
+                            <th scope="col" className='text-end'>Importe abonado</th>
+                            <th scope="col" className='text-end'>Importe a cobrar</th>
+                            <th scope="col" className='text-end'>Estado</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>

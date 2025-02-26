@@ -35,7 +35,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
-            minimumFractionDigits: 2, 
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         }).format(price);
     };
@@ -54,8 +54,8 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                 <th scope="col">Hora Turno</th>
                                 <th scope="col">CBU o Alias</th>
                                 <th scope="col">Titular de la cuenta</th>
-                                <th scope="col" >A reembolsar</th>
-                                <th scope="col" >Comprobante</th>
+                                <th scope="col" className='text-end' >A reembolsar</th>
+                                <th scope="col" className='text-end'>Comprobante</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -78,10 +78,10 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         </td>
                                         <td className="text-capitalize">{formatearFecha(reserva.fecha)}</td>
                                         <td>{reserva.horaInicio}</td>
-                                        <td><input className="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readOnly style={{cursor:"text"}} /></td>
-                                        <td><input className="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readOnly style={{cursor:"text"}} /></td>
-                                        <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                        <td className='visualizar-btn'>
+                                        <td><input className="form-control" type="text" value={reserva.Cliente?.cbu || "-"} aria-label="readonly input example" disabled readOnly style={{ cursor: "text" }} /></td>
+                                        <td><input className="form-control" type="text" value={reserva.Cliente?.titular_cuenta || "-"} aria-label="readonly input example" disabled readOnly style={{ cursor: "text" }} /></td>
+                                        <td className='text-end'><strong>{formatPrice(reserva.montoSenia)}</strong></td>
+                                        <td className='visualizar-btn text-end'>
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
                                                 : <a
                                                     className='fs-6'

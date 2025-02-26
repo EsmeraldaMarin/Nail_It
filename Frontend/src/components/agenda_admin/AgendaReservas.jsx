@@ -86,7 +86,7 @@ const AgendaReservas = () => {
             estado: "por_reembolsar"
         });;
         setMensajeACliente(`*Hola, ${response.data.Cliente ? response.data.Cliente.nombre : response.data.nombre_cliente}!*\n\n` +
-            `Tu reserva a una sesión de *${response.data.Servicio.nombre}* el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs* ha sido CANCELADA.\n` +
+            `Tu reserva a una sesión de *${response.data.Servicio.nombre}* el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs* ha sido *cancelada*.\n` +
             `Tu seña será devuelta, por favor confirma tu alias o CBU y el nombre del titular de la cuenta.\n\n` +
             `Muchas Gracias!,\n\n` +
             `- _Oh My Nails_`

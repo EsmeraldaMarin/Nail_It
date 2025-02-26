@@ -52,7 +52,7 @@ const ReservasPendientes = () => {
                     estado: "confirmada"
                 });;
                 setMensajeACliente(`*Hola, ${response.data.Cliente ? response.data.Cliente.nombre : response.data.nombre_cliente}!*\n\n` +
-                    `Tu reserva a una sesión de *${response.data.Servicio.nombre}* ha sido *confirmada* exitosamente.\n` +
+                    `Tu reserva a una sesión de *${response.data.Servicio.nombre}* ha sido *confirmada*.\n` +
                     `Te esperamos en nuestro local el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs*.\n` +
                     `¡Muchas gracias!\n\n` +
                     `- _Oh My Nails_`
@@ -69,7 +69,7 @@ const ReservasPendientes = () => {
                     estado: "por_reembolsar"
                 });;
                 setMensajeACliente(`*Hola, ${response.data.Cliente ? response.data.Cliente.nombre : response.data.nombre_cliente}!*\n\n` +
-                    `Tu reserva a una sesión de *${response.data.Servicio.nombre}* el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs* ha sido CANCELADA.\n` +
+                    `Tu reserva a una sesión de *${response.data.Servicio.nombre}* el *${formatearFecha(response.data.fecha)}* a las *${response.data.horaInicio}hs* ha sido *cancelada*.\n` +
                     `Tu seña será devuelta, por favor confirma tu alias o CBU y el nombre del titular de la cuenta.\n\n` +
                     `Muchas Gracias!,\n\n` +
                     `- _Oh My Nails_`
@@ -117,7 +117,7 @@ const ReservasPendientes = () => {
         });
         if (result) {
             setMensajeACliente(`*Hola, ${reservaData.Cliente ? reservaData.Cliente.nombre : reservaData.nombre_cliente}!*\n\n` +
-                `Tu seña de *${formatPrice(reservaData.montoSenia)}* correspondiente a la reserva de una sesión de ${reservaData.Servicio.nombre} te ha sido *devuelta* exitosamente.\n` +
+                `Tu seña de *${formatPrice(reservaData.montoSenia)}* correspondiente a la reserva de una sesión de ${reservaData.Servicio.nombre} te ha sido *devuelta*.\n` +
                 `Por favor revisa en tu cuenta y comunícate con nosotras ante cualquier inconveniente.`+
                     `¡Te esperamos la próxima!\n\n` +
                 `- _Oh My Nails_`
@@ -155,8 +155,8 @@ const ReservasPendientes = () => {
                                 <th scope="col">Fecha Turno</th>
                                 <th scope="col">Hora Turno</th>
                                 <th scope="col">Servicio</th>
-                                <th scope="col">Importe abonado</th>
-                                <th scope="col">Comprobante</th>
+                                <th scope="col" className='text-end'>Importe abonado</th>
+                                <th scope="col" className='text-center'>Comprobante</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -180,9 +180,9 @@ const ReservasPendientes = () => {
                                         </td>
                                         <td className="text-capitalize" style={{ width: "7em" }}>{formatearFecha(reserva.fecha)}</td>
                                         <td style={{ width: "7em" }}>{reserva.horaInicio}</td>
-                                        <td className="text-wrap" style={{ width: "15rem" }}>{reserva.Servicio.nombre}</td>
-                                        <td><strong>{formatPrice(reserva.montoSenia)}</strong></td>
-                                        <td className="visualizar-btn">
+                                        <td className="text-wrap" style={{ width: "8rem" }}>{reserva.Servicio.nombre}</td>
+                                        <td className='text-end' style={{ width: "12rem" }}><strong>{formatPrice(reserva.montoSenia)}</strong></td>
+                                        <td className="visualizar-btn text-center">
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
                                                 : <a
                                                     className='fs-6'
