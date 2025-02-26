@@ -42,14 +42,32 @@ export default function RegistrarServicio({ mensajeServicioExistente, onGuardar,
                 </div>
                 <div className="form-group">
                     <label htmlFor="precio">Precio del servicio</label>
-                    <textarea type="number" className="form-control" id="precio" placeholder="Ingrese el precio (sin $)"
-                        {...register('precio', { required: 'Campo obligatorio' })} />
-                    {mensajeErrorEnImporte && <p className='text-danger'>{mensajeErrorEnImporte}</p>}
+                    <div className="input-group">
+                        <span className="input-group-text">$</span>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="precio"
+                            placeholder="Ingrese el precio (sin $)"
+                            {...register("precio", {
+                                required: "Campo obligatorio",
+                                pattern: {
+                                    value: /^[0-9]+$/, // Solo números enteros
+                                    message: "El precio no debe tener decimales",
+                                },
+                                validate: (value) =>
+                                    Number.isInteger(Number(value)) || "El precio debe ser un número entero",
+                            })}
+                        />
+                        <span className="input-group-text">,00</span>
+                    </div>
+                    {mensajeErrorEnImporte && <p className="text-danger">{mensajeErrorEnImporte}</p>}
                     {errors.precio && <span className="text-danger">{errors.precio.message}</span>}
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="duracion">Duración del servicio (en minutos)</label>
-                    <textarea
+                    <input
                         type="number"
                         className="form-control"
                         id="duracion"

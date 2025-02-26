@@ -5,7 +5,7 @@ import { Especialidades } from "./especialidad_tabla.js";
 export const Servicios = sequelize.define('Servicios', {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     nombre: { type: DataTypes.STRING },
-    precio: { type: DataTypes.DOUBLE },
+    precio: { type: DataTypes.DECIMAL(10,2) },
     duracion: { type: DataTypes.INTEGER },
     esta_activo: { type: DataTypes.BOOLEAN, defaultValue: true }, 
     id_especialidad: {

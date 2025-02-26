@@ -5,6 +5,7 @@ import './Consulta.scss'
 
 export default function ConsultaServicios({ servicios, onNewClick, onActualizar, onToggleActivo }) {
     const formatPrice = (price) => {
+        console.log(price)
         if (typeof price === "string") {
             price = parseFloat(price.replace(",", "."));
         }
