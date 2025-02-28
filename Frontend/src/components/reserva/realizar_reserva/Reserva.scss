@@ -2,16 +2,7 @@
     padding: 30px;
     box-shadow: 0 0 5px #aaa;
     border-radius: 30px;
-    >div{
-        @media (min-width: 920px) {
-            font-size: 1.2em;
-        }
-        select, input, button{
-            @media (min-width: 920px) {
-                font-size: 1em;
-            }
-        }
-    }
+    
     @media (min-width: 920px) {
         width: 50vw;
         margin: 0 auto;
@@ -102,5 +93,8 @@
     font-weight: bold;
     border: 0;
     width: 100%;
+    &:hover{
+        background-color: #fe9e67;
+    }
 }
 

@@ -4,55 +4,56 @@ import axios from '../../../../axiosConfig/axiosConfig';
 
 const ProfesionalSelect = ({ fecha, profesional, profesionales, setProfesional, setHorariosOcupados }) => {
 
-
   function convertToISO(dateString) {
-    // Crear un objeto Date con la fecha en formato yyyy-MM-dd
     const date = new Date(`${dateString}T00:00:00Z`);
-
-    // Convertir la fecha al formato ISO 8601
     return date.toISOString();
   }
 
   const buscarReservasEnDiayProfesionalSeleccionado = async (fecha, id_profesional) => {
+    if (!fecha || !id_profesional) return;  // Evita llamadas innecesarias
+
     try {
       const response = await axios.get(`/reserva?fecha=${fecha}&id_profesional=${id_profesional}`);
-      const horarios_ocupados = response.data.filter(res => res.estado != "cancelada" && res.estado != "por_reembolsar")
-      setHorariosOcupados(horarios_ocupados)
+      const horarios_ocupados = response.data.filter(res => res.estado !== "cancelada" && res.estado !== "por_reembolsar");
+      setHorariosOcupados(horarios_ocupados);
     } catch (error) {
       console.error('Error al buscar las reservas', error);
     }
   };
 
-  const handleChange = (e) => {
-    setProfesional(e.target.value)
+  useEffect(() => {
+    if (fecha && profesional) {
+      const currentDate = convertToISO(fecha).split('T')[0];
+      buscarReservasEnDiayProfesionalSeleccionado(currentDate, profesional);
+    }
+  }, [fecha, profesional]);  // Se ejecuta cuando cambia la fecha o el profesional
 
-    fecha = convertToISO(fecha);
-    const currentDate = (fecha).split('T')[0];
-
-    buscarReservasEnDiayProfesionalSeleccionado(currentDate, e.target.value);
-  }
   return (
     <div className="mb-3 col" style={{ minWidth: "200px" }}>
       <label>Operadora</label>
 
-      {profesionales.length == 0 && fecha ?
+      {profesionales.length === 0 && fecha ? (
         <div className='mt-2'>
           <span className='text-danger'>
             <i className="bi bi-exclamation-diamond me-2"></i>
-            No hay operadoras para esa fecha</span>
-
+            No hay operadoras para esa fecha
+          </span>
         </div>
-        :
-        <select disabled={fecha ? false : true} value={profesional} onChange={(e) => handleChange(e)} className="form-select">
+      ) : (
+        <select
+          disabled={!fecha}
+          value={profesional}
+          onChange={(e) => setProfesional(e.target.value)}
+          className="form-select"
+        >
           <option value="">Seleccione una operadora</option>
           {profesionales?.map((pro, index) => (
             <option key={index} value={pro.id}>
               {pro.nombre}
             </option>
-          ))
-          }
+          ))}
         </select>
-      }
+      )}
     </div>
   );
 };

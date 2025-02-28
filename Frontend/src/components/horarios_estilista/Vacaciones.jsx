@@ -9,6 +9,9 @@ export default function Vacaciones() {
     const [diasLibres, setDiasLibres] = useState([]);
 
     const idAdmin = localStorage.getItem('userId');
+    const convertirAFechaLocal = (fecha) => {
+        return new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+    }
 
     useEffect(() => {
         const fetchDiasLibres = async () => {
@@ -28,27 +31,26 @@ export default function Vacaciones() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         if (!fechaDesde || !fechaHasta) {
             setMensaje("Ambas fechas son requeridas.");
             return;
         }
-        if(new Date(fechaDesde) > new Date(fechaHasta)){
+        if (convertirAFechaLocal(fechaDesde) > convertirAFechaLocal(fechaHasta)) {
             setMensaje("La fecha de fin no puede ser anterior que la fecha de inicio")
             return
         }
-
+        
         if (!idAdmin) {
             setMensaje("No estás autenticado.");
             return;
         }
         try {
             const datos = {
-                id_admin: idAdmin,  // Usar el id_admin desde el localStorage
-                fecha_desde: fechaDesde,
-                fecha_hasta: fechaHasta,
+                id_admin: idAdmin,
+                fecha_desde: new Date(fechaDesde).getTime(),
+                fecha_hasta: new Date(fechaHasta).getTime(),
             };
-
+            
             // Realizar la solicitud POST al backend para guardar los días libres
             const response = await axios.post("/diasLibres", datos);
 

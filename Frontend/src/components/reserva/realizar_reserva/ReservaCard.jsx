@@ -19,6 +19,26 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const [fechaInput, setFechaInput] = useState(fecha); // Para mantener la fecha temporalmente
   const [horariosOcupados, setHorariosOcupados] = useState([]);
 
+  const convertirAFechaLocal = (fecha) => {
+    return new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+  }
+
+  const estaDeVacacionesEnLaFechaSeleccionada = (diasLibres) => {
+    console.log(diasLibres)
+    if (diasLibres.length === 0) return false;
+
+    // Convertir la fecha seleccionada a un objeto Date
+    const fechaSeleccionadaDate = new Date(fecha).toLocaleDateString("es-ES", { timeZone: "UTC" });
+
+    return diasLibres.some(vacaciones => {
+      // Convertir las fechas desde y hasta eliminando la hora
+      const fechaDesde = new Date(vacaciones.fecha_desde).toLocaleDateString("es-ES", { timeZone: "UTC" })
+      const fechaHasta = new Date(vacaciones.fecha_hasta).toLocaleDateString("es-ES", { timeZone: "UTC" })
+
+      return fechaSeleccionadaDate >= fechaDesde && fechaSeleccionadaDate <= fechaHasta;
+    });
+  };
+
   useEffect(() => {
     const fetchTiposServicio = async () => {
       try {
@@ -61,35 +81,53 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
     fetchServicios()
   }, [reservaData]);
 
+
+  //Solo guarda las operadoras que no tengan vacaciones en la fecha seleccionada
   useEffect(() => {
-    const fetchProfesionales = async () => {
+    const fetchData = async () => {
       try {
-        // Resetea el estado
         setProfesionales([]);
 
+        if (!fecha || !reservaData.horarios_disponibles) return;
+
         // Obtener IDs únicos de los profesionales
-        const profesionalesUnicos = [...new Set(reservaData.horarios_disponibles?.map(horario => horario.id_profesional))];
+        const profesionalesUnicos = [...new Set(reservaData.horarios_disponibles.map(horario => horario.id_profesional))];
 
-        // Crear un array de promesas con las llamadas a la API
-        const promesas = profesionalesUnicos.map(id_profesional => axios.get(`/admin/${id_profesional}`));
+        // Crear un array de promesas para obtener los días libres de cada profesional
+        const promesasDiasLibres = profesionalesUnicos.map(id_profesional =>
+          axios.get(`/diasLibres?id_admin=${id_profesional}`).then(response => ({
+            id_profesional,
+            diasLibres: response.data
+          }))
+        );
 
-        // Esperar a que todas las promesas se resuelvan
-        const resultados = await Promise.all(promesas);
+        // Resolver todas las promesas
+        const diasLibresData = await Promise.all(promesasDiasLibres);
+        console.log(diasLibresData)
+        // Filtrar solo los profesionales que NO tienen la fecha seleccionada como libre
+        const profesionalesDisponibles = diasLibresData
+          .filter(({ diasLibres }) => !estaDeVacacionesEnLaFechaSeleccionada(diasLibres))
+          .map(({ id_profesional }) => id_profesional);
 
-        // Extraer los datos de la respuesta
-        const profesionales = resultados.map(response => response.data);
+        // Obtener datos de los profesionales filtrados
+        const promesasProfesionales = profesionalesDisponibles.map(id_profesional =>
+          axios.get(`/admin/${id_profesional}`)
+        );
 
-        // Actualizar el estado con los profesionales
-        setProfesionales(profesionales);
+        const resultadosProfesionales = await Promise.all(promesasProfesionales);
+        const profesionalesFinales = resultadosProfesionales.map(response => response.data);
+
+        // Actualizar el estado con los profesionales disponibles
+        setProfesionales(profesionalesFinales);
+
       } catch (error) {
-        console.error('Error al obtener los profesionales', error);
+        console.error("Error al obtener los datos", error);
       }
     };
 
-    if (reservaData.horarios_disponibles) {
-      fetchProfesionales();
-    }
-  }, [reservaData.horarios_disponibles]);
+    fetchData();
+  }, [fecha, reservaData.horarios_disponibles]);
+
 
 
   // Manejo de cambios en selects, para hacer la busqueda secuencial

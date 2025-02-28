@@ -27,13 +27,13 @@ const ForgotPassword = () => {
             <h2>Recuperar Contraseña</h2>
             <form className="row g-3 mt-3" onSubmit={handleSubmit}>
                 <div className='m-0 p-0'>
-                    <label htmlFor="inputEmail4" className="form-label fs-4">Ingrese su email</label>
-                    <input type="email" className="form-control fs-4" id="inputEmail4" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <label htmlFor="inputEmail4" className="form-label">Ingrese su email</label>
+                    <input type="email" className="form-control" id="inputEmail4" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
-                <button type="submit" className='btn btn-primary fs-4' disabled={estilos==="bg-secondary"}>Enviar</button>
+                <button type="submit" className='btn btn-primary' disabled={estilos==="bg-secondary"}>Enviar</button>
             </form>
-            {message && <p className={`p-3 text-white mt-4 fs-5 ${estilos}`}>{message}</p>}
-            <Link to="/login" className="mt-3 fs-5">Volver al login</Link>
+            {message && <p className={`p-3 text-white mt-4 ${estilos}`}>{message}</p>}
+            <Link to="/login" className="mt-3">Volver al login</Link>
         </div>
     );
 };
