@@ -19,10 +19,6 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
   const [fechaInput, setFechaInput] = useState(fecha); // Para mantener la fecha temporalmente
   const [horariosOcupados, setHorariosOcupados] = useState([]);
 
-  const convertirAFechaLocal = (fecha) => {
-    return new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
-  }
-
   const estaDeVacacionesEnLaFechaSeleccionada = (diasLibres) => {
     console.log(diasLibres)
     if (diasLibres.length === 0) return false;

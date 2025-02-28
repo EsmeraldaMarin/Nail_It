@@ -37,10 +37,13 @@ function App() {
 
                 {/* Ruta para el cliente con rutas anidadas */}
                 <Route path="/inicio/*" element={<RutaProtegida><ClienteLayout /></RutaProtegida>}>
-                    <Route path="" element={<Inicio />} />
-                    <Route path="realizar_reserva" element={<ReservaContext />}></Route>
                     <Route path="configuracion_cuenta" element={<AccountInfo />} />
                     <Route path="mis_reservas" element={<Historial_turnos />}></Route>
+                </Route>
+                {/* Ruta para el cliente con rutas anidadas */}
+                <Route path="/inicio/*" element={<NoLoginLayout />}>
+                    <Route path="" element={<Inicio />} />
+                    <Route path="realizar_reserva" element={<ReservaContext />}></Route>
                 </Route>
 
                 {/* Ruta para el admin con rutas anidadas */}
@@ -54,16 +57,16 @@ function App() {
                     <Route path="configuracion" element={<ConfiguracionAdmin />}></Route>
                     <Route path="reportes" element={<Reportes></Reportes>}></Route>
                     <Route path="agenda" element={<AgendaReservas />}></Route>
-                    <Route path="perfil" element={<PerfilAdmin/>}></Route>
+                    <Route path="perfil" element={<PerfilAdmin />}></Route>
                 </Route>
 
                 {/* Rutas básicas */}
-                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/" element={<Navigate to="/inicio" />} />
+                <Route path="*" element={<Navigate to="/inicio" />} />
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/forgot-password" element={<ForgotPassword />}></Route>
                 <Route path="/reset-password/:token" element={<ResetPassword />}></Route>
                 <Route path="/registro" element={<Registro />}></Route>
-                <Route path="/inicio" element={<Inicio />}></Route>
             </Routes>
         </div>
     );
@@ -77,6 +80,18 @@ const ClienteLayout = () => {
                 <Route path="/" element={<Inicio />} />
                 <Route path="/configuracion_cuenta" element={<AccountInfo />} />
                 <Route path="/mis_reservas" element={<Historial_turnos />}></Route>
+                <Route path="/realizar_reserva" element={<ReservaContext />}></Route>
+            </Routes>
+            <Footer></Footer>
+        </>
+    );
+};
+const NoLoginLayout = () => {
+    return (
+        <>
+            <Header></Header>
+            <Routes>
+                <Route path="/" element={<Inicio />} />
                 <Route path="/realizar_reserva" element={<ReservaContext />}></Route>
             </Routes>
             <Footer></Footer>

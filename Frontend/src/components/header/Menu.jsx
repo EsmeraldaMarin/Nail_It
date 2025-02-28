@@ -3,7 +3,9 @@ import { Link, NavLink } from 'react-router-dom';
 import Logout from '../login/Logout';
 
 const Menu = () => {
-    const closeOffcanvas = () => {
+
+    const isLogged = localStorage.getItem("auth")
+    /*const closeOffcanvas = () => {
         // Encontrar el offcanvas activo y cerrarlo
         const offcanvasElement = document.getElementById('offcanvasNavbar');
         const bsOffcanvas = window.bootstrap.Offcanvas.getInstance(offcanvasElement);
@@ -19,7 +21,7 @@ const Menu = () => {
             backdrop.remove(); // Elimina el fondo oscuro (si sigue presente)
         }
     };
-
+*/
     return (
         <nav className="navbar navbar-expand-lg fixed-top">
             <div className="container-fluid">
@@ -35,29 +37,44 @@ const Menu = () => {
                     <div className="offcanvas-body menu">
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li className="nav-item">
-                                <NavLink end to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
+                                <NavLink end to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')}>
                                     <i className="bi bi-house"></i> Inicio
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink to="/inicio/realizar_reserva" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
+                                <NavLink to="/inicio/realizar_reserva" className={({ isActive }) => (isActive ? 'active' : '')}>
                                     <i className="bi bi-bag"></i> Realizar reserva
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink to="/inicio/mis_reservas" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
-                                    <i className="bi bi-journal-bookmark"></i> Mis Reservas
-                                </NavLink>
-                            </li>
-                            
-                            <li className="nav-item">
-                                <NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeOffcanvas}>
-                                    <i className="bi bi-person"></i> Mi Cuenta
-                                </NavLink>
-                            </li>
-                            <li className="nav-item logout">
-                                <Logout />
-                            </li>
+
+                            {isLogged &&
+                                <li className="nav-item">
+                                    <NavLink to="/inicio/mis_reservas" className={({ isActive }) => (isActive ? 'active' : '')}>
+                                        <i className="bi bi-journal-bookmark"></i> Mis Reservas
+                                    </NavLink>
+                                </li>
+                            }
+
+                            {isLogged &&
+                                <li className="nav-item">
+                                    <NavLink to="/inicio/configuracion_cuenta" className={({ isActive }) => (isActive ? 'active' : '')}>
+                                        <i className="bi bi-person"></i> Mi Cuenta
+                                    </NavLink>
+                                </li>
+
+                            }
+                            {isLogged &&
+                                <li className="nav-item logout">
+                                    <Logout />
+                                </li>
+                            }
+                            {!isLogged &&
+                                <li className="nav-item">
+                                    <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
+                                        <i className="bi bi-person"></i> Iniciar Sesión
+                                    </NavLink>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ const RutaProtegida = ({ children }) => {
   // Verificar si hay un usuario autenticado
   const isAuthenticated = localStorage.getItem('auth');
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/inicio/" />;
 };
 
 export default RutaProtegida;
