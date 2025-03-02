@@ -26,15 +26,13 @@
             border-radius: 30px;
             min-width: 370px;
             max-width: 370px;
-            max-height: 260px;
+            max-height: 290px;
             @media screen and (max-width: 920px) {
                 min-width: 320px;
                 max-width: 320px;
-                p {
-                    font-size: 4em !important ;
-                    transform: translateY(-10px) !important;
-                }
+                max-height: 350px;
             }
+
             .info-sobre-reservas {
                 position: relative;
                 span {
@@ -60,6 +58,9 @@
                 label {
                     height: fit-content;
                 }
+            }
+            .cantidad-number{
+                margin-top: -35px;
             }
         }
     }
@@ -99,6 +100,7 @@
                     background-color: #050095 !important;
                     color: #fff !important;
                 }
+                
             }
             .card-concurrencia,
             .card-servicios {
@@ -110,6 +112,7 @@
                     width: 100%;
                 }
             }
+            
         }
     }
 

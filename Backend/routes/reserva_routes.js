@@ -6,14 +6,18 @@ import { Reservas } from '../db/reserva_tabla.js';
 export const routerReservas = Router();
 
 routerReservas.get("/", async (req, res) => {
-    const fecha = req.query.fecha;
-    const id_profesional = req.query.id_profesional;
-    const estado = req.query.estado;
-    const datos = await gestorReservas.obtener_reservas(fecha, id_profesional, estado);
-    if (datos) {
+    const { fecha, fecha_desde, fecha_hasta, id_profesional, estado } = req.query;
+
+    try {
+        const datos = await gestorReservas.obtener_reservas(fecha, fecha_desde, fecha_hasta, id_profesional, estado);
+        console.log("-----------")
+        if (fecha_desde) { console.log(datos) }
+        console.log("-----------")
+
         res.status(200).json(datos);
-    } else {
-        res.status(500).json("Error!");
+    } catch (error) {
+        console.error("Error al obtener reservas:", error);
+        res.status(500).json({ error: "Error al obtener las reservas" });
     }
 });
 

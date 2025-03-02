@@ -4,60 +4,63 @@ import { Reservas } from "../db/reserva_tabla.js";
 import { Servicios } from "../db/servicio_tabla.js";
 import { Especialidades } from "../db/especialidad_tabla.js";
 import enviarNotificacion from "../whatsapp.js";
-import {Op} from "sequelize";
-import {sequelize} from "../db/database.js";
+import { Op } from "sequelize";
+import { sequelize } from "../db/database.js";
 
 export class GestorReservas {
-    async obtener_reservas(fecha, id_profesional, estado) {
+
+    async obtener_reservas(fecha, fechaDesde, fechaHasta, id_profesional, estado) {
+        console.log("-----------")
+        console.log(fechaDesde, fechaHasta)
+        console.log("-----------")
         let condicion = [];
 
-        // FIX WHERE FECHA
-        fecha && condicion.push({
-            [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),
-        });
-        id_profesional && condicion.push({ id_profesional: `${id_profesional}` })
-        estado && condicion.push({ estado: `${estado}` })
+        // 🔹 Filtro por fecha exacta (si se proporciona)
+        if (fecha) {
+            condicion.push({
+                [Op.and]: sequelize.where(sequelize.fn("date", sequelize.col("fecha")), "=", fecha),
+            });
+        }
+
+        // 🔹 Filtro por rango de fechas (si se proporciona)
+        if (fechaDesde && fechaHasta) {
+            condicion.push({
+                [Op.and]: [
+                    sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), '>=', fechaDesde),
+                    sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), '<=', fechaHasta)
+                ]
+            });
+        }
+        
+        if (id_profesional) {
+            condicion.push({ id_profesional });
+        }
+
+        if (estado) {
+            condicion.push({ estado });
+        }
 
         try {
             return await Reservas.findAll({
-                where: condicion,
+                where: condicion.length > 0 ? { [Op.and]: condicion } : {},
                 order: [
-                    ['fecha', 'ASC'],      // Ordenar primero por fecha de manera ASCendente
-                    ['horaInicio', 'ASC']  // Ordenar luego por hora de inicio de manera ASCendente
+                    ["fecha", "ASC"],      // Ordenar por fecha ASC
+                    ["horaInicio", "ASC"], // Ordenar por hora de inicio ASC
                 ],
                 include: [
+                    { model: Clientes },
                     {
-                        model: Clientes,   // Incluir el cliente
+                        model: Servicios,
+                        include: [{ model: Especialidades, as: "Especialidad" }],
                     },
-                    {
-                        model: Servicios,  // Incluir el servicio
-                        include: [{
-                            model: Especialidades,
-                            as: "Especialidad"  // Incluir la especialidad dentro del servicio
-                        }]
-                    },
-                    {
-                        model: Admins,     // Incluir el profesional
-                    }
+                    { model: Admins }
                 ],
             });
-
         } catch (error) {
-            console.error('Error en obtener_reservas:', error);
-            throw error; // Lanzar el error para manejarlo en la ruta
+            console.error("Error en obtener_reservas:", error);
+            throw error;
         }
     }
-    /*
-        async crear_reserva(req_body) {
-            try {
-                return await Reservas.create(req_body);
-                
-            } catch (error) {
-                console.error('Error en crear_reserva:', error);
-                throw error; // Lanzar el error para manejarlo en la ruta
-            }
-        }
-    */
     // Función para crear una reserva y enviar la notificación
     async crear_reserva(req_body) {
         try {
@@ -73,7 +76,7 @@ export class GestorReservas {
             // Obtener los datos del cliente, reserva desde estilista
             let clienteNombre = req_body.nombre_cliente;
             let clienteApellido = req_body.apellido_cliente;
-            
+
             // Obtener los datos del cliente, reserva desde cliente
             if (req_body.id_cliente) {
                 const cliente = await Clientes.findByPk(req_body.id_cliente);
@@ -215,7 +218,7 @@ export class GestorReservas {
     async cancelar_reservas_pendientes_del_dia(fecha) {
         console.log("Cancelando reservas del día " + fecha);
 
-        const reservas =  await Reservas.findAll({
+        const reservas = await Reservas.findAll({
             where: {
                 estado: 'pendiente',
                 [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),
@@ -230,7 +233,7 @@ export class GestorReservas {
 
         await Reservas.update({
             estado: 'cancelada'
-        },{
+        }, {
             where: {
                 estado: 'pendiente',
                 [Op.and]: sequelize.where(sequelize.fn('date', sequelize.col('fecha')), '=', fecha),

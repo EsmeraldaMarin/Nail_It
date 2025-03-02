@@ -3,7 +3,6 @@ import '../Reportes.scss'
 import CardIngresosGenerados from "./CardIngresosGenerados";
 import CardConcurrencia from "./CardConcurrencia";
 import CardServicios from "./CardServicios";
-import CardIngresosChart from "./CardIngresosChart";
 import axios from '../../../axiosConfig/axiosConfig'
 
 const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {

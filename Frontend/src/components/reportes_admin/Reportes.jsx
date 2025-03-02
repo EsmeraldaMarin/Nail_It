@@ -22,6 +22,7 @@ const Reportes = () => {
     const [modoVerLista, setModoVerLista] = useState(false)
     const [columnasTabla, setColumnasTabla] = useState([])
     const [dataTabla, setDataTabla] = useState([])
+    const [rangoAMostrarLista, setRangoAMostrarLista] = useState("")
 
     useEffect(() => {
         const fetchDatos = async () => {
@@ -51,10 +52,23 @@ const Reportes = () => {
         return format(fechaLocal, 'dd/MM/yy', { locale: es });
     };
 
-    const fetchReservasConFiltro = async (tipoReserva) => {
-        const response = await axios.get(`/reserva?estado=${tipoReserva}`)
-        return response.data
+    const formatearFechaSinHorasParaDB = (fecha) => {
+        const fechaUTC = new Date(fecha).toISOString().replace("T", " ").replace("Z", " +00:00");
+        let fechaSplit = fechaUTC.split(" ");
+        //se considera solo la fecha sin la hora
+        return fechaSplit[0];
+    };
+
+    const fetchByPeriodoYEstado = async (startDate, endDate, tipoReserva) => {
+        const reservasPorPeriodoYestado = await axios.get(`/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=${tipoReserva}`);
+        return reservasPorPeriodoYestado.data
     }
+    const fetchByPeriodo = async (startDate, endDate) => {
+        const reservasPendientes = await axios.get(`/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=cancelada`);
+        const reservasPorReembolsar = await axios.get(`/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=por_reembolsar`);
+        return [reservasPendientes.data, reservasPorReembolsar.data]
+    }
+
     const formatPrice = (price) => {
         if (typeof price === "string") {
             price = parseFloat(price.replace(",", "."));
@@ -67,7 +81,7 @@ const Reportes = () => {
         }).format(price);
     };
 
-    const handleClickVerLista = async (tipoReserva) => {
+    const handleClickVerLista = async (tipoReserva, rangoAMostrar) => {
         setColumnasTabla([
             { accessorKey: "numero", header: "N°", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "nombre", header: "Nombre Cliente", enableSorting: true, enableColumnFilter: true },
@@ -81,7 +95,12 @@ const Reportes = () => {
             { accessorKey: "montoTotal", header: "Importe Total", enableSorting: true, enableColumnFilter: true },
             { accessorKey: "estado", header: "Estado", enableSorting: false, enableColumnFilter: false },
         ])
-        let dataObtenida = await fetchReservasConFiltro(tipoReserva);
+        //let dataObtenida = await fetchReservasConFiltro(tipoReserva);
+        let dataObtenida;
+        if (tipoReserva === "realizada") { dataObtenida = reservasRealizada }
+        if (tipoReserva === "no_realizada") { dataObtenida = reservasNoRealizada }
+        if (tipoReserva === "cancelada") { dataObtenida = reservasCanceladas }
+        if (tipoReserva === "pendiente") { dataObtenida = [...reservasPendientes, ...reservasPorReembolsar] }
 
         //esto cambia el formato en el que se trae la info del back lista para insertar en la tabla
         dataObtenida = dataObtenida.map((r, index) => (
@@ -99,17 +118,55 @@ const Reportes = () => {
                 estado: (r.estado).replace("_", " ")
             }
         ))
+        setRangoAMostrarLista(rangoAMostrar)
         setDataTabla(dataObtenida)
         setModoVerLista(tipoReserva)
+    }
+
+    const handleChangePeriodo = async (startDate, endDate, tipoReserva) => {
+        let filteredReservas;
+        if (tipoReserva === "pendiente") {
+            //esto se hace porque si el tipo de reserva es pendiente, a la base de datos se deben buscar reservas cuyo estado sea pendiente O por reembolsar.
+            filteredReservas = await fetchByPeriodo(startDate, endDate);
+        } else {
+            filteredReservas = await fetchByPeriodoYEstado(startDate, endDate, tipoReserva);
+        }
+        if (tipoReserva === "realizada") { setReservasRealizada(filteredReservas) }
+        if (tipoReserva === "no_realizada") { setReservasNoRealizada(filteredReservas) }
+        if (tipoReserva === "cancelada") { setReservasCanceladas(filteredReservas) }
+        if (tipoReserva === "pendiente") {
+            setReservasPendientes(filteredReservas[0])
+            setReservasPorReembolsar(filteredReservas[1])
+        }
     }
 
     return (
         <div className="reportes">
             <div className="cards-ctn d-flex flex-wrap justify-content-evenly">
-                <CardReporteReservasPendientes index={'1'} cantReservasAConfirmar={reservasPendientes.length} cantReservasAReembolsar={reservasPorReembolsar.length} />
-                <CardReporteReserva index={'2'} porcentaje={Math.trunc((reservasRealizada.length / cantidadTotalReservas)*100)} cantidadReservas={reservasRealizada.length} tipoReserva={'realizada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
-                <CardReporteReserva index={'3'} porcentaje={Math.trunc((reservasNoRealizada.length / cantidadTotalReservas)*100)} cantidadReservas={reservasNoRealizada.length} tipoReserva={'no_realizada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
-                <CardReporteReserva index={'4'} porcentaje={Math.trunc((reservasCanceladas.length / cantidadTotalReservas)*100)} cantidadReservas={reservasCanceladas.length} tipoReserva={'cancelada'} handleClickVerLista={handleClickVerLista} handleChangePeriodo={() => { }} />
+                <CardReporteReservasPendientes index={'1'}
+                    cantReservasAConfirmar={reservasPendientes.length}
+                    cantReservasAReembolsar={reservasPorReembolsar.length}
+                    tipoReserva={'pendiente'}
+                    handleClickVerLista={handleClickVerLista}
+                    handleChangePeriodo={handleChangePeriodo} />
+                <CardReporteReserva index={'2'}
+                    porcentaje={Math.trunc((reservasRealizada.length / cantidadTotalReservas) * 100)}
+                    cantidadReservas={reservasRealizada.length}
+                    tipoReserva={'realizada'}
+                    handleClickVerLista={handleClickVerLista}
+                    handleChangePeriodo={handleChangePeriodo} />
+                <CardReporteReserva index={'3'}
+                    porcentaje={Math.trunc((reservasNoRealizada.length / cantidadTotalReservas) * 100)}
+                    cantidadReservas={reservasNoRealizada.length}
+                    tipoReserva={'no_realizada'}
+                    handleClickVerLista={handleClickVerLista}
+                    handleChangePeriodo={handleChangePeriodo} />
+                <CardReporteReserva index={'4'}
+                    porcentaje={Math.trunc((reservasCanceladas.length / cantidadTotalReservas) * 100)}
+                    cantidadReservas={reservasCanceladas.length}
+                    tipoReserva={'cancelada'}
+                    handleClickVerLista={handleClickVerLista}
+                    handleChangePeriodo={handleChangePeriodo} />
             </div>
             <div className="table-ctn">
                 {(operadoras && !modoVerLista) && <CardsVariasCtn
@@ -117,8 +174,8 @@ const Reportes = () => {
                     servicios={servicios}
                     operadoras={operadoras}></CardsVariasCtn>}
                 {modoVerLista &&
-                    <div className="d-flex justify-content-between">
-                        <p className="text-capitalize fw-bold fs-4">Reservas {modoVerLista.replace("_", " ")}s</p>
+                    <div className="d-flex justify-content-between align-items-center px-4">
+                        <div className="text-capitalize fw-bold fs-4 d-flex ">Reservas {modoVerLista.replace("_", " ")}s <span className="mx-2"></span>{rangoAMostrarLista && rangoAMostrarLista}</div>
                         <button className="btn btn-secondary p-2" style={{ height: "fit-content" }} onClick={() => setModoVerLista(false)} >Cerrar</button>
                     </div>
                 }
