@@ -10,6 +10,7 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
     const [datosConcurrenciaMensual, setDatosConcurrenciaMensual] = useState([])
     const [demandaServicios, setDemandaServicios] = useState([])
     const [ingresosTotales, setIngresosTotales] = useState('')
+    const [cantidadDeServicios, setCantidadDeServicios] = useState('')
     const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState('');
     const [reservas, setReservas] = useState([]);
     const [servicioSeleccionado, setServicioSeleccionado] = useState('');
@@ -49,6 +50,7 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
             );
             const total = reservasFiltradas.reduce((acc, reserva) => acc + reserva.montoTotal, 0);
             setIngresosTotales(total);
+            setCantidadDeServicios(reservasFiltradas.length)
         };
 
         calcularIngresos();
@@ -100,15 +102,13 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
         <div className="cardsVarias-ctn">
             <CardIngresosGenerados
                 ingresosTotales={ingresosTotales}
+                cantidadDeServicios={cantidadDeServicios}
                 handleChangeEspecialidad={(e) => setEspecialidadSeleccionada(e.target.value)}
                 handleChangeServicio={(e) => setServicioSeleccionado(e.target.value)}
                 handleChangeOperadora={(e) => setOperadoraSeleccionada(e.target.value)}
                 especialidades={especialidades}
                 servicios={servicios}
                 operadoras={operadoras}
-                especialidadSeleccionada={especialidadSeleccionada}
-                servicioSeleccionado={servicioSeleccionado}
-                operadoraSeleccionada={operadoraSeleccionada}
                 handleChangePeriodo={fetchRealizadasByPeriodo}
             ></CardIngresosGenerados>
             <CardConcurrencia data={datosConcurrencia} dataMeses={datosConcurrenciaMensual}></CardConcurrencia>

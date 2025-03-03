@@ -8,11 +8,11 @@ import "react-date-range/dist/theme/default.css";
 
 const CardIngresosGenerados = (
     { ingresosTotales,
+        cantidadDeServicios,
         handleChangeEspecialidad,
         handleChangeServicio,
         handleChangeOperadora,
         servicios, especialidades, operadoras,
-        servicioSeleccionado, especialidadSeleccionada, operadoraSeleccionada,
         handleChangePeriodo }) => {
 
     const [showCalendar, setShowCalendar] = useState(false);
@@ -160,6 +160,7 @@ const CardIngresosGenerados = (
                 <div className="text-center mt-2 pt-3 p-0 mb-0" style={{ borderTop: "1px solid #eee", borderBottom: "1px solid #eee", lineHeight: "5px" }}>{rangoAMostrar}</div>
 
                 <span className="m-0 fw-bold text-center my-3" style={{ fontSize: "3em" }}>{formatPrice(ingresosTotales)}</span>
+                <span className="m-0 text-center my-0">Cantidad de servicios realizados: <strong className="fs-5">{cantidadDeServicios}</strong></span>
             </div>
 
             {/*<div className="d-flex flex-column ctn-input-periodo">
