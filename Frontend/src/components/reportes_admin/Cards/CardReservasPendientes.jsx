@@ -49,13 +49,13 @@ const CardReporteReservasPendientes = ({ index, tipoReserva, cantReservasAConfir
 
     return (
         <div className="card-reporte-reserva mb-3 d-flex flex-column justify-content-between position-relative">
-            <h4 className="text-capitalize d-flex justify-content-between">Total Reservas Pendientes
-                <i className="bi bi-info-circle info-sobre-reservas">
+            <h5 className="text-capitalize d-flex justify-content-between">Total Reservas Pendientes
+                {/*<i className="bi bi-info-circle info-sobre-reservas">
                     <span><strong className="text-decoration-underline text-capitalize">info</strong>: Se consideran las reservas que corresponden a <strong className="text-decoration-underline">todas</strong> las operadoras.</span>
-                </i>
-            </h4>
+                </i>*/}
+            </h5>
             <div className="d-flex align-items-center justify-content-between mt-2">
-                <button className="btn p-0 text-decoration-underline" onClick={() => setShowCalendar(!showCalendar)}>
+                <button className="btn p-0 text-decoration-underline seleccionar-periodo" onClick={() => setShowCalendar(!showCalendar)}>
                     Seleccionar Período<i className="ms-2 bi bi-calendar3"></i>
                 </button>
                 <button className="btn-ver-lista d-flex flex-nowrap text-nowrap" onClick={() => handleClickVerLista(tipoReserva, rangoAMostrar)}>
@@ -64,7 +64,7 @@ const CardReporteReservasPendientes = ({ index, tipoReserva, cantReservasAConfir
             </div>
             <div className="text-center mt-2 pt-3 p-0 mb-0" style={{ borderTop: "1px solid #eee", borderBottom: "1px solid #eee", lineHeight: "5px" }}>{rangoAMostrar}</div>
                         {showCalendar && (
-                            <div className="calendar-container mt-3 bg-secondary d-flex flex-column p-2" style={{ position: "absolute", top:"155px", zIndex: "20" }}>
+                            <div className="calendar-container mt-0 bg-secondary d-flex flex-column p-2" style={{ position: "absolute", top:"100px", zIndex: "20" }}>
                                 <DateRange
                                     ranges={dateRange}
                                     onChange={handleSelect}
@@ -88,9 +88,8 @@ const CardReporteReservasPendientes = ({ index, tipoReserva, cantReservasAConfir
                     <p className="m-0 fw-bold text-center" style={{ fontSize: "4em", transform: 'translatey(-20px)' }}>{cantReservasAReembolsar}</p>
                 </div>
             </div>
-            <div className="d-flex align-items-end justify-content-center" style={{ transform: 'translateY(-33px)' }}>
-                <Link className="btn btn-outline-secondary p-0 px-2 fw-bold" style={{ color: "#050095da" }} to={'/inicio_admin/reservas_pendientes'}>Ir a mis Reservas Pendientes</Link>
-
+            <div className="d-flex align-items-end justify-content-center" style={{ transform: 'translateY(-20px)' }}>
+                <Link className="btn btn-outline-secondary p-0 px-2 fw-bold btn-ir-reservas-pendientes" style={{ color: "#050095da", fontSize:"14px"}}  to={'/inicio_admin/reservas_pendientes'}>Ir a mis Reservas Pendientes</Link>
             </div>
         </div>
     )

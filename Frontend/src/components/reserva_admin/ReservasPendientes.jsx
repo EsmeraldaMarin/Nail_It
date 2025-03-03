@@ -118,8 +118,8 @@ const ReservasPendientes = () => {
         if (result) {
             setMensajeACliente(`*Hola, ${reservaData.Cliente ? reservaData.Cliente.nombre : reservaData.nombre_cliente}!*\n\n` +
                 `Tu seña de *${formatPrice(reservaData.montoSenia)}* correspondiente a la reserva de una sesión de ${reservaData.Servicio.nombre} te ha sido *devuelta*.\n` +
-                `Por favor revisa en tu cuenta y comunícate con nosotras ante cualquier inconveniente.`+
-                    `¡Te esperamos la próxima!\n\n` +
+                `Por favor revisa en tu cuenta y comunícate con nosotras ante cualquier inconveniente.` +
+                `¡Te esperamos la próxima!\n\n` +
                 `- _Oh My Nails_`
             )
             setTelefonoCliente(reservaData.Cliente ? reservaData.Cliente.numero : reservaData.telefono_cliente);
@@ -143,7 +143,7 @@ const ReservasPendientes = () => {
     return (
         <div className='container-fluid Reservas'>
             <h3>Gestor de reservas a confirmar</h3>
-            <h4 className="py-3">Reservas pendientes de comprobar su cobro</h4>
+            <h5 className="py-3">Reservas pendientes de comprobar su cobro</h5>
 
             <div className="table-ctn pb-2 reservas-pendientes" >
                 <div className="table-responsive">
@@ -191,7 +191,7 @@ const ReservasPendientes = () => {
                                                     rel="noopener noreferrer"
                                                     style={{ color: "#000", textDecoration: "none" }}
                                                 >
-                                                    <i className="bi bi-box-arrow-up-right">  Ver Whatsapp </i>
+                                                    <i className="bi bi-box-arrow-up-right" style={{ fontSize: "14px" }}>  Ver Whatsapp </i>
                                                 </a>}
                                         </td>
                                         <td>

@@ -44,7 +44,7 @@ function EstilistaModal({
                         )}
                     </div>
                     <div className="modal-footer">
-                        {modoConsulta && <button type="button" className="btn btn-danger">Eliminar Usuario</button>}
+                        {modoConsulta && <button type="button" className="btn btn-danger">Dar de baja usuario</button>}
                         {!modoConsulta && <button type="button" className="btn btn-danger" onClick={() => {
                             setEstilistaData({
                                 id: selectedProfesional.id,
@@ -55,7 +55,7 @@ function EstilistaModal({
                             });
                             handleModificarClick()
                         }}>Cancelar Cambios</button>}
-                        {modoConsulta && <button type="button" className="btn btn-primary" onClick={handleModificarClick}>Modificar Usuario</button>}
+                        {modoConsulta && <button type="button" className="btn btn-primary" onClick={handleModificarClick}>Modificar usuario</button>}
                         {!modoConsulta && <button type="button" className="btn btn-primary" onClick={handleGuardarCambios}>Guardar Cambios</button>}
                         {modoConsulta && <button type="button" className="btn btn-success" data-bs-dismiss="modal" aria-label="Close" onClick={() => { handleModificarClick }}>Listo</button>}
                     </div>

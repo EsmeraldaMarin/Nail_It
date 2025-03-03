@@ -55,7 +55,7 @@
         .btn-toggle-menu {
             position: fixed;
             top: 80px;
-            left: 280px;
+            left: 230px;
             width: 35px;
             height: 35px;
             color: #fff;
@@ -128,7 +128,7 @@
         nav.sideBar {
             background-color: white;
             height: calc(100vh - 60px);
-            width: 300px;
+            width: 250px;
             position: sticky;
             top: 0px;
             transition: width 0.2s ease;
@@ -176,8 +176,9 @@
                         }
                     }
                     .brandName {
-                        bottom: 100px;
-                        transform: translateX(-60px) rotate(-90deg);
+                        bottom: 80px;
+                        font-size: 1.5em;
+                        transform: translateX(-40px) rotate(-90deg);
                     }
                 }
             }
@@ -243,10 +244,7 @@
                             color: #777;
                             text-decoration: none;
                             white-space: nowrap;
-                            font-size: 1.3em;
-                            @media screen and (max-width: 920px) {
-                                font-size: 1em;
-                            }
+                            
                             &.active {
                                 background-color: #f85b00;
                                 border-radius: 10px;
@@ -267,12 +265,9 @@
                             }
                         }
 
-                        &.space-between {
-                            margin-top: 30px;
-                        }
+                        
                         
                         &.logout {
-                            margin-top: 30px;
 
                             @media screen and (max-width: 920px) {
                                 margin: 0;
@@ -299,7 +294,7 @@
             }
         }
         .content {
-            width: calc(100% - 300px);
+            width: calc(100% - 250px);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -311,7 +306,6 @@
 
             .dashboard {
                 padding: 40px 15px 40px 30px;
-
                 @media screen and (max-width: 920px) {
                     padding: 20px;
                 }

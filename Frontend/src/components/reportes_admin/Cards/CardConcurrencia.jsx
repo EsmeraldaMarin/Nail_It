@@ -89,7 +89,7 @@ const CardConcurrencia = () => {
 
     return (
         <div className="card-concurrencia">
-            <h4>Tendencia de reservas por horario</h4>
+            <h5 className="mb-3">Concurrencia de reservas por horario</h5>
 
             <div className="filtros d-flex align-items-center justify-content-between mb-2">
                 <label className="me-2">Mes:</label>
@@ -106,7 +106,7 @@ const CardConcurrencia = () => {
 
             <Bar data={{ labels: rangosHorarios, datasets: [{ label: "Reservas por horario", data: datosConcurrencia, backgroundColor: "rgba(75,192,192,0.6)" }] }} options={options} />
 
-            <h4 className="mt-2">Tendencia de reservas en el año</h4>
+            <h5 className="mt-2 mb-3">Concurrencia de reservas en el año</h5>
             <div className="filtros d-flex align-items-center mb-2 justify-content-end">
                 <label className="me-2 ms-3">Año:</label>
                 <input className="form-control"  style={{width:"35%"}} type="number" value={añoSeleccionado2} onChange={(e) => setAñoSeleccionado2(parseInt(e.target.value, 10))} />

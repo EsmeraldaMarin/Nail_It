@@ -114,7 +114,7 @@ export default function Vacaciones() {
                 {mensaje && <div className="mt-3 fs-5 text-bg-secondary py-1 px-3">{mensaje}</div>}
             </div>
             {/* Tabla de días libres */}
-            <h4 className="mt-4">Días libres registrados:</h4>
+            <h5  className="mt-4">Días libres registrados:</h5 >
             <table className="table mt-4">
                 <thead>
                     <tr>

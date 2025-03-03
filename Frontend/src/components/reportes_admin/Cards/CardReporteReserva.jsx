@@ -50,15 +50,15 @@ const CardReporteReserva = ({ index, porcentaje, cantidadReservas, tipoReserva, 
 
     return (
         <div className="card-reporte-reserva mb-3 position-relative">
-            <h4 className="text-capitalize d-flex justify-content-between">
+            <h5 className="text-capitalize d-flex justify-content-between">
                 Total {tipoReservaAMostrar?.replaceAll("_", " ")}
-                <i className="bi bi-info-circle info-sobre-reservas">
+                {/*<i className="bi bi-info-circle info-sobre-reservas" >
                     <span><strong className="text-decoration-underline text-capitalize">info</strong>: Se consideran las reservas que corresponden a <strong className="text-decoration-underline">todas</strong> las operadoras.</span>
-                </i>
-            </h4>
+                </i>*/}
+            </h5>
 
             <div className="d-flex align-items-center justify-content-between mt-3">
-                <button className="btn p-0 text-decoration-underline" onClick={() => setShowCalendar(!showCalendar)}>
+                <button className="btn p-0 text-decoration-underline seleccionar-periodo" onClick={() => setShowCalendar(!showCalendar)}>
                     Seleccionar Período<i className="ms-2 bi bi-calendar3"></i>
                 </button>
                 <button className="btn-ver-lista d-flex flex-nowrap text-nowrap" onClick={() => handleClickVerLista(tipoReserva, rangoAMostrar)}>
@@ -67,7 +67,7 @@ const CardReporteReserva = ({ index, porcentaje, cantidadReservas, tipoReserva, 
             </div>
             <div className="text-center mt-2 pt-3 p-0 mb-0" style={{ borderTop: "1px solid #eee", borderBottom: "1px solid #eee", lineHeight: "5px" }}>{rangoAMostrar}</div>
             {showCalendar && (
-                <div className="calendar-container mt-3 bg-secondary d-flex flex-column p-2" style={{ position: "absolute", zIndex: "20" }}>
+                <div className="calendar-container mt-0 bg-secondary d-flex flex-column p-2" style={{ position: "absolute", zIndex: "20", top:"100px" }}>
                     <DateRange
                         ranges={dateRange}
                         onChange={handleSelect}
@@ -87,7 +87,7 @@ const CardReporteReserva = ({ index, porcentaje, cantidadReservas, tipoReserva, 
                     {cantidadReservas}
                 </p>
             </div>
-            <i className="me-2 text-center" style={{ width: "100%", display: "inline-block", transform: "translateY(-30px)" }}>
+            <i className="me-2 text-center porcentaje" style={{ width: "100%", display: "inline-block", transform: "translateY(-30px)" }}>
                 Representan un <strong className="fs-5">{porcentaje}%</strong> de las reservas totales
             </i>
         </div>

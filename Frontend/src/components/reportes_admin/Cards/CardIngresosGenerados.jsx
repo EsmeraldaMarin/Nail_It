@@ -38,7 +38,7 @@ const CardIngresosGenerados = (
         }).format(price || 0);
     };
 
-   
+
     /*
      const getFormattedUTCDate = (fecha = new Date()) => {
 
@@ -97,8 +97,8 @@ const CardIngresosGenerados = (
             return new Date(fechaHasta).toLocaleString('es-ES', { month: 'long' })
         }
     */
-    
-        //funcionalidad para seleccionar periodo
+
+    //funcionalidad para seleccionar periodo
     const handleSelect = (ranges) => {
         setSeCambioElRango(true)
         setDateRange([ranges.selection]);
@@ -128,17 +128,16 @@ const CardIngresosGenerados = (
     }, []);
 
     return (
-        <div className="card-ingresos-generados" style={{ minWidth: "350px" }}>
-            <h4 className="text-capitalize mb-0">Total Ingresos Generados</h4>
-            <p className="p-0 m-0"><i className="bi bi-info-circle"></i> Solo se considera el importe total de los servicios realizados</p>
+        <div className="card-ingresos-generados">
+            <h5 className="text-capitalize mb-0">Total Ingresos Generados</h5>
             <div className="d-flex flex-column justify-content-center position-relative">
                 {/*<div className="periodo d-flex justify-content-center align-items-center">
                     {sePuedeMoverFecha && <button className="btn-directions btn btn-secondary mx-2" onClick={retrocederFecha}>{'<'}</button>}
                     <span className="fs-5 text-capitalize text-center" style={{ minWidth: "7em" }}>{sePuedeMoverFecha ? obtenerTitulo() : fechaDesde + " : " + fechaHasta}</span>
                     {sePuedeMoverFecha && <button className="btn-directions btn btn-secondary mx-2" onClick={avanzarFecha}>{'>'}</button>}
                 </div>*/}
-                <div className="d-flex align-items-center justify-content-between">
-                    <button className="btn p-0 text-decoration-underline" onClick={() => setShowCalendar(!showCalendar)}>
+                <div className="d-flex align-items-center justify-content-between mt-3">
+                    <button className="btn p-0 text-decoration-underline seleccionar-periodo" onClick={() => setShowCalendar(!showCalendar)}>
                         Seleccionar Período<i className="ms-2 bi bi-calendar3"></i>
                     </button>
                 </div>
@@ -157,7 +156,7 @@ const CardIngresosGenerados = (
                         <button className="btn btn-primary mt-2" onClick={handleAplicarPeriodo} style={{ backgroundColor: "#050095da" }}>Aplicar</button>
                     </div>
                 )}
-                <div className="text-center mt-2 pt-3 p-0 mb-0" style={{ borderTop: "1px solid #eee", borderBottom: "1px solid #eee", lineHeight: "5px" }}>{rangoAMostrar}</div>
+                <div className="text-center mt-3 pt-3 p-0 mb-0" style={{ borderTop: "1px solid #eee", borderBottom: "1px solid #eee", lineHeight: "5px" }}>{rangoAMostrar}</div>
 
                 <span className="m-0 fw-bold text-center my-3" style={{ fontSize: "3em" }}>{formatPrice(ingresosTotales)}</span>
                 <span className="m-0 text-center my-0">Cantidad de servicios realizados: <strong className="fs-5">{cantidadDeServicios}</strong></span>
@@ -215,6 +214,8 @@ const CardIngresosGenerados = (
                 Exportar a Excel
                 <i className="bi bi-file-earmark-excel ms-2"></i>
             </button>*/}
+            <p className="p-0 m-0 mt-4" style={{ fontSize: "13px" }}><i className="bi bi-info-circle"></i> Solo se considera el importe total de los servicios realizados</p>
+
         </div>
     )
 };

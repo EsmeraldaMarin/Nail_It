@@ -1,7 +1,7 @@
 @import "../../variables.scss";
 .ctn-horarios {
     width: 100%;
-    max-width: 700px;
+    max-width: 580px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f8f8f8;
@@ -21,7 +21,7 @@
         input,
         button,
         p {
-            font-size: 1.2em;
+            font-size: 1em;
         }
         .heads {
             display: flex;
@@ -37,7 +37,7 @@
                 background-color: #bbb;
                 color: white;
                 cursor: pointer;
-                font-size: 1.2em;
+                font-size: 0.98em;
 
                 &.active,
                 &:active,
@@ -66,7 +66,7 @@
                 }
 
                 p {
-                    font-size: 1.2em;
+                    font-size: 1em;
                     color: #555;
                     padding: 5px 0;
                     margin: 0;
@@ -87,26 +87,25 @@
 
                 label {
                     display: block;
-                    font-size: 1.3em;
+                    font-size: 1em;
                     margin-bottom: 5px;
                     color: #333;
                 }
 
                 .form-control,
                 .form-select {
-                    padding: 10px;
+                    padding: 5px 10px;
                     border: 1px solid #ccc;
                     border-radius: 5px;
-                    font-size: 1.3em;
+                    font-size: 1em;
                     outline: none;
                     transition: border-color 0.3s ease;
-                    width: 150px;
+                    width: 130px;
                     &:focus {
                         border-color: #f85b00;
                     }
                 }
                 select {
-                    font-size: 1.3em;
                     &#especialidad{
                         width: 200px;
                     }
@@ -118,8 +117,8 @@
                     justify-content: center;
                     background-color: #f85b00;
                     align-self: flex-end;
-                    width: 50px;
-                    height: 50px;
+                    width: 45px;
+                    height: 45px;
                     color: white;
                     border: none;
                     border-radius: 5px;

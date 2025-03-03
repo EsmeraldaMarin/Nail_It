@@ -200,7 +200,7 @@ const ReservaCard = ({ setPasoActual, reservaData, setReservaData }) => {
 
   return (
     <div className="reserva-card">
-      <h2 className='text-center pb-2 mb-3 border-bottom'>Realizá tu reserva</h2>
+      <h2 className='text-center pb-4 mb-3 border-bottom'>Realizá tu reserva</h2>
       <TipoServicioSelect tiposServicio={tiposServicio} tipoServicio={tipoServicio} setTipoServicio={handleTipoServicioChange} />
 
       <div className="servicio-ctn">

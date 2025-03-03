@@ -9,13 +9,12 @@
     }
 
     .title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: bold;
         color: #333;
         position: relative;
         display: inline-block;
-        padding-bottom: 10px;
-        
+        padding-bottom: 10px;  
         &::after {
             content: "";
             width: 50px;
@@ -39,7 +38,7 @@
         background: white;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
+        width: 250px;
         overflow: hidden;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         cursor: pointer;
@@ -52,15 +51,17 @@
 
     .service-header {
         background: #f85b00;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: white;
         padding: 15px;
-        font-size: 1.2rem;
+        height: 90px;
         font-weight: bold;
     }
 
     .service-details {
         padding: 15px;
-        font-size: 1rem;
         color: #555;
     }
 

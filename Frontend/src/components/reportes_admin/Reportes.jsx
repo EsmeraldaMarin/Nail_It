@@ -142,7 +142,7 @@ const Reportes = () => {
 
     return (
         <div className="reportes">
-            <div className="cards-ctn d-flex flex-wrap justify-content-evenly">
+            <div className="cards-ctn d-flex flex-wrap justify-content-between">
                 <CardReporteReservasPendientes index={'1'}
                     cantReservasAConfirmar={reservasPendientes.length}
                     cantReservasAReembolsar={reservasPorReembolsar.length}

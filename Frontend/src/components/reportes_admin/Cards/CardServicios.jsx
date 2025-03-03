@@ -77,9 +77,9 @@ export default function CardServicios() {
 
     return (
         <div className="card-servicios">
-            <h4>Demanda de Servicios</h4>
-            <p className="p-0 m-0 mb-3">
-                <i className="bi bi-info-circle"></i> Si no figuran servicios es porque no tienen reservas
+            <h5>Demanda de Servicios</h5>
+            <p className="p-0 m-0 mb-3" style={{fontSize:"13px"}}>
+                <i className="bi bi-info-circle"></i> Solo figuran los servicios con reservas
             </p>
             <div className="filters d-flex align-items-center">
                 <label className="me-2">Mes:</label>

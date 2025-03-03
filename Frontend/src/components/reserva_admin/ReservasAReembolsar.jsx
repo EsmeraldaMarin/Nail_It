@@ -41,7 +41,7 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
     };
     return (
         <div>
-            <h4 className="py-3">Reservas pendientes de reembolsar</h4>
+            <h5 className="pt-3 mt-3">Reservas pendientes de reembolsar</h5>
 
             <div className="table-ctn pb-2 reservas-pendientes a-reembolsar" >
                 <div className="table-responsive">
@@ -84,19 +84,18 @@ const ReservasAReembolsar = ({ reservas, handleReembolsoReserva, formatearFecha 
                                         <td className='visualizar-btn text-end'>
                                             {reserva.Cliente && reserva.comprobante != "sin comprobante" ? <VisualizadorComprobante comprobanteURL={reserva.comprobante} />
                                                 : <a
-                                                    className='fs-6'
                                                     href={`https://wa.me/${reserva.Cliente ? reserva.Cliente.numero : reserva.telefono_cliente}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    style={{ color: "#000", textDecoration: "none" }}
+                                                    style={{ color: "#000", textDecoration: "none", fontSize: "14px" }}
                                                 >
-                                                    <i className="bi bi-box-arrow-up-right">  Ver Whatsapp </i>
+                                                    <i className="bi bi-box-arrow-up-right ">  Ver Whatsapp </i>
                                                 </a>}
                                         </td>
                                         <td>
                                             {
                                                 <div>
-                                                    <button className="btn btn-danger" onClick={() => openModal(reserva)}>
+                                                    <button className="btn btn-danger" style={{ fontSize: "14px" }} onClick={() => openModal(reserva)}>
                                                         Reembolsado
                                                     </button>
 

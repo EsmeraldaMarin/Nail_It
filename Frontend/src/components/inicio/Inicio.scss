@@ -26,6 +26,7 @@
       }
       h1 {
         display: none;
+        text-wrap: nowrap !important;
         @media (min-width: 1000px) {
           font-size: 5em;
           display: inline-block;
@@ -40,7 +41,7 @@
           .btn-reservar {
             width: 450px;
             height: 60px;
-            font-size: 1.7em;
+            font-size: 1.4em;
             text-align: left;
           }
           &::after {
@@ -56,7 +57,7 @@
       }
       p {
         @media (min-width: 1000px) {
-          font-size: 1.5em;
+          font-size: 1.2em;
           margin: 0;
           margin-right: 30px;
         }
@@ -69,7 +70,7 @@
         font-size: 5em;
         font-weight: bold;
         transform: rotate(90deg);
-        text-wrap: nowrap;
+        text-wrap: nowrap !important;
         margin-left: 0px;
         margin-bottom: 0px;
         padding-top: 0px;
