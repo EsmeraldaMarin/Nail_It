@@ -64,7 +64,7 @@ const Reportes = () => {
         return reservasPorPeriodoYestado.data
     }
     const fetchByPeriodo = async (startDate, endDate) => {
-        const reservasPendientes = await axios.get(`/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=cancelada`);
+        const reservasPendientes = await axios.get(`/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=pendiente`);
         const reservasPorReembolsar = await axios.get(`/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=por_reembolsar`);
         return [reservasPendientes.data, reservasPorReembolsar.data]
     }

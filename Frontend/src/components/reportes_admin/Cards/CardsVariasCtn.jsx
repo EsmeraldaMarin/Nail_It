@@ -6,22 +6,12 @@ import CardServicios from "./CardServicios";
 import axios from '../../../axiosConfig/axiosConfig'
 
 const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
-    const [datosConcurrencia, setDatosConcurrencia] = useState([])
-    const [datosConcurrenciaMensual, setDatosConcurrenciaMensual] = useState([])
-    const [demandaServicios, setDemandaServicios] = useState([])
     const [ingresosTotales, setIngresosTotales] = useState('')
     const [cantidadDeServicios, setCantidadDeServicios] = useState('')
     const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState('');
     const [reservas, setReservas] = useState([]);
     const [servicioSeleccionado, setServicioSeleccionado] = useState('');
     const [operadoraSeleccionada, setOperadoraSeleccionada] = useState('');
-
-    useEffect(() => {
-        getConcurrenciaReservas();
-        getConcurrenciaMensualReservas();
-        getDemandaServicios();
-    }, []);
-
 
     const formatearFechaSinHorasParaDB = (fecha) => {
         const fechaUTC = new Date(fecha).toISOString().replace("T", " ").replace("Z", " +00:00");
@@ -56,47 +46,6 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
         calcularIngresos();
     }, [reservas, especialidadSeleccionada, servicioSeleccionado, operadoraSeleccionada]);
 
-    const getConcurrenciaReservas = async () => {
-        const response = await axios.get('/reserva');
-        const concurrencia = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-        response.data.forEach(reserva => {
-            const hora = reserva.horaInicio.split(':')[0]; // Suponiendo que el campo se llama "horario"
-            concurrencia[hora - 8] = (concurrencia[hora - 8] || 0) + 1;
-        });
-        setDatosConcurrencia(concurrencia); // Retornar datos listos para un gráfico
-    };
-
-    const getConcurrenciaMensualReservas = async () => {
-        try {
-            const response = await axios.get('/reserva');
-            const concurrencia = Array(12).fill(0); // Inicializa un array de 12 posiciones en 0
-
-            response.data.forEach(reserva => {
-                if (!reserva.fecha) return; // Verificar que la fecha exista
-
-                const fecha = new Date(reserva.fecha.split(" ")[0]); // Convertir a objeto Date
-                const mesIndex = fecha.getMonth(); // Obtener el índice del mes (0-11)
-
-                concurrencia[mesIndex] += 1; // Sumar 1 a la concurrencia de ese mes
-            });
-
-            setDatosConcurrenciaMensual(concurrencia);
-        } catch (error) {
-            console.error("Error obteniendo concurrencia de reservas:", error);
-        }
-    };
-
-    const getDemandaServicios = async () => {
-        const response = await axios.get('/reserva');
-        const demanda = {};
-
-        response.data.forEach(reserva => {
-            const servicio = reserva.Servicio.nombre;
-            demanda[servicio] = (demanda[servicio] || 0) + 1;
-        });
-        setDemandaServicios(demanda);
-    };
 
     return (
         <div className="cardsVarias-ctn">
@@ -111,8 +60,8 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
                 operadoras={operadoras}
                 handleChangePeriodo={fetchRealizadasByPeriodo}
             ></CardIngresosGenerados>
-            <CardConcurrencia data={datosConcurrencia} dataMeses={datosConcurrenciaMensual}></CardConcurrencia>
-            <CardServicios data={demandaServicios}></CardServicios>
+            <CardConcurrencia></CardConcurrencia>
+            <CardServicios></CardServicios>
             {/*<CardIngresosChart></CardIngresosChart>*/}
         </div>
     )

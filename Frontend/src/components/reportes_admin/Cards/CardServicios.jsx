@@ -1,48 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../Reportes.scss";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+} from "chart.js";
+import axios from "../../../axiosConfig/axiosConfig";
 
-// Registrar módulos de Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function CardServicios({ data }) {
-    if (!data || Object.keys(data).length === 0) {
-        return <p>No hay datos disponibles.</p>;
-    }
-    let colors = ["#4ec2b1", "#a067d3", "#55b0d3",  "#dc0ed1", "#faaceb", "#ce0d23", "#7e8e57", "#8f13e8", "#10cf27", "#8b64fd", "#83ca63", "#c9ac0f"]
+const colors = ["#4ec2b1", "#a067d3", "#55b0d3", "#dc0ed1", "#faaceb", "#ce0d23", "#7e8e57", "#8f13e8", "#10cf27", "#8b64fd", "#83ca63", "#c9ac0f"];
 
-    // Función para generar colores aleatorios en formato HEX
-    const getColor = (indice) => {
-        if (indice > colors.length - 1) {
-            return colors[indice - colors.length]
-        }
-        return colors[indice]
-    };
+export default function CardServicios() {
+    const [reservas, setReservas] = useState([]);
+    const [demandaServicios, setDemandaServicios] = useState({});
+    const [mes, setMes] = useState("");
+    const [anio, setAnio] = useState(new Date().getFullYear());
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-    // Obtener los nombres de los servicios y las cantidades de reservas
-    const servicios = Object.entries(data); // [[nombreServicio1, cantidad], [nombreServicio2, cantidad], ...]
+    useEffect(() => {
+        const getReservas = async () => {
+            try {
+                const response = await axios.get("/reserva");
+                setReservas(response.data);
+            } catch (error) {
+                console.error("Error al obtener las reservas", error);
+            }
+        };
 
-    // Generar colores aleatorios
-    const colores = servicios.map((serv, index) => getColor(index));
+        getReservas();
+    }, []);
 
-    // Crear datos del gráfico
+    useEffect(() => {
+        const demanda = {};
+        reservas.forEach(reserva => {
+            const fecha = new Date(reserva.fecha);
+            if ((mes === "" || fecha.getMonth() + 1 === mes) && fecha.getFullYear() === anio) {
+                const servicio = reserva.Servicio.nombre;
+                demanda[servicio] = (demanda[servicio] || 0) + 1;
+            }
+        });
+        setDemandaServicios(demanda);
+    }, [mes, anio, reservas]);
+
+
+    const getColor = (indice) => colors[indice % colors.length];
+
+    const servicios = Object.entries(demandaServicios);
     const chartData = {
-        labels: servicios.map(([nombre], index) => (index + 1) + "- " + nombre.slice(0, 5)),
+        labels: servicios.map(([nombre], index) => `${index + 1}- ${nombre.slice(0, 5)}`),
         datasets: [
             {
                 label: "Cantidad de Reservas",
                 data: servicios.map(([_, cantidad]) => cantidad),
-                backgroundColor: colores,
+                backgroundColor: servicios.map((_, index) => getColor(index)),
             },
         ],
     };
 
-    // Configurar el gráfico
     const options = {
         responsive: true,
         plugins: {
-            legend: { display: false }, // Oculta la leyenda predeterminada
+            legend: { display: false },
             title: { display: true, text: "Demanda de Servicios" },
         },
         scales: {
@@ -54,6 +78,22 @@ export default function CardServicios({ data }) {
     return (
         <div className="card-servicios">
             <h4>Demanda de Servicios</h4>
+            <p className="p-0 m-0 mb-3">
+                <i className="bi bi-info-circle"></i> Si no figuran servicios es porque no tienen reservas
+            </p>
+            <div className="filters d-flex align-items-center">
+                <label className="me-2">Mes:</label>
+                <select className="form-select" value={mes} onChange={(e) => setMes(Number(e.target.value))}>
+                    <option value="">Todos</option>
+                    {meses.map((m, index) => (
+                        <option key={index + 1} value={index + 1}>{m}</option>
+                    ))}
+                </select>
+
+                <label className="ms-3 me-2">Año:</label>
+                <input className="form-control" type="number" value={anio} onChange={(e) => setAnio(Number(e.target.value))} />
+
+            </div>
             <Bar data={chartData} options={options} />
             <div style={{ marginTop: "10px" }}>
                 <h5>Referencia de Servicios:</h5>
@@ -64,12 +104,12 @@ export default function CardServicios({ data }) {
                                 style={{
                                     width: "20px",
                                     height: "20px",
-                                    backgroundColor: colores[index],
+                                    backgroundColor: getColor(index),
                                     display: "inline-block",
                                     marginRight: "10px",
                                 }}
                             ></span>
-                            {(index + 1) + ': ' + nombre}
+                            {`${index + 1}: ${nombre}`}
                         </li>
                     ))}
                 </ul>
