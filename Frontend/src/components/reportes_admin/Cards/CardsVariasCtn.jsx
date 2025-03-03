@@ -10,24 +10,8 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
     const [datosConcurrenciaMensual, setDatosConcurrenciaMensual] = useState([])
     const [demandaServicios, setDemandaServicios] = useState([])
     const [ingresosTotales, setIngresosTotales] = useState('')
-    const getFormattedUTCDate = () => {
-        const now = new Date();
-
-        const year = now.getUTCFullYear();
-        const month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = now.getUTCDate().toString().padStart(2, "0");
-
-        // Hora en 00:00:00.000
-        const hours = "00";
-        const minutes = "00";
-        const seconds = "00";
-        const milliseconds = "000";
-
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds} +00:00`;
-    };
-    const [fechaDesdeSeleccionada, setFechaDesdeSeleccionada] = useState(getFormattedUTCDate());
-    const [fechaHastaSeleccionada, setFechaHastaSeleccionada] = useState(getFormattedUTCDate());
     const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState('');
+    const [reservas, setReservas] = useState([]);
     const [servicioSeleccionado, setServicioSeleccionado] = useState('');
     const [operadoraSeleccionada, setOperadoraSeleccionada] = useState('');
 
@@ -35,30 +19,40 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
         getConcurrenciaReservas();
         getConcurrenciaMensualReservas();
         getDemandaServicios();
-    }, [])
-    useEffect(() => {
-        getIngresosGenerados();
-    }, [fechaDesdeSeleccionada,
-        fechaHastaSeleccionada,
-        especialidadSeleccionada,
-        servicioSeleccionado,
-        operadoraSeleccionada]);
+    }, []);
 
 
-    const getIngresosGenerados = async () => {
-        const response = await axios.get('/reserva');
-        const reservasFiltradas = response.data.filter(reserva =>
-            reserva.estado === "realizada" &&
-            (!especialidadSeleccionada || reserva.Servicio.Especialidad.id == especialidadSeleccionada) &&
-            (!servicioSeleccionado || reserva.Servicio.id == servicioSeleccionado) &&
-            (!operadoraSeleccionada || reserva.Admin.id == operadoraSeleccionada) &&
-            (!fechaDesdeSeleccionada || reserva.fecha >= fechaDesdeSeleccionada) &&
-            (!fechaHastaSeleccionada || reserva.fecha <= fechaHastaSeleccionada)
-        );
-
-        const totalIngresos = reservasFiltradas.reduce((acc, reserva) => acc + reserva.montoTotal, 0);
-        setIngresosTotales(totalIngresos);
+    const formatearFechaSinHorasParaDB = (fecha) => {
+        const fechaUTC = new Date(fecha).toISOString().replace("T", " ").replace("Z", " +00:00");
+        let fechaSplit = fechaUTC.split(" ");
+        //se considera solo la fecha sin la hora
+        return fechaSplit[0];
     };
+
+    const fetchRealizadasByPeriodo = async (startDate, endDate) => {
+        try {
+            const { data } = await axios.get(
+                `/reserva?fecha_desde=${formatearFechaSinHorasParaDB(startDate)}&fecha_hasta=${formatearFechaSinHorasParaDB(endDate)}&estado=realizada`
+            );
+            setReservas(data);
+        } catch (error) {
+            console.error("Error al obtener reservas:", error);
+        }
+    };
+
+    useEffect(() => {
+        const calcularIngresos = () => {
+            const reservasFiltradas = reservas.filter(reserva =>
+                (!especialidadSeleccionada || reserva.Servicio.Especialidad.id == especialidadSeleccionada) &&
+                (!servicioSeleccionado || reserva.Servicio.id == servicioSeleccionado) &&
+                (!operadoraSeleccionada || reserva.Admin.id == operadoraSeleccionada)
+            );
+            const total = reservasFiltradas.reduce((acc, reserva) => acc + reserva.montoTotal, 0);
+            setIngresosTotales(total);
+        };
+
+        calcularIngresos();
+    }, [reservas, especialidadSeleccionada, servicioSeleccionado, operadoraSeleccionada]);
 
     const getConcurrenciaReservas = async () => {
         const response = await axios.get('/reserva');
@@ -91,7 +85,6 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
         }
     };
 
-
     const getDemandaServicios = async () => {
         const response = await axios.get('/reserva');
         const demanda = {};
@@ -107,17 +100,17 @@ const CardsVariasCtn = ({ especialidades, servicios, operadoras }) => {
         <div className="cardsVarias-ctn">
             <CardIngresosGenerados
                 ingresosTotales={ingresosTotales}
-                exportarAExcel={() => { }}
                 handleChangeEspecialidad={(e) => setEspecialidadSeleccionada(e.target.value)}
                 handleChangeServicio={(e) => setServicioSeleccionado(e.target.value)}
                 handleChangeOperadora={(e) => setOperadoraSeleccionada(e.target.value)}
-                fechaDesde={fechaDesdeSeleccionada}
-                fechaHasta={fechaHastaSeleccionada}
-                setFechaDesde={setFechaDesdeSeleccionada}
-                setFechaHasta={setFechaHastaSeleccionada}
                 especialidades={especialidades}
                 servicios={servicios}
-                operadoras={operadoras}></CardIngresosGenerados>
+                operadoras={operadoras}
+                especialidadSeleccionada={especialidadSeleccionada}
+                servicioSeleccionado={servicioSeleccionado}
+                operadoraSeleccionada={operadoraSeleccionada}
+                handleChangePeriodo={fetchRealizadasByPeriodo}
+            ></CardIngresosGenerados>
             <CardConcurrencia data={datosConcurrencia} dataMeses={datosConcurrenciaMensual}></CardConcurrencia>
             <CardServicios data={demandaServicios}></CardServicios>
             {/*<CardIngresosChart></CardIngresosChart>*/}

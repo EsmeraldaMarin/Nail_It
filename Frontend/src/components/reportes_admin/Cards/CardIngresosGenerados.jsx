@@ -2,36 +2,45 @@ import React, { useState, useEffect } from "react";
 import '../Reportes.scss'
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { DateRange } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 const CardIngresosGenerados = (
     { ingresosTotales,
-        exportarAExcel,
         handleChangeEspecialidad,
         handleChangeServicio,
         handleChangeOperadora,
-        fechaDesde,
-        fechaHasta,
-        setFechaDesde,
-        setFechaHasta,
-        servicios, especialidades, operadoras }) => {
+        servicios, especialidades, operadoras,
+        servicioSeleccionado, especialidadSeleccionada, operadoraSeleccionada,
+        handleChangePeriodo }) => {
 
-
+    const [showCalendar, setShowCalendar] = useState(false);
+    const [rangoAMostrar, setRangoAMostrar] = useState("");
+    const [seCambioElRango, setSeCambioElRango] = useState(false) //esto me sirve para que en el primer render aparezca el txto "todas hasta hoy"
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: "selection",
+        },
+    ]);
+    /*
     const [sePuedeMoverFecha, setSePuedeMoverFecha] = useState(true);
     const [periodo, setPeriodo] = useState('dia')
-
+    */
     const formatPrice = (price) => {
-        if (typeof price === "string") {
-            price = parseFloat(price.replace(",", "."));
-        }
         return new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: 'ARS',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-        }).format(price);
+        }).format(price || 0);
     };
 
-    const getFormattedUTCDate = (fecha = new Date()) => {
+   
+    /*
+     const getFormattedUTCDate = (fecha = new Date()) => {
 
         const year = fecha.getUTCFullYear();
         const month = (fecha.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -46,58 +55,114 @@ const CardIngresosGenerados = (
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds} +00:00`;
     };
 
-    const avanzarFecha = () => {
-
-        let nuevaFechaDesde = new Date(new Date(fechaDesde).getTime() + new Date().getTimezoneOffset() * 60000);
-        let nuevaFechaHasta = new Date(new Date(fechaHasta).getTime() + new Date().getTimezoneOffset() * 60000);
-        if (periodo === "dia") {
-            nuevaFechaDesde.setDate(nuevaFechaDesde.getDate() + 1);
-            nuevaFechaHasta.setDate(nuevaFechaHasta.getDate() + 1);
+        const avanzarFecha = () => {
+    
+            let nuevaFechaDesde = new Date(new Date(fechaDesde).getTime() + new Date().getTimezoneOffset() * 60000);
+            let nuevaFechaHasta = new Date(new Date(fechaHasta).getTime() + new Date().getTimezoneOffset() * 60000);
+            if (periodo === "dia") {
+                nuevaFechaDesde.setDate(nuevaFechaDesde.getDate() + 1);
+                nuevaFechaHasta.setDate(nuevaFechaHasta.getDate() + 1);
+            }
+            if (periodo === "mes") {
+                nuevaFechaDesde.setMonth(nuevaFechaDesde.getMonth() + 1);
+                nuevaFechaHasta.setMonth(nuevaFechaHasta.getMonth() + 1);
+            }
+    
+            setFechaDesde(getFormattedUTCDate(nuevaFechaDesde));
+            setFechaHasta(getFormattedUTCDate(nuevaFechaHasta));
+        };
+    
+        const retrocederFecha = () => {
+            let nuevaFechaDesde = new Date(new Date(fechaDesde).getTime() + new Date().getTimezoneOffset() * 60000);
+            let nuevaFechaHasta = new Date(new Date(fechaHasta).getTime() + new Date().getTimezoneOffset() * 60000);
+            if (periodo === "dia") {
+                nuevaFechaDesde.setDate(nuevaFechaDesde.getDate() - 1);
+                nuevaFechaHasta.setDate(nuevaFechaHasta.getDate() - 1);
+            }
+            if (periodo === "mes") {
+                nuevaFechaDesde.setMonth(nuevaFechaDesde.getMonth() - 1);
+                nuevaFechaHasta.setMonth(nuevaFechaHasta.getMonth() - 1);
+            }
+            setFechaDesde(getFormattedUTCDate(nuevaFechaDesde));
+            setFechaHasta(getFormattedUTCDate(nuevaFechaHasta));
+        };
+    
+        const formatearFecha = (fecha) => {
+            const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
+            return format(fechaLocal, 'EEEE dd/MM', { locale: es });
+        };
+    
+        const obtenerTitulo = () => {
+            if (periodo === 'dia') return formatearFecha(fechaDesde)
+            return new Date(fechaHasta).toLocaleString('es-ES', { month: 'long' })
         }
-        if (periodo === "mes") {
-            nuevaFechaDesde.setMonth(nuevaFechaDesde.getMonth() + 1);
-            nuevaFechaHasta.setMonth(nuevaFechaHasta.getMonth() + 1);
-        }
-
-        setFechaDesde(getFormattedUTCDate(nuevaFechaDesde));
-        setFechaHasta(getFormattedUTCDate(nuevaFechaHasta));
+    */
+    
+        //funcionalidad para seleccionar periodo
+    const handleSelect = (ranges) => {
+        setSeCambioElRango(true)
+        setDateRange([ranges.selection]);
     };
 
-    const retrocederFecha = () => {
-        let nuevaFechaDesde = new Date(new Date(fechaDesde).getTime() + new Date().getTimezoneOffset() * 60000);
-        let nuevaFechaHasta = new Date(new Date(fechaHasta).getTime() + new Date().getTimezoneOffset() * 60000);
-        if (periodo === "dia") {
-            nuevaFechaDesde.setDate(nuevaFechaDesde.getDate() - 1);
-            nuevaFechaHasta.setDate(nuevaFechaHasta.getDate() - 1);
-        }
-        if (periodo === "mes") {
-            nuevaFechaDesde.setMonth(nuevaFechaDesde.getMonth() - 1);
-            nuevaFechaHasta.setMonth(nuevaFechaHasta.getMonth() - 1);
-        }
-        setFechaDesde(getFormattedUTCDate(nuevaFechaDesde));
-        setFechaHasta(getFormattedUTCDate(nuevaFechaHasta));
+    const handleAplicarPeriodo = () => {
+        const { startDate, endDate } = dateRange[0];
+        handleChangePeriodo(startDate, endDate);
+        setShowCalendar(false); // Oculta el calendario después de aplicar
     };
+    const obtenerRangoAMostrar = () => {
+        const { startDate, endDate } = dateRange[0];
 
-    const formatearFecha = (fecha) => {
-        const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
-        return format(fechaLocal, 'EEEE dd/MM', { locale: es });
-    };
-    const obtenerTitulo = () => {
-        if (periodo === 'dia') return formatearFecha(fechaDesde)
-        return new Date(fechaHasta).toLocaleString('es-ES', { month: 'long' })
+        if (!seCambioElRango) return <p>Ingresos de hoy: <strong>{new Date().toLocaleDateString()}</strong></p>
+        return (startDate.getTime() !== endDate.getTime())
+            ? <p>Del <strong>{startDate.toLocaleDateString()}</strong> al{" "} <strong>{endDate.toLocaleDateString()}</strong></p>
+            : <p className="text-capitalize"><strong>{format(endDate, 'EEEE dd/MM', { locale: es })}</strong> </p>
     }
+
+    useEffect(() => {
+        setRangoAMostrar(obtenerRangoAMostrar());
+    }, [dateRange]);
+
+    useEffect(() => {
+        const { startDate, endDate } = dateRange[0];
+        handleChangePeriodo(startDate, endDate);
+    }, []);
+
     return (
         <div className="card-ingresos-generados" style={{ minWidth: "350px" }}>
-            <h4 className="text-capitalize">Total Ingresos Generados</h4>
-            <div className="d-flex flex-column justify-content-center mt-3">
-                <div className="periodo d-flex justify-content-center align-items-center">
+            <h4 className="text-capitalize mb-0">Total Ingresos Generados</h4>
+            <p className="p-0 m-0"><i className="bi bi-info-circle"></i> Solo se considera el importe total de los servicios realizados</p>
+            <div className="d-flex flex-column justify-content-center position-relative">
+                {/*<div className="periodo d-flex justify-content-center align-items-center">
                     {sePuedeMoverFecha && <button className="btn-directions btn btn-secondary mx-2" onClick={retrocederFecha}>{'<'}</button>}
                     <span className="fs-5 text-capitalize text-center" style={{ minWidth: "7em" }}>{sePuedeMoverFecha ? obtenerTitulo() : fechaDesde + " : " + fechaHasta}</span>
                     {sePuedeMoverFecha && <button className="btn-directions btn btn-secondary mx-2" onClick={avanzarFecha}>{'>'}</button>}
+                </div>*/}
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="btn p-0 text-decoration-underline" onClick={() => setShowCalendar(!showCalendar)}>
+                        Seleccionar Período<i className="ms-2 bi bi-calendar3"></i>
+                    </button>
                 </div>
+                {showCalendar && (
+                    <div className="calendar-container bg-secondary d-flex flex-column p-2" style={{ position: "absolute", top: "45px", zIndex: "20" }}>
+                        <DateRange
+                            ranges={dateRange}
+                            onChange={handleSelect}
+                            moveRangeOnFirstSelection={false}
+                            showSelectionPreview={true}
+                            months={1}
+                            direction="horizontal"
+                            locale={es}
+                            rangeColors={['#050095da', '#050095da', '#050095da']}
+                        />
+                        <button className="btn btn-primary mt-2" onClick={handleAplicarPeriodo} style={{ backgroundColor: "#050095da" }}>Aplicar</button>
+                    </div>
+                )}
+                <div className="text-center mt-2 pt-3 p-0 mb-0" style={{ borderTop: "1px solid #eee", borderBottom: "1px solid #eee", lineHeight: "5px" }}>{rangoAMostrar}</div>
+
                 <span className="m-0 fw-bold text-center my-3" style={{ fontSize: "3em" }}>{formatPrice(ingresosTotales)}</span>
             </div>
-            <div className="d-flex flex-column ctn-input-periodo">
+
+            {/*<div className="d-flex flex-column ctn-input-periodo">
                 <div className="d-flex justify-content-center position-relative">
                     <input type="radio" className="btn-check btn-toggle" name="options-base" id="ingresos-dia" autoComplete="off"
                         onChange={() => {
@@ -117,7 +182,7 @@ const CardIngresosGenerados = (
                         }} checked={periodo === "mes"} />
                     <label className="py-0 px-3 btn btn-toggle" htmlFor="ingresos-mes">Mes</label>
                 </div>
-            </div>
+            </div>*/}
             <div className="input-group mb-3 mt-3">
                 <label className="input-group-text" htmlFor="inputGroupSelect01">Especialidad</label>
                 <select className="form-select" id="inputGroupSelect01" onChange={handleChangeEspecialidad}>

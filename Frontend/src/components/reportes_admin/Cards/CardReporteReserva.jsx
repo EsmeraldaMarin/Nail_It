@@ -59,7 +59,7 @@ const CardReporteReserva = ({ index, porcentaje, cantidadReservas, tipoReserva, 
 
             <div className="d-flex align-items-center justify-content-between mt-3">
                 <button className="btn p-0 text-decoration-underline" onClick={() => setShowCalendar(!showCalendar)}>
-                    Seleccionar Período
+                    Seleccionar Período<i className="ms-2 bi bi-calendar3"></i>
                 </button>
                 <button className="btn-ver-lista d-flex flex-nowrap text-nowrap" onClick={() => handleClickVerLista(tipoReserva, rangoAMostrar)}>
                     Ver Lista <i className="ms-2 bi bi-card-list"></i>
