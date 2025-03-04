@@ -5,7 +5,6 @@ import './Consulta.scss'
 
 export default function ConsultaServicios({ servicios, onNewClick, onActualizar, onToggleActivo }) {
     const formatPrice = (price) => {
-        console.log(price)
         if (typeof price === "string") {
             price = parseFloat(price.replace(",", "."));
         }
@@ -40,7 +39,7 @@ export default function ConsultaServicios({ servicios, onNewClick, onActualizar,
         <div className='container-fluid Reservas'>
             <div className="d-flex justify-content-between align-items-center ss">
                 <h3>Gestor de Servicios</h3>
-                <button type="button" className="btn active fs-5" onClick={onNewClick}>
+                <button type="button " className="btn active fw-bold" style={{fontSize:"16px"}} onClick={onNewClick}>
                     Registrar servicio<i className="bi bi-plus-circle"></i>
                 </button>
             </div>

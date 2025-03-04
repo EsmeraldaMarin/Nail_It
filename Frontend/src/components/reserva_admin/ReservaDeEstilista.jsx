@@ -10,8 +10,7 @@ const ReservaDeEstilista = () => {
         <div>
             <button onClick={handleClick} className='btn fw-bold fs-6'
                 style={{ backgroundColor: "#f85b00", color: "#fff"}}>
-                <i className="bi bi-plus" style={{ color: "#fff" }}></i>
-                Realizar una Reserva
+                Realizar una Reserva <i className="bi bi-plus-circle ms-2"></i>
             </button>
             <ModalReservaDeEstilista display={displayModal} setDisplay={setDisplayModal}></ModalReservaDeEstilista>
         </div>

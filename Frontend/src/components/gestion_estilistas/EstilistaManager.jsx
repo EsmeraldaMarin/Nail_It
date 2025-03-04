@@ -100,7 +100,7 @@ function EstilistaManager() {
         <div className="ctn container-fluid mt-5">
             <div className="ss d-flex justify-content-between align-items-center">
                 <h3>Gestor de Operadoras</h3>
-                <button className="btn btn-crear-usuario fs-5" onClick={() => {
+                <button className="btn btn-crear-usuario fw-bold" onClick={() => {
                     const modalElement = modalRefCrearUsuario.current;
                     const bootstrapModal = new window.bootstrap.Modal(modalElement);
                     bootstrapModal.show();

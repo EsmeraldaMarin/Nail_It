@@ -14,6 +14,7 @@ const ChangePasswordModal = ({ show, onClose, userId }) => {
         try {
             // Verificar que las contraseñas coincidan
             if (newPassword !== confirmPassword) {
+                console.log(newPassword, confirmPassword)
                 setErrorMessage("Las contraseñas no coinciden.");
                 return;
             }
@@ -28,6 +29,8 @@ const ChangePasswordModal = ({ show, onClose, userId }) => {
             navigate("/inicio_admin");
         } catch (error) {
             console.error('Error changing password', error);
+            setErrorMessage("Ocurrió un error. Intentelo otra vez.");
+
         }
     };
 

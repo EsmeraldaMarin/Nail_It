@@ -1,6 +1,6 @@
 import pkg from "express";
 const { Router } = pkg
-import { gestorClientes } from "../index.js";
+import { gestorAdmins, gestorClientes } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { enviarMailVerificacion } from "../controllers/services/mail.services.js";
@@ -128,8 +128,8 @@ routerClientes.post("/registro", async (req, res) => {
             return res.status(400).json({ message: "Password del cliente es requerido" });
         }
 
-        const clienteARevisar = await gestorClientes.obtener_cliente_por_email(req.body.email);
-        if (clienteARevisar) {
+        const existeUnUsuario = await gestorClientes.obtener_cliente_por_email(req.body.email) || await gestorAdmins.obtener_admin_por_email(req.body.email);
+        if (existeUnUsuario) {
             return res.status(409).json({
                 status: 409,
                 error: "Conflict",

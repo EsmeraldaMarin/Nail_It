@@ -1,6 +1,6 @@
 import pkg from "express";
 const { Router } = pkg
-import { gestorAdmins } from "../index.js";
+import { gestorAdmins, gestorClientes } from "../index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { GestorAdmins } from "../controllers/admin_controller.js";
@@ -44,8 +44,8 @@ routerAdmins.post("/registro", async (req, res) => {
             return res.status(400).json({ message: "Password del admin es requerido" });
         }
 
-        const existingAdmin = await gestorAdmins.obtener_admin_por_email(req.body.email);
-        if (existingAdmin) {
+        const existingUser = await gestorAdmins.obtener_admin_por_email(req.body.email) || await gestorClientes.obtener_cliente_por_email(req.body.email);
+        if (existingUser) {
             return res.status(409).json({
                 status: 409,
                 error: "Conflict",
@@ -148,14 +148,12 @@ routerAdmins.put("/:id", async (req, res) => {
         const id = req.params.id.toLowerCase();
 
         const adminExistente = await gestorAdmins.obtener_admin(id);
-
         if (!adminExistente) {
             return res.status(401).send("Administrador no encontrado");
         }
 
         const { password } = req.body;
         let token;
-
         // Si se proporciona una nueva contraseña, la hasheamos
         if (password) {
             const payload = {
@@ -168,10 +166,10 @@ routerAdmins.put("/:id", async (req, res) => {
             };
             req.body.password = await bcrypt.hash(password, 10);
             token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
-            body.mustChangePassword = false;
+            req.body.mustChangePassword = false;
         }
 
-        await gestorAdmins.actualizar_admin_por_id(body, id);
+        await gestorAdmins.actualizar_admin_por_id(req.body, id);
         res.status(202).json({
             token,
             message: "Admin cambiado exitosamente"
