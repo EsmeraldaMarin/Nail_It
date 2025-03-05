@@ -144,7 +144,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
 
                 <div className="mb-3">
                     <div className="d-flex justify-content-between">
-                        <p className="fw-bold mb-0">Profesional</p>
+                        <p className="fw-bold mb-0">Operadora</p>
                         <p className="text-end mb-0">{profesional_data.nombre} {profesional_data.apellido}</p>
                     </div>
                     <div className="d-flex justify-content-between">

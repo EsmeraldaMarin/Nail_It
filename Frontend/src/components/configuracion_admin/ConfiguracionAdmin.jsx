@@ -148,6 +148,7 @@ const ConfiguracionAdmin = () => {
                                 disabled={editableField !== "importe_seña"}
                                 aria-label="Amount (to the nearest dollar)"
                             />
+                            <span className="input-group-text">,00</span>
                             <button
                                 type="button"
                                 className={`${editableField === "importe_seña" ? "btn-danger" : "btn-warning"} btn mx-3`}
