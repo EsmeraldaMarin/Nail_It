@@ -26,6 +26,17 @@ const AgendaReservas = () => {
         const fechaLocal = new Date(new Date(fecha).getTime() + new Date().getTimezoneOffset() * 60000);
         return format(fechaLocal, 'EEEE dd/MM', { locale: es });
     };
+    const formatPrice = (price) => {
+            if (typeof price === "string") {
+                price = parseFloat(price.replace(",", "."));
+            }
+            return new Intl.NumberFormat('es-AR', {
+                style: 'currency',
+                currency: 'ARS',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(price);
+        };
 
 
     useEffect(() => {
@@ -33,8 +44,9 @@ const AgendaReservas = () => {
             .get('http://localhost:5050/reserva') // Cambia la URL según tu backend
             .then((response) => {
                 const eventos = response.data
-                    .filter((res) => res.id_profesional == userId && res.estado === "confirmada")
+                    .filter((res) => res.id_profesional == userId && ["confirmada", "realizada", "no_realizada"].includes(res.estado))
                     .map((reserva) => {
+                        console.log(reserva.estado)
                         const fechaBase = new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)); // Fecha base
                         const [hour, minute] = reserva.horaInicio.split(':');
                         const start = new Date(fechaBase)
@@ -70,7 +82,7 @@ const AgendaReservas = () => {
                         };
                     });
                 setReservas(eventos);
-                setReservasParaListado(response.data.filter((res) => res.id_profesional == userId && res.estado === "confirmada"))
+                setReservasParaListado(response.data.filter((res) => res.id_profesional == userId && res.estado == "confirmada"))
             })
             .catch((error) => {
                 console.error("Error al cargar reservas:", error);
@@ -96,14 +108,45 @@ const AgendaReservas = () => {
         // actualiza la lista de reservas.
         const nuevaLista = await axios.get('http://localhost:5050/reserva');
         const eventosActualizados = nuevaLista.data
-            .filter((res) => res.id_profesional == userId && res.estado === "confirmada")
-            .map((reserva) => ({
-                title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente}`,
-                start: new Date(reserva.fecha).toISOString(),
-                extendedProps: { id: reserva.id, estado: reserva.estado }
-            }));
+            .filter((res) => res.id_profesional == userId && ["confirmada", "realizada", "no_realizada"].includes(res.estado))
+            .map((reserva) => {
+                console.log(reserva.estado)
+                const fechaBase = new Date(new Date(new Date(reserva.fecha).getTime() + new Date().getTimezoneOffset() * 60000)); // Fecha base
+                const [hour, minute] = reserva.horaInicio.split(':');
+                const start = new Date(fechaBase)
+                start.setHours(parseInt(hour, 10));
+                start.setMinutes(parseInt(minute, 10));
+
+                const end = new Date(start)
+                end.setMinutes(start.getMinutes() + reserva.Servicio.duracion);
+
+                return {
+                    title: `${reserva.Servicio.nombre} - Cliente: ${reserva.Cliente ? reserva.Cliente.nombre : reserva.nombre_cliente
+                        }`,
+                    start: start.toISOString(), // Formato ISO
+                    end: end.toISOString(),
+                    extendedProps: {
+                        id: reserva.id,
+                        comprobante: reserva.comprobante,
+                        montoSenia: reserva.montoSenia,
+                        montoTotal: reserva.montoTotal,
+                        duracion: reserva.Servicio.duracion,
+                        horaInicio: reserva.horaInicio,
+                        horaFin: end.getHours() + ":" + end.getMinutes(),
+                        estado: reserva.estado,
+                        cliente: reserva.Cliente
+                            ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
+                            : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`,
+                        numero: reserva.Cliente
+                            ? `${reserva.Cliente.numero}`
+                            : `${reserva.telefono_cliente}`,
+                        servicio: reserva.Servicio.nombre,
+                        especialidad: reserva.Servicio.Especialidad.nombre,
+                    },
+                };
+            });
         setReservas(eventosActualizados);
-        setReservasParaListado(nuevaLista.data.filter((res) => res.id_profesional == userId && res.estado === "confirmada"));
+        setReservasParaListado(nuevaLista.data.filter((res) => res.id_profesional == userId && res.estado == "confirmada"));
         setModalReserva(null);
         setShowModal(true);
     }
@@ -147,7 +190,7 @@ const AgendaReservas = () => {
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
                 >
-                    <div className="modal-dialog" style={{ marginTop: '150px' }} role="document">
+                    <div className="modal-dialog" style={{ marginTop: '50px' }} role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title fs-3" id="exampleModalLabel">
@@ -177,23 +220,24 @@ const AgendaReservas = () => {
                                     <strong>Especialidad:</strong> {modalReserva.especialidad}
                                 </p>
                                 <p>
-                                    <strong>Importe seña:</strong> ${modalReserva.montoSenia}
+                                    <strong>Importe seña:</strong> {formatPrice(modalReserva.montoSenia)}
                                 </p>
                                 <p>
-                                    <strong>Importe Total:</strong> ${modalReserva.montoTotal}
+                                    <strong>Importe Total:</strong> {formatPrice(modalReserva.montoTotal)}
                                 </p>
                                 <p>
                                     <strong>Teléfono:</strong> {modalReserva.numero}
                                 </p>
+                                <span className={`${modalReserva.estado} estado-enModal`}>{modalReserva.estado.replace("_"," ")}</span>
                             </div>
                             <div className="modal-footer d-flex justify-content-between">
-                                <button
+                                {modalReserva.estado === "confirmada" && <button
                                     type="button"
                                     className="btn btn-danger"
                                     onClick={() => handleCancelarReserva(modalReserva.id)}
                                 >
                                     Cancelar Reserva
-                                </button>
+                                </button>}
                                 <button
                                     type="button"
                                     className="btn btn-secondary"
