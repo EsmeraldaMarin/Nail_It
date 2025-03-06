@@ -118,8 +118,8 @@ const ReservasConfirmadas = () => {
     const renderFilasReserva = (reservasFiltradas) => {
         return reservasFiltradas.map((reserva, index) => (
             <tr key={index} className={["realizada", "no_realizada"].includes(reserva.estado) ? "table-active realizadas" : ""}>
-                <td className="text-capitalize text-wrap" style={{ minWidth: "170px", maxWidth: "170px" }}>{reserva.Servicio.nombre}</td>
-                <td className="text-capitalize text-wrap" style={{ minWidth: "170px", maxWidth: "170px" }}>
+                <td className="text-capitalize text-wrap" style={{ minWidth: "7em", maxWidth: "7em" }}>{reserva.Servicio.nombre}</td>
+                <td className="text-capitalize text-wrap" style={{ minWidth: "7em", maxWidth: "7em" }}>
                     {reserva.Cliente
                         ? `${reserva.Cliente.nombre} ${reserva.Cliente.apellido}`
                         : `${reserva.nombre_cliente} ${reserva.apellido_cliente}`}
@@ -188,15 +188,15 @@ const ReservasConfirmadas = () => {
                 <table className="table ">
                     <thead className="table-primary">
                         <tr>
-                            <th scope="col" style={{ minWidth: "170px", maxWidth: "170px" }}>Servicio</th>
-                            <th scope="col" style={{ minWidth: "170px", maxWidth: "170px" }}>Cliente</th>
+                            <th scope="col" style={{ minWidth: "7em", maxWidth: "7em" }}>Servicio</th>
+                            <th scope="col" style={{ minWidth: "7em", maxWidth: "7em" }}>Cliente</th>
                             <th scope="col">Teléfono</th>
                             <th scope="col">Fecha Turno</th>
                             <th scope="col">Hora Turno</th>
                             <th scope="col" className='text-end'>Precio servicio</th>
                             <th scope="col" className='text-end'>Importe abonado</th>
                             <th scope="col" className='text-end'>Importe a cobrar</th>
-                            <th scope="col" className='text-end'>Estado</th>
+                            <th scope="col" className='text-center'>Estado</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>

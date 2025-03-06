@@ -132,7 +132,7 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
 
             <div className="card shadow-sm p-4 mb-4 info-ctn">
                 <div className="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                    <button className="btn border-black border-2 fw-bolder fs-3 rounded-circle d-flex align-items-center justify-content-center"
+                    <button className="btn border-black border-2 fw-bolder fs-4 rounded-circle d-flex align-items-center justify-content-center"
                         style={{ width: "30px", height: "30px" }}
                         onClick={() => setPasoActual(1)}>
                         {`<`}
@@ -240,34 +240,34 @@ const CardInfoReserva = ({ esDeEstilista, setPasoActual, reservaData, setReserva
                 {
                     esDeEstilista &&
                     <div className='my-3'>
-                        <div className="form-group col-md-6">
-                            <label className="form-label">Nombre</label>
+                        <div className="form-group col-md-6" style={{fontSize:"16px"}}>
+                            <label className="form-label">Nombre Cliente</label>
                             <input
                                 type="text"
                                 name="nombre_cliente"
-                                className="form-control"
+                                className="form-control p-1 mb-2"
                                 value={reservaData.userId.nombre_cliente}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-                        <div className="form-group col-md-6">
-                            <label className="form-label">Apellido</label>
+                        <div className="form-group col-md-6" style={{fontSize:"16px"}}>
+                            <label className="form-label">Apellido Cliente</label>
                             <input
                                 type="text"
                                 name="apellido_cliente"
-                                className="form-control"
+                                className="form-control p-1 mb-2"
                                 value={reservaData.userId.apellido_cliente}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-                        <div className="form-group col-md-6">
-                            <label className="form-label" >Número de teléfono</label>
+                        <div className="form-group col-md-6" style={{fontSize:"16px"}}>
+                            <label className="form-label" >Número de teléfono cliente</label>
                             <input
                                 type="number"
                                 name="telefono_cliente"
-                                className="form-control"
+                                className="form-control p-1 mb-2"
                                 value={reservaData.userId.telefono_cliente}
                                 onChange={handleChange}
                                 required
